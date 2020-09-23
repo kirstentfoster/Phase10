@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/overallLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/TopRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/QuitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QUIT" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/AIDeck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="75"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/AIDeckCard1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/cardback" />
+
+            <ImageView
+                android:id="@+id/AIDeckCard2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/cardback" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/AIPhase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="60"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/AIPhaseCard1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/greennine" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/rednine" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellownine" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/rednine" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellowthree" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/redfour" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellowfive" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellowsix" />
+
+            <Button
+                android:id="@+id/HitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:text="Hit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PhaseDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/PhaseDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_horizontal"
+                android:text="Phase 3: \n1 set of 4\n1 run of 4"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DrawPiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="30"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/DiscardPile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/bluetwo" />
+
+            <ImageView
+                android:id="@+id/DrawPile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/cardback" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PlayerPhase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="55"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/InvisiblePhase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/cardback" />
+
+            <Button
+                android:id="@+id/PlayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:text="Play Phase" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PlayerDeck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_weight="55"
+            android:gravity="bottom|center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/PlayerDeck1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/bluetwo" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/greennine" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellownine" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/greenfive" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellowfive" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/yellowfive" />
+
+            <ImageView
+                android:id="@+id/PlayerDeck7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/rednine" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
