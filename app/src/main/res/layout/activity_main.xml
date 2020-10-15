@@ -33,21 +33,25 @@
             android:id="@+id/AIDeck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="75"
+            android:layout_gravity="center"
+            android:layout_weight="85"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/AIDeckCard1"
-                android:layout_width="wrap_content"
+                android:layout_width="32dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
                 app:srcCompat="@drawable/cardback" />
 
             <ImageView
                 android:id="@+id/AIDeckCard2"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
                 app:srcCompat="@drawable/cardback" />
 
         </LinearLayout>
@@ -215,11 +219,25 @@
                 app:srcCompat="@drawable/greennine" />
 
             <ImageView
+                android:id="@+id/playerDeck2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/greenfive" />
+
+            <ImageView
                 android:id="@+id/PlayerDeck3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/yellownine" />
+
+            <ImageView
+                android:id="@+id/playerDeck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/bluetwo" />
 
             <ImageView
                 android:id="@+id/PlayerDeck4"
