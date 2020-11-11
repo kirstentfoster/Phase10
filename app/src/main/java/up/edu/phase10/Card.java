@@ -97,45 +97,6 @@ public class Card implements Comparable{
 
     }
 
-    /**   https://htmlcolorcodes.com/
-     * Creates all the cards as drawables
-     * @param canvas
-     */
-    public void drawCards(Canvas canvas){
-        Paint white = new Paint();
-        white.setColor(0xFFFFFF);
-        Paint redCard = new Paint();
-        redCard.setColor(0xF92929);
-        Paint blueCard = new Paint();
-        blueCard.setColor(0x2949F9);
-        Paint greenCard = new Paint();
-        greenCard.setColor(0x0A9339);
-        Paint yellowCard = new Paint();
-        yellowCard.setColor(0xFCF905);
-        Paint cardColor = new Paint();
-
-        //assigns base color of card to the drawable
-        if(this.number == 1) {
-            cardColor =redCard;
-        }
-        if(this.number == 2) {
-            cardColor =blueCard;
-        }
-        if(this.number == 3) {
-            cardColor =greenCard;
-        }
-        if(this.number == 4) {
-            cardColor =yellowCard;
-        }
-
-
-
-
-        canvas.drawRect(0,0,0,0,cardColor); //base of card
-        canvas.drawCircle(0,0,0,white); //big circle in the middle displaying large number
-        canvas.drawCircle(0,0,0,white); //smaller circle in corner displaying number
-
-    }
 
     @Override
     public int compareTo(Object o) {
