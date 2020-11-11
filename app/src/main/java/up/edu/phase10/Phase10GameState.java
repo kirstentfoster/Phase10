@@ -4,6 +4,9 @@
  */
 package up.edu.phase10;
 
+import android.widget.Button;
+import android.widget.ImageButton;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -29,7 +32,9 @@ public class Phase10GameState extends GameState {
     private int player1Phase; //Standard is 10 phases, optional: set different phases for game
     private int player2Phase;
     private int hasGoneOut; //set to zero until a player goes out, then set to player Id
-    private Phase phase = new Phase();
+    public Phase phase = new Phase();
+
+    public ImageButton discardDraw = null;
 
     //Setters
     public void setTurnId(int turnId) {
@@ -184,9 +189,9 @@ public class Phase10GameState extends GameState {
                 drawPile.add(new Card(i, j));
             }
         }
-        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0)
-            drawPile.add(new Card(0, 0));
-        }
+//        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
+//            drawPile.add(new Card(0, 0));
+//        }
         for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
             drawPile.add(new Card(-1, -1));
         }
@@ -325,13 +330,30 @@ public class Phase10GameState extends GameState {
      *
      * @param playerId id of the player attempting to discard, this param could be replaced by a player object later on,
      *                 in which case a .getId() call would be added to the method
-     * @param cardLoc  the location in player hand of the card being discarded
+     * @param card the card being discarded
      * @return true if the action was successful, else will return false
      */
-    public boolean discard(int playerId, int cardLoc) {
-
-        if (playerId != this.turnId || this.hasGoneOut == playerId || cardLoc < 0) return false;
-
+    public boolean discard(int playerId, Card card) {
+        if (playerId != this.turnId || this.hasGoneOut == playerId) return false;
+        int cardLoc = 0;
+        boolean notFound = true;
+        while (notFound) {
+            if (playerId == 1) {
+                for (int i = 0; i < this.player1Hand.size(); i++) {
+                    if (card.equals(this.player1Hand.get(i))) {
+                        cardLoc = i;
+                        notFound = false;
+                    }
+                }
+            } else if (playerId == 2) {
+                for (int i = 0; i < this.player2Hand.size(); i++) {
+                    if (card.equals(this.player2Hand.get(i))) {
+                        cardLoc = i;
+                        notFound = false;
+                    }
+                }
+            } else return false;
+        }
         //determine which player is discarding
         if (playerId == 1) {
             if (this.player1Hand.size() < cardLoc) return false;
@@ -418,7 +440,7 @@ public class Phase10GameState extends GameState {
             if (hitOnPlayer != playerNum) { //if this is false in a 2 player game, player is hitting on opposite player phase
                 if (playerNum == 1 && player1HasPhased) {
                     if (player2HasPhased) {
-                        if (phase.checkHitValid(selectedCard, player1PhaseContent, playerNum)) {
+                        if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             player1Hand.remove(selectedCard);
                             return true;
@@ -426,7 +448,7 @@ public class Phase10GameState extends GameState {
                     }
                 } else if (playerNum == 2 && player2HasPhased) {
                     if (player1HasPhased) {
-                        if (phase.checkHitValid(selectedCard, player2PhaseContent, playerNum)) {
+                        if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             player2Hand.remove(selectedCard);
                             return true;
@@ -436,7 +458,7 @@ public class Phase10GameState extends GameState {
             }else if (hitOnPlayer == playerNum) { // if hitOnPlayer is the same as playerNum then the player hits on their own phaseContext
                 if (playerNum == 1) {
                     if (player1HasPhased) {
-                        if (phase.checkHitValid(selectedCard, player1PhaseContent, playerNum)) {
+                        if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             player1Hand.remove(selectedCard);
                             return true;
@@ -445,7 +467,7 @@ public class Phase10GameState extends GameState {
                 }
                 if (playerNum == 2) {
                     if (player2HasPhased) {
-                        if (phase.checkHitValid(selectedCard, player2PhaseContent, playerNum)) {
+                        if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             player2Hand.remove(selectedCard);
                             return true;
@@ -462,4 +484,169 @@ public class Phase10GameState extends GameState {
         }
         return false;
     }
+
+    public void drawDiscard(MainActivity MA){
+        discardDraw = MA.findViewById(R.id.DiscardPile);
+        int id = testSlot(this.discardPile.peek());
+        discardDraw.setImageResource(id);
+    }
+
+    public int testSlot(Card card){
+        int i = 0;
+        if(card.isSkip()){
+            return R.drawable.skip;
+        }
+        else if(card.isWild()){
+            return R.drawable.wild;
+        }
+        else if(card.getColor() == 1){
+            if(card.getNumber()==1){
+                return R.drawable.red1;
+            }
+            else if(card.getNumber()==2){
+                return R.drawable.red2;
+            }
+            else if(card.getNumber()==3){
+                return R.drawable.red3;
+            }
+            else if(card.getNumber()==4){
+                return R.drawable.red4;
+            }
+            else if(card.getNumber()==5){
+                return R.drawable.red5;
+            }
+            else if(card.getNumber()==6){
+                return R.drawable.red6;
+            }
+            else if(card.getNumber()==7){
+                return R.drawable.red7;
+            }
+            else if(card.getNumber()==8){
+                return R.drawable.red8;
+            }
+            else if(card.getNumber()==9){
+                return R.drawable.red9;
+            }else if(card.getNumber()==10){
+                return R.drawable.red10;
+            }
+            else if(card.getNumber()==11){
+                return R.drawable.red11;
+            }
+            else if(card.getNumber()==12){
+                return R.drawable.red12;
+            }
+        }
+        else if(card.getColor() == 2){
+            if(card.getNumber()==1){
+                return R.drawable.blue1;
+            }
+            else if(card.getNumber()==2){
+                return R.drawable.blue2;
+            }
+            else if(card.getNumber()==3){
+                return R.drawable.blue3;
+            }
+            else if(card.getNumber()==4){
+                return R.drawable.blue4;
+            }
+            else if(card.getNumber()==5){
+                return R.drawable.blue5;
+            }
+            else if(card.getNumber()==6){
+                return R.drawable.blue6;
+            }
+            else if(card.getNumber()==7){
+                return R.drawable.blue7;
+            }
+            else if(card.getNumber()==8){
+                return R.drawable.blue8;
+            }
+            else if(card.getNumber()==9){
+                return R.drawable.blue9;
+            }else if(card.getNumber()==10){
+                return R.drawable.blue10;
+            }
+            else if(card.getNumber()==11){
+                return R.drawable.blue11;
+            }
+            else if(card.getNumber()==12){
+                return R.drawable.blue12;
+            }
+        }
+        else if(card.getColor() == 3){
+            if(card.getNumber()==1){
+                return R.drawable.green1;
+            }
+            else if(card.getNumber()==2){
+                return R.drawable.green2;
+            }
+            else if(card.getNumber()==3){
+                return R.drawable.green3;
+            }
+            else if(card.getNumber()==4){
+                return R.drawable.green4;
+            }
+            else if(card.getNumber()==5){
+                return R.drawable.green5;
+            }
+            else if(card.getNumber()==6){
+                return R.drawable.green6;
+            }
+            else if(card.getNumber()==7){
+                return R.drawable.green7;
+            }
+            else if(card.getNumber()==8){
+                return R.drawable.green8;
+            }
+            else if(card.getNumber()==9){
+                return R.drawable.green9;
+            }else if(card.getNumber()==10){
+                return R.drawable.green10;
+            }
+            else if(card.getNumber()==11){
+                return R.drawable.green11;
+            }
+            else if(card.getNumber()==12){
+                return R.drawable.green12;
+            }
+        }
+        else if(card.getColor() == 4){
+            if(card.getNumber()==1){
+                return R.drawable.yellow1;
+            }
+            else if(card.getNumber()==2){
+                return R.drawable.yellow2;
+            }
+            else if(card.getNumber()==3){
+                return R.drawable.yellow3;
+            }
+            else if(card.getNumber()==4){
+                return R.drawable.yellow4;
+            }
+            else if(card.getNumber()==5){
+                return R.drawable.yellow5;
+            }
+            else if(card.getNumber()==6){
+                return R.drawable.yellow6;
+            }
+            else if(card.getNumber()==7){
+                return R.drawable.yellow7;
+            }
+            else if(card.getNumber()==8){
+                return R.drawable.yellow8;
+            }
+            else if(card.getNumber()==9){
+                return R.drawable.yellow9;
+            }else if(card.getNumber()==10){
+                return R.drawable.yellow10;
+            }
+            else if(card.getNumber()==11){
+                return R.drawable.yellow11;
+            }
+            else if(card.getNumber()==12){
+                return R.drawable.yellow12;
+            }
+        }
+        return -1;
+    } //testSlot
 }

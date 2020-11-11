@@ -14,7 +14,7 @@ import up.edu.phase10.Framework.GamePlayerType;
  * @author Andrew M. Nuxoll, modified by Steven R. Vegdahl
  * @version February 2016
  */
-public class Phase10MainActivity extends GameMainActivity {
+public class MainActivity extends GameMainActivity {
 
     // the port number that this game will use when playing over the network
     private static final int PORT_NUMBER = 2278;

@@ -9,7 +9,7 @@ package up.edu.phase10;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Phase {
+public class Phase { //Wild card handling will be added in beta release
 
     //Phase Rules
     private String Phase1 = "2 sets of 3";
@@ -38,7 +38,7 @@ public class Phase {
     Card[] play2Color;
 
 
-    //needs constructor
+
 
     /** checks if the play can play a phase, first by seeing what phase
      * the player is on, then by referencing two different methods that checks
@@ -88,10 +88,11 @@ public class Phase {
                 return checkIfPhaseSeven(sorted, playerNum);
             case 8: //Special Boy - 7 cards of 1 color
                 sorted = sortCardsByColor(phaseContent);
+                if(isColorGroup(sorted, 7,playerNum, false) != null) return true;
                 if(sorted.length != 7){
                     return false;
                 }
-                if(isColorGroup(sorted, 7,playerNum) != null) return true;
+                if(isColorGroup(sorted, 7, playerNum, false) != null) return true;
                 else return false;
             case 9:
                 if(sorted.length != 7){
@@ -124,10 +125,10 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseOne(Card[] phaseContent, int playerNum){
-        if(isSet(phaseContent,3, playerNum,1) != null) {
-            Card[] temp = isSet(phaseContent,3, playerNum,1); //First set
+        if(isSet(phaseContent,3, playerNum,1, false) != null) {
+            Card[] temp = isSet(phaseContent,3, playerNum,1, false); //First set
 
-            if(isSet(temp,3,playerNum,2) != null){ //Second set
+            if(isSet(temp,3,playerNum,2, false) != null){ //Second set
 
                 //set other phase qualifiers as null
                 if(playerNum == 1) {
@@ -138,7 +139,7 @@ public class Phase {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,3,playerNum,2) == temp) return true; //make sure no cards are left
+                if(isSet(temp,3,playerNum,2, false) == temp) return true; //make sure no cards are left
             }
         }
         return false;
@@ -153,10 +154,10 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseTwo(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,4, playerNum) != null) {
-            Card[] temp = isRun(phaseContent,4, playerNum); //Check for run
+        if(isRun(phaseContent,4, playerNum, false) != null) {
+            Card[] temp = isRun(phaseContent,4, playerNum, false); //Check for run
 
-            if(isSet(temp,3,playerNum,1) != null){ //Check for set
+            if(isSet(temp,3,playerNum,1, false) != null){ //Check for set
 
                 //set other phase qualifiers as null
                 if(playerNum == 1) {
@@ -167,7 +168,7 @@ public class Phase {
                     this.play2Set2 = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,3,playerNum,1) == temp) return true; //make sure no cards are left
+                if(isSet(temp,3,playerNum,1, false) == temp) return true; //make sure no cards are left
             }
         }
         return false;
@@ -182,10 +183,10 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseThree(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,4, playerNum) != null) {
-            Card[] temp = isRun(phaseContent,4, playerNum); //Check for run
+        if(isRun(phaseContent,4, playerNum, false) != null) {
+            Card[] temp = isRun(phaseContent,4, playerNum, false); //Check for run
 
-            if(isSet(temp,4,playerNum,1) != null){ //Check for set
+            if(isSet(temp,4,playerNum,1, false) != null){ //Check for set
 
                 //set other phase qualifiers as null
                 if(playerNum == 1){
@@ -196,7 +197,7 @@ public class Phase {
                     this.play2Set2 = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,4,playerNum,1) == temp) return true; //make sure no cards are left
+                if(isSet(temp,4,playerNum,1, false) == temp) return true; //make sure no cards are left
             }
         }
         return false;
@@ -211,7 +212,7 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseFour(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,7,playerNum) == null) return false; //Check for run
+        if(isRun(phaseContent,7,playerNum, false) == null) return false; //Check for run
         else{
 
             //set other phase qualifiers as null
@@ -225,7 +226,7 @@ public class Phase {
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,7,playerNum) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,7,playerNum, false) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -239,7 +240,7 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseFive(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,8,playerNum) == null) return false; //Check for run
+        if(isRun(phaseContent,8,playerNum, false) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
             if(playerNum == 1) {
@@ -252,7 +253,7 @@ public class Phase {
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,8,playerNum) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,8,playerNum, false) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -266,7 +267,7 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseSix(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,9,playerNum) == null) return false; //Check for run
+        if(isRun(phaseContent,9,playerNum, false) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
             if(playerNum == 1) {
@@ -279,7 +280,7 @@ public class Phase {
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,9,playerNum) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,9,playerNum, false) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -293,10 +294,10 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseSeven(Card[] phaseContent, int playerNum){
-        if(isSet(phaseContent,4, playerNum,1) != null) {
-            Card[] temp = isSet(phaseContent,4, playerNum,1); //Check for set 1
+        if(isSet(phaseContent,4, playerNum,1, false) != null) {
+            Card[] temp = isSet(phaseContent,4, playerNum,1, false); //Check for set 1
 
-            if(isSet(temp,4,playerNum,2) != null){ //Check for set 2
+            if(isSet(temp,4,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
                 if(playerNum == 1){
@@ -307,7 +308,7 @@ public class Phase {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,4,playerNum,2) == temp) return true; //make sure no cards are left
+                if(isSet(temp,4,playerNum,2, false) == temp) return true; //make sure no cards are left
             }
         }
         return false;
@@ -323,10 +324,10 @@ public class Phase {
      */
     public boolean checkIfPhaseNine(Card[] phaseContent, int playerNum){
 
-        if(isSet(phaseContent,5, playerNum,1) != null) {
-            Card[] temp = isSet(phaseContent,5, playerNum,1); //Check for set 1
+        if(isSet(phaseContent,5, playerNum,1, false) != null) {
+            Card[] temp = isSet(phaseContent,5, playerNum,1, false); //Check for set 1
 
-            if(isSet(temp,2,playerNum,2) != null){ //Check for set 2
+            if(isSet(temp,2,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
                 if(playerNum == 1) {
@@ -337,7 +338,7 @@ public class Phase {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,2,playerNum,2) == temp) return true;//make sure no cards are left
+                if(isSet(temp,2,playerNum,2, false) == temp) return true;//make sure no cards are left
             }
         }
         return false;
@@ -352,10 +353,10 @@ public class Phase {
      * @return true if phase valid
      */
     public boolean checkIfPhaseTen(Card[] phaseContent, int playerNum){
-        if(isSet(phaseContent,5, playerNum,1) != null) {
-            Card[] temp = isSet(phaseContent,5, playerNum,1); //Check for set 1
+        if(isSet(phaseContent,5, playerNum,1,false) != null) {
+            Card[] temp = isSet(phaseContent,5, playerNum,1, false); //Check for set 1
 
-            if(isSet(temp,3,playerNum,2) != null){ //Check for set 2
+            if(isSet(temp,3,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
                 if(playerNum == 1){
@@ -366,7 +367,7 @@ public class Phase {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
-                if(isSet(temp,3,playerNum,2) == temp) return true;//make sure no cards are left
+                if(isSet(temp,3,playerNum,2, false) == temp) return true;//make sure no cards are left
             }
         }
         return false;
@@ -385,7 +386,7 @@ public class Phase {
      * @param setNum 1 or 2 based on if this is the first or second set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum){
+    private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum, boolean test){
         Card[] temp;
         Card[] notInSet;
         int notInSetLoc;
@@ -397,8 +398,7 @@ public class Phase {
             tempLoc = 0;
             notInSet = new Card[checkForSet.length-size];
             notInSetLoc = 0;
-            for (int j = i+1; j < checkForSet.length; j++) {
-
+            for (int j = i + 1; j < checkForSet.length; j++) {
                 if (checkForSet[j].getNumber() == temp[tempLoc].getNumber()) {
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
@@ -422,6 +422,12 @@ public class Phase {
                             notInSetLoc++;
                         }
                     }
+
+                    if(test){
+                        Card[] test1 = new Card[11];
+                        test1[0] = new Card(40,40);
+                        return test1;}
+
                     if(setNum == 1){
                         this.play1Set1 = temp;
                         if(notInSetLoc == 0){
@@ -445,6 +451,12 @@ public class Phase {
                             notInSetLoc++;
                         }
                     }
+
+                    if(test){
+                        Card[] test1 = new Card[11];
+                        test1[0] = new Card(40,40);
+                        return test1;}
+
                     if(setNum == 1){
                         this.play2Set1 = temp;
                         if(notInSetLoc == 0){
@@ -477,7 +489,7 @@ public class Phase {
      * @param playerNum the number of the player that is phasing
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isRun(Card[] checkForRun, int size, int playerNum){
+    private Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
         Card[] temp;
         Card[] notInRun;
         int notInRunLoc;
@@ -495,8 +507,6 @@ public class Phase {
                     tempLoc++;
                 } else {
                     if(notInRun.length > 0) {
-
-
                         if(notInRunLoc < notInRun.length) {
                             notInRun[notInRunLoc] = checkForRun[j];
                             notInRunLoc++;
@@ -509,6 +519,12 @@ public class Phase {
 
             }
             if(tempLoc >= temp.length -1){
+
+                if(test){
+                    Card[] test1 = new Card[11];
+                    test1[0] = new Card(40,40);
+                    return test1;}
+
                 if(playerNum == 1) {
 
                     for(int b = 0; b < i; b++){
@@ -555,7 +571,7 @@ public class Phase {
      * @param playerNum the number of the player that is phasing
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum){
+    private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
         Card[] temp;
         Card[] notInColor;
         int notInColorLoc;
@@ -574,8 +590,6 @@ public class Phase {
                     tempLoc++;
                 } else {
                     if(notInColor.length > 0) {
-
-
                         if(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[j];
                             notInColorLoc++;
@@ -588,6 +602,12 @@ public class Phase {
 
             }
             if(tempLoc >= temp.length -1){
+
+                if(test){
+                    Card[] test1 = new Card[11];
+                    test1[0] = new Card(40,40);
+                    return test1;}
+
                 if(playerNum == 1) {
                     for(int b = 0; b < i; b++){
                         while(notInColorLoc < notInColor.length) {
@@ -630,7 +650,7 @@ public class Phase {
      * @param attempt the cards attempting to be phased
      * @return the sorted card array
      */
-    public Card[] sortCards(ArrayList<Card> attempt){
+    private Card[] sortCards(ArrayList<Card> attempt){
         Card[] arr = new Card[attempt.size()];
         int x = 0;
         while(x < attempt.size()){
@@ -650,6 +670,7 @@ public class Phase {
         }
         return arr;
     }
+
     /**
      * sortCards sorts the cards by color instead of number
      *
@@ -683,13 +704,11 @@ public class Phase {
      * checkHitValid checks if the selected card is valid
      *
      * @param selectedCard the card that is being hit
-     * @param phaseContent phase that it is being hit to
-     * @param playerNum the player that is hitting
+     * @param playerNum the player that is being hit on
      * @return true if hit is successful
      */
-    protected boolean checkHitValid(Card selectedCard, ArrayList<Card> phaseContent, int playerNum) {
+    public boolean checkHitValid(Card selectedCard, int playerNum, boolean test) {
         if (playerNum == 1) {
-
             //Runs
             if(this.play1Run != null) {
                 Card[] tempPlay1Run = new Card[play1Run.length + 1];
@@ -697,7 +716,7 @@ public class Phase {
                     tempPlay1Run[i] = play1Run[i];
                 }
                 tempPlay1Run[play1Run.length] = selectedCard;
-                if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum) == null)) return true;
+                if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test) == null)) return true;
                 else{
                     return false;
                 }
@@ -709,7 +728,7 @@ public class Phase {
                     tempPlay1Set1[i] = play1Set1[i];
                 }
                 tempPlay1Set1[play1Set1.length] = selectedCard;
-                if(!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum,1)==null)) return true;
+                if(!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum,1, test)==null)) return true;
                 else{
                     return false;
                 }
@@ -720,7 +739,7 @@ public class Phase {
                     tempPlay1Set2[i] = play1Set2[i];
                 }
                 tempPlay1Set2[play1Set2.length] = selectedCard;
-                if(!(isSet(tempPlay1Set2, tempPlay1Set2.length, playerNum, 2)==null)) return true;
+                if(!(isSet(tempPlay1Set2, tempPlay1Set2.length, playerNum, 2, test)==null)) return true;
                 else{
                     return false;
                 }
@@ -735,7 +754,7 @@ public class Phase {
                 }
                 tempPlay1Color[play1Color.length] = selectedCard;
 
-                if (!(isColorGroup(tempPlay1Color, tempPlay1Color.length, playerNum) == null))
+                if (!(isColorGroup(tempPlay1Color, tempPlay1Color.length, playerNum, test) == null))
                     return true;
                 else return false;
             }
@@ -748,7 +767,7 @@ public class Phase {
                     tempPlay2Run[i] = play2Run[i];
                 }
                 tempPlay2Run[play2Run.length] = selectedCard;
-                if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum) == null)) return true;
+                if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum, test) == null)) return true;
                 else{
                     return false;
                 }
@@ -761,7 +780,7 @@ public class Phase {
                     tempPlay2Set1[i] = play2Set1[i];
                 }
                 tempPlay2Set1[play2Set1.length] = selectedCard;
-                if(!(isSet(tempPlay2Set1, tempPlay2Set1.length, playerNum,1)==null)) return true;
+                if(!(isSet(tempPlay2Set1, tempPlay2Set1.length, playerNum,1, test)==null)) return true;
                 else{
                     return false;
                 }
@@ -772,7 +791,7 @@ public class Phase {
                     tempPlay2Set2[i] = play2Set2[i];
                 }
                 tempPlay2Set2[play2Set2.length] = selectedCard;
-                if(!(isSet(tempPlay2Set2, tempPlay2Set2.length, playerNum, 2)==null)) return true;
+                if(!(isSet(tempPlay2Set2, tempPlay2Set2.length, playerNum, 2, test)==null)) return true;
                 else{
                     return false;
                 }
@@ -786,7 +805,7 @@ public class Phase {
                 }
                 tempPlay2Color[play2Color.length] = selectedCard;
 
-                if (!(isColorGroup(tempPlay2Color, tempPlay2Color.length, playerNum) == null))
+                if (!(isColorGroup(tempPlay2Color, tempPlay2Color.length, playerNum, test) == null))
                     return true;
                 else return false;
             }
