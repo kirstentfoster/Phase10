@@ -15,6 +15,7 @@ import up.edu.phase10.Framework.GameInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -54,6 +55,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageButton Hand8 = null;
     private ImageButton Hand9 = null;
     private ImageButton Hand10 = null;
+    private ImageButton Hand11 = null;
     private ArrayList<Card> selected = null;
 
     private Phase10GameState state;
@@ -189,6 +191,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.drawFaceDownImageButton= (ImageButton)activity.findViewById(R.id.DrawPile);
         this.hitButton= (Button)activity.findViewById(R.id.HitButton);
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
+        this.discardButton = activity.findViewById(R.id.DiscardButton);
 
 
         //Listen for button presses
@@ -201,16 +204,18 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     }//setAsGui
 
     private void createHand(Phase10GameState gs){
-        ImageButton Hand1 = myActivity.findViewById(R.id.PlayerHand1);
-        ImageButton Hand2 = myActivity.findViewById(R.id.PlayerHand2);
-        ImageButton Hand3 = myActivity.findViewById(R.id.PlayerHand3);
-        ImageButton Hand4 = myActivity.findViewById(R.id.PlayerHand4);
-        ImageButton Hand5 = myActivity.findViewById(R.id.PlayerHand5);
-        ImageButton Hand6 = myActivity.findViewById(R.id.PlayerHand6);
-        ImageButton Hand7 = myActivity.findViewById(R.id.PlayerHand7);
-        ImageButton Hand8 = myActivity.findViewById(R.id.PlayerHand8);
-        ImageButton Hand9 = myActivity.findViewById(R.id.PlayerHand9);
-        ImageButton Hand10 = myActivity.findViewById(R.id.PlayerHand10);
+        Hand1 = myActivity.findViewById(R.id.PlayerHand1);
+        Hand2 = myActivity.findViewById(R.id.PlayerHand2);
+        Hand3 = myActivity.findViewById(R.id.PlayerHand3);
+        Hand4 = myActivity.findViewById(R.id.PlayerHand4);
+        Hand5 = myActivity.findViewById(R.id.PlayerHand5);
+        Hand6 = myActivity.findViewById(R.id.PlayerHand6);
+        Hand7 = myActivity.findViewById(R.id.PlayerHand7);
+        Hand8 = myActivity.findViewById(R.id.PlayerHand8);
+        Hand9 = myActivity.findViewById(R.id.PlayerHand9);
+        Hand10 = myActivity.findViewById(R.id.PlayerHand10);
+        Hand11 = myActivity.findViewById(R.id.PlayerHand11);
+        Hand11.setImageDrawable(null);
         if(this.playerNum+1==1) {
             Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
             Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
