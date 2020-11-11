@@ -18,7 +18,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/tab_height" >
+            android:paddingTop="75dp" >
 
             <include
                 android:id="@+id/localTabLayout"
@@ -32,7 +32,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/tab_height" >
+            android:paddingTop="75dp" >
 
             <include
                 android:id="@+id/remoteTabLayout"

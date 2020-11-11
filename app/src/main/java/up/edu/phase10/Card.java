@@ -10,9 +10,14 @@ package up.edu.phase10;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/*
-EXTERNAL CITATION https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
+/**
+ External Citation
+ Date: 11/5/20
+ Problem: I wanted to adapt the collections sort to sort my cards
+ Resource: https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
+ Solution: I used the example from this link and adapted it to my code.
  */
+
 public class Card implements Comparable{
     private int number; //1-12 number
     private int color; // 1-4 to represent the 4 colors
@@ -96,7 +101,6 @@ public class Card implements Comparable{
         }
 
     }
-
 
     @Override
     public int compareTo(Object o) {

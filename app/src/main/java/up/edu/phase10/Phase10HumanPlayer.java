@@ -12,6 +12,7 @@ import up.edu.phase10.Framework.GameMainActivity;
 import up.edu.phase10.R;
 import up.edu.phase10.Framework.GameInfo;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -20,10 +21,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /** @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  */
 
 public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListener {
+
+    // the android activity that we are running
+    private GameMainActivity myActivity;
 
     /* instance variables */
 
@@ -34,13 +41,28 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private TextView    messageTextView     = null;
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
-    private Button      discardButton       = null;
-    private ImageButton drawFaceUpImageButton =null;
+    public Button discardButton       = null;
+    private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
+    private ImageButton Hand1 = null;
+    private ImageButton Hand2 = null;
+    private ImageButton Hand3 = null;
+    private ImageButton Hand4 = null;
+    private ImageButton Hand5 = null;
+    private ImageButton Hand6 = null;
+    private ImageButton Hand7 = null;
+    private ImageButton Hand8 = null;
+    private ImageButton Hand9 = null;
+    private ImageButton Hand10 = null;
+    private ArrayList<Card> selected = null;
+
+    private Phase10GameState state;
 
 
-    // the android activity that we are running
-    private GameMainActivity myActivity;
+
+
+
+
 
     /**
      * constructor does nothing extra
@@ -71,6 +93,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             flash(Color.RED, 500);
             return;
         }
+        createHand((Phase10GameState) info);
+        ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
     }//receiveInfo
 
@@ -84,16 +108,20 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      */
     public void onClick(View button) {
         if(button.equals(phaseButton)) {
-            PhaseAction p = new PhaseAction(this); //Need to get info of phaseContent from gui
+            PhaseAction p = new PhaseAction(this, this.selected); //Need to get info of phaseContent from gui
+            selected.clear();
             game.sendAction(p);
         }
         if(button.equals(hitButton)) {
-            HitAction p = new HitAction(this); //need to get info of hit card and player to hit from gui
+            HitAction p = new HitAction(this, this.selected.get(0), 1); //need to get info of hit card and player to hit from gui
+            selected.clear();
             game.sendAction(p);
         }
         if(button.equals(discardButton)) {
-            DiscardAction p = new DiscardAction(this); //need to get info of discard card from gui
+            DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
+            selected.clear();
             game.sendAction(p);
+
         }
 
         // for the drawFaceDown && drawFace up : click a card, in a specific area (i.e. should the
@@ -106,6 +134,38 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         if(button.equals(drawFaceUpImageButton)) {
             DrawFaceUpAction p = new DrawFaceUpAction(this);
             game.sendAction(p);
+        }
+
+        //select cards
+        if(button.equals(Hand1)){
+            selected.add(state.getPlayer1Hand().get(0));
+        }
+        if(button.equals(Hand2)){
+            selected.add(state.getPlayer1Hand().get(1));
+        }
+        if(button.equals(Hand3)){
+            selected.add(state.getPlayer1Hand().get(2));
+        }
+        if(button.equals(Hand4)){
+            selected.add(state.getPlayer1Hand().get(3));
+        }
+        if(button.equals(Hand5)){
+            selected.add(state.getPlayer1Hand().get(4));
+        }
+        if(button.equals(Hand6)){
+            selected.add(state.getPlayer1Hand().get(5));
+        }
+        if(button.equals(Hand7)){
+            selected.add(state.getPlayer1Hand().get(6));
+        }
+        if(button.equals(Hand8)){
+            selected.add(state.getPlayer1Hand().get(7));
+        }
+        if(button.equals(Hand9)){
+            selected.add(state.getPlayer1Hand().get(8));
+        }
+        if(button.equals(Hand10)){
+            selected.add(state.getPlayer1Hand().get(9));
         }
     }// onClick
 
@@ -129,7 +189,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.drawFaceDownImageButton= (ImageButton)activity.findViewById(R.id.DrawPile);
         this.hitButton= (Button)activity.findViewById(R.id.HitButton);
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
-        this.discardButton= (Button)activity.findViewById(R.id.DiscardButton);
+
 
         //Listen for button presses
         drawFaceUpImageButton.setOnClickListener(this);
@@ -139,5 +199,44 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         discardButton.setOnClickListener(this);
 
     }//setAsGui
+
+    private void createHand(Phase10GameState gs){
+        ImageButton Hand1 = myActivity.findViewById(R.id.PlayerHand1);
+        ImageButton Hand2 = myActivity.findViewById(R.id.PlayerHand2);
+        ImageButton Hand3 = myActivity.findViewById(R.id.PlayerHand3);
+        ImageButton Hand4 = myActivity.findViewById(R.id.PlayerHand4);
+        ImageButton Hand5 = myActivity.findViewById(R.id.PlayerHand5);
+        ImageButton Hand6 = myActivity.findViewById(R.id.PlayerHand6);
+        ImageButton Hand7 = myActivity.findViewById(R.id.PlayerHand7);
+        ImageButton Hand8 = myActivity.findViewById(R.id.PlayerHand8);
+        ImageButton Hand9 = myActivity.findViewById(R.id.PlayerHand9);
+        ImageButton Hand10 = myActivity.findViewById(R.id.PlayerHand10);
+        if(this.playerNum+1==1) {
+            Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
+            Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
+            Hand3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
+            Hand4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
+            Hand5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
+            Hand6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
+            Hand7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
+            Hand8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
+            Hand9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
+            Hand10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+        }
+        else{
+            Hand1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
+            Hand2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
+            Hand3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
+            Hand4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
+            Hand5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
+            Hand6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
+            Hand7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
+            Hand8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
+            Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
+            Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+        }
+    }
+
+
 
 }// class HumanPlayer

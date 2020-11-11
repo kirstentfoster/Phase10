@@ -7,38 +7,54 @@ import java.util.Iterator;
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
-public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
+public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends blah blah blah*/ {
+
+    private ArrayList<Card> hitList = null;
+    private ArrayList<Integer> whereToHitList = null;
+
+    private ArrayList<ArrayList<Card>> weakGroups1 = null;
+    private ArrayList<ArrayList<Card>> viableGroups1 = null;
+    private ArrayList<Card> completeGroup1 = null;
+
+    private ArrayList<ArrayList<Card>> weakGroups2 = null;
+    private ArrayList<ArrayList<Card>> viableGroups2 = null;
+    private ArrayList<Card> completeGroup2 = null;
+
+    private ArrayList<Card> nonGroupCards = null;
+
 
     public Phase10IgnorantComputerPlayer(String name) {
         super(name);
     }
 
-    private boolean drawChoice; //Cant remember why these two variables
-    private int discardChoice; //exist
-    //Might not use these
-    private boolean hitReady;
-    private Card toHit;
-    private ArrayList<Card> willHit = null;
-    private ArrayList<Card> couldHit = null;
-    private ArrayList<Card> toPhase = null;
+    /**
+     External Citation
+     Date: 11/6/20
+     Problem: I needed more clarification on how to make a deep copy
 
-    private ArrayList<ArrayList<Card>> weakGroups1 = null;
-    private ArrayList<ArrayList<Card>> viableGroups1 = null;
-    private ArrayList<Card> completeGroup1 = null;
-    private ArrayList<ArrayList<Card>> weakGroups2 = null;
-    private ArrayList<ArrayList<Card>> viableGroups2 = null;
-    private ArrayList<Card> completeGroup2 = null;
-    private ArrayList<Card> nonGroupCards = null;
+     Resource: https://howtodoinjava.com/java/collections/arraylist/arraylist-clone-deep-copy/
+     Solution: I used the example from this link and adapted it to my code.
+     */
 
-//EXTERNAL CITAITON https://howtodoinjava.com/java/collections/arraylist/arraylist-clone-deep-copy/
+    /**
+     * receives information from game
+     *
+     * @param info the received info (gameState)
+     */
+    protected void receiveInfo(GameInfo info) {
 
-    protected void receiveInfo(GameInfo info) {                                       ///INCOMPLETE
-        if (!(info instanceof Phase10GameState)) return;
-        Phase10GameState copy = (Phase10GameState) info;
-        if (copy.getTurnId() != this.playerNum) return;
+        if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
+
+        Phase10GameState copy = (Phase10GameState) info; //Shallow copy
+
+        if (copy.getTurnId() != this.playerNum + 1) return;
+        // gameFramework uses 0/1 player ID
+        // Phase 10 code handles based on 1/2 player ID
+
         boolean hasPhased = false;
         int phase = 0;
         ArrayList<Card> fullHand = null;
+
         if (this.playerNum == 0) {
 
             //Deep copy into a usable temporary hand
@@ -48,17 +64,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                 hand.add(new Card(it.next().getNumber(), it.next().getColor()));
             }
 
-            //separated to eliminate redundant playerNum tests
+            //Separated to eliminate redundant playerNum tests/
             hasPhased = copy.getPlayer1HasPhased();
             phase = copy.getPlayer1Phase();
             fullHand = copy.getPlayer1Hand();
-            //sort groups
+
+            //Sort groups
             Collections.sort(hand);
-            if (!hasPhased) { //Groups only need to be sorted if player has not phased
-                sortGroups(hand, copy.getPlayer1Phase(), fullHand, copy);
-            } else { //Otherwise, we need to look at potential hit cards
-                ///////////////
-            }
+            if(phase == 8) hand = sortColor(hand);
+            sortGroups(hand, copy.getPlayer1Phase(), fullHand, copy);
 
         } else if (this.playerNum == 1) {
 
@@ -69,152 +83,352 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                 hand.add(new Card(it.next().getNumber(), it.next().getColor()));
             }
 
-            //separated to eliminate redundant playerNum tests
+            //Separated to eliminate redundant playerNum tests
             hasPhased = copy.getPlayer2HasPhased();
             phase = copy.getPlayer2Phase();
             fullHand = copy.getPlayer2Hand();
 
-            //sort groups
+            //Sort groups
             Collections.sort(hand);
-            if (!hasPhased) {
-                sortGroups(hand, copy.getPlayer2Phase(), fullHand, copy);
-            } else {
-                ///////////////
-            }
+            if(phase == 8) hand = sortColor(hand);
+            sortGroups(hand, copy.getPlayer2Phase(), fullHand, copy);
+
 
         }
-        //Draw
+
+        /* DRAW */
         doDraw(copy, hasPhased, phase, fullHand);
-        //Check phase
+
+        /* Resort groups */
+
+        //Get new variables
+        ArrayList<Card> hand = null;
+        if(this.playerNum + 1 == 1){
+            //Deep copy again with new card
+            hand = new ArrayList<Card>();
+            Iterator<Card> it = copy.getPlayer1Hand().iterator();
+            while (it.hasNext()) {
+                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+            }
+            fullHand = copy.getPlayer1Hand();//update
+        }
+        else if(this.playerNum + 1 == 2){
+            //Deep copy again with new card
+            hand = new ArrayList<Card>();
+            Iterator<Card> it = copy.getPlayer2Hand().iterator();
+            while (it.hasNext()) {
+                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+            }
+            fullHand = copy.getPlayer2Hand();//update
+        }
+
+        //Do resort
+        Collections.sort(hand);
+        if(phase == 8) hand = sortColor(hand);
+        sortGroups(hand, phase, fullHand, copy);
+
+
+        /* PHASE */
         if (!hasPhased) {
-            int phasing = checkPhaseReady(copy, phase);
-            if (phasing > 0){
-                doPhase(phasing);
+            if (checkPhaseReady(copy, phase)){
+                doPhase(phase); //Phase action in here
                 hasPhased = true;
             }
         }
-        //If has phased, check hit
-        if (hasPhased) {
-            while (checkHitReady(copy)) {
-                //send hit actions with HitCARD
-            }
+
+        /* HIT */
+        if (hasPhased & checkHitsExist()) {
+            doHits(phase, fullHand); //Hit action in here
         }
 
-        //Discard
-        doDiscard(copy, hasPhased, this.playerNum + 1);
+
+        /* DISCARD */
+        doDiscard(copy, hasPhased);
 
     }
 
-    public boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {                      //INCOMPLETE
+    /**
+     * SortGroups organizes the cards in the AI's hand into priority groups based on how close they are to being a
+     * complete phase requirement
+     *
+     * @param hand the AI's hand that provides sortable cards
+     * @param phase the phase the AI is currently on
+     * @param fullHand shallow copy AI hand
+     * @param gameState the gameState (shallow)
+     * @return true if sort successful
+     */
+    public boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
+
         boolean complete1 = false;
         boolean complete2 = false;
-        //Runs are always checked first
+        boolean sorted = false;
+
+        //Runs are always checked first (runs are hard to make)
         //Bigger sets are checked before smaller sets
         switch (phase) {
             case 1:
+                //test if the groups are complete first
                 complete1 = testCompleteSet(hand, 3, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(3,3);
-                return true;
+                //If something wasnt complete, find largest viable group
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(3, 3); //Reorganize to accomodate largest viable
+                }
+                sorted = true; //Sort successful
+                break;
             case 2:
                 complete1 = testCompleteRun(hand, 4, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(4,3);
-                return true;
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(4, 3);
+                }
+                sorted = true;
+                break;
             case 3:
                 complete1 = testCompleteRun(hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(4,4);
-                return true;
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(4, 4);
+                }
+                sorted = true;
+                break;
             case 4:
                 complete1 = testCompleteRun(hand, 7, 1);
                 if (!complete1) makeRunGroups(hand, 7, 1);
                 //no second group
-                findLargestViable(1,fullHand);
-                checkGroupOrg(7,0);
-                return true;
+                if(!complete1) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(7, 0);
+                }
+                sorted = true;
+                break;
             case 5:
                 complete1 = testCompleteRun(hand, 8, 1);
                 if (!complete1) makeRunGroups(hand, 8, 1);
                 //no second group
-                findLargestViable(1,fullHand);
-                checkGroupOrg(8,0);
-                return true;
+                if(!complete1 ){
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(8, 0);
+                }
+                sorted = true;
+                break;
             case 6:
                 complete1 = testCompleteRun(hand, 9, 1);
                 if (!complete1) makeRunGroups(hand, 9, 1);
                 //no second group
-                findLargestViable(1,fullHand);
-                checkGroupOrg(9,0);
-                return true;
+                if(!complete1) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(9, 0);
+                }
+                sorted = true;
+                break;
             case 7:
                 complete1 = testCompleteSet(hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeSetGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(4,4);
-                return true;
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(4, 4);
+                }
+                sorted = true;
+                break;
             case 8:
                 complete1 = testCompleteColor(hand, 7, 1);
                 if (!complete1) makeColorGroups(hand, 7, 1);
                 //no second group
-                findLargestViable(1,fullHand);
-                checkGroupOrg(7,0);
-                return true;
+                if(!complete1) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(7, 0);
+                }
+                sorted = true;
+                break;
             case 9:
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 2, 2);
                 if (!complete1) makeSetGroups(hand, 5, 1);
                 if (!complete2) makeSetGroups(hand, 2, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(5,2);
-                return true;
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(5, 2);
+                }
+                sorted = true;
+                break;
             case 10:
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
-                findLargestViable(2,fullHand);
-                checkGroupOrg(5,3);
-                return true;
+                if(!complete1 || !complete2) {
+                    findLargestViable(2, fullHand);
+                    checkGroupOrg(5, 3);
+                }
+                sorted = true;
+                break;
             default:
-                return false;
+                break;
         }
-        //Organize hit cards if someone has phased
-        //Change above return to variable, then return that instead
+
+        //If somebody has phased, non-group cards will be organized into hits
+        if(this.nonGroupCards.size() != 0 && (gameState.getPlayer1HasPhased() || gameState.getPlayer2HasPhased()) ) {
+            makeHits(gameState, gameState.getPlayer1HasPhased(), gameState.getPlayer2HasPhased());
+            sorted = true;
+        }
+
+        return sorted;
     }
 
+    /**
+     * sorts cards into weak and viable run groups
+     *
+     * @param hand (Deep) AI's hand
+     * @param size of phase requirement
+     * @param groupNum 1 or 2 depending on group order
+     * @return true if groups get made
+     */
     public boolean makeRunGroups(ArrayList<Card> hand, int size, int groupNum) {
+
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
-        ArrayList<Card> notInGroup;
-        int notInGroupLoc;
         int tempLoc;
-        for (int i = 0; i < hand.size(); i++) {
+
+        for (int i = 0; i < hand.size(); i++) { //Look through hand
             //Reset temp
             temp = new ArrayList<Card>();
             temp.set(0, hand.get(i));
             tempLoc = 0;
-            notInGroup = new ArrayList<Card>();
-            notInGroupLoc = 0;
-            for (int j = i + 1; j < hand.size(); j++) {
-                //Compare card is within run Size of initial card
+
+            for (int j = i + 1; j < hand.size(); j++) {//Compare card is within run Size of initial card
+
                 if (hand.get(j).getNumber() <= temp.get(0).getNumber() + size && hand.get(j).getNumber() != temp.get(tempLoc).getNumber()) {
                     temp.set(tempLoc + 1, hand.get(j));
                     tempLoc++;
-                } else { //doesn't work as part of a run
-                    notInGroup.set(notInGroupLoc, hand.get(j));
-                    notInGroupLoc++;
+                }
+            }
+
+            //add as another group to collective of viable and weak groups
+            if (temp.size() > 1) allLowGroups.add(temp);
+        }
+
+        /* Separate into weak and viable groups based on size conditions */
+        ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
+        ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
+
+        for (ArrayList<Card> group : allLowGroups) {
+            if(group.size() < 2) allLowGroups.remove(group); //Too small
+            if (size == 4 && group.size() == 2) weaks.add(group);
+            if (size > 4 && group.size() <= 3) weaks.add(group);
+            else viables.add(group);
+        }
+
+        //Groups are set to instance variables
+        if (groupNum == 1) {
+            if (weaks.size() != 0) {
+                this.weakGroups1 = weaks;
+                for (ArrayList<Card> group : weaks) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d); //Remove from (deep) hand
+                        }
+                    }
+                }
+                if (viables.size() != 0) {
+                    this.viableGroups1 = viables;
+                    for (ArrayList<Card> group : viables) {
+                        for (Card c : group) {
+                            for (Card d : hand) {
+                                if (c.equals(d)) hand.remove(d);  //Remove from (deep) hand
+                            }
+                        }
+                    }
+                }
+                nonGroupCards = hand;  //Non group cards are anything remaining in hand
+            }
+        } else if (groupNum == 2) { //Same for group 2
+            if (weaks.size() != 0) {
+                this.weakGroups2 = weaks;
+                for (ArrayList<Card> group : weaks) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d);
+                        }
+                    }
+                }
+            }
+            if (viables.size() != 0) {
+                this.viableGroups2 = viables;
+                for (ArrayList<Card> group : viables) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d);
+                        }
+                    }
+                }
+            }
+            this.nonGroupCards = hand;
+        }
+
+        //Put in wilds
+        boolean used = false;
+        for(Card c : this.nonGroupCards){
+            if(c.isWild()) {
+                if (this.weakGroups1 != null) {
+                    for (ArrayList<Card> group : weakGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.weakGroups2 != null) {
+                    for (ArrayList<Card> group : weakGroups2) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups1 != null) {
+                    for (ArrayList<Card> group : viableGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups2 != null) {
+                    for (ArrayList<Card> group : viableGroups2) group.add(c);
+                    used = true;
+                }
+            }
+            if(used = true) nonGroupCards.remove(c);
+        }
+
+        return true;
+    }
+
+    /**
+     * sorts cards into weak and viable set groups
+     *
+     * @param hand (Deep) AI's hand
+     * @param size of phase requirement
+     * @param groupNum 1 or 2 depending on group order
+     * @return true if groups get made
+     */
+
+    public boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
+
+        ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
+        ArrayList<Card> temp;
+        int tempLoc;
+
+        for (int i = 0; i < hand.size(); i++) { //Look at each card
+            //Reset temp
+            temp = new ArrayList<Card>();
+            temp.set(0, hand.get(i));
+            tempLoc = 0;
+            for (int j = i + 1; j < hand.size(); j++) {//Compare card number
+                if (hand.get(j).getNumber() == temp.get(0).getNumber()) {
+                    temp.set(tempLoc + 1, hand.get(j));
+                    tempLoc++;
                 }
             }
             //add as another group to collective of viable and weak groups
@@ -225,6 +439,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
         ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
         for (ArrayList<Card> group : allLowGroups) {
+            if(group.size() < 2) allLowGroups.remove(group);
             if (size == 4 && group.size() == 2) weaks.add(group);
             if (size > 4 && group.size() <= 3) weaks.add(group);
             else viables.add(group);
@@ -252,7 +467,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                     }
                 }
                 nonGroupCards = hand;
-                return true;
             }
         } else if (groupNum == 2) {
             if (weaks.size() != 0) {
@@ -275,28 +489,165 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                     }
                 }
             }
-            nonGroupCards = hand;
-            return true;
+            this.nonGroupCards = hand;
         }
-        return false;
-    }
-    public boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){ //needs same code                                       ///EMPTY
-        return false;
+        //Put in wilds
+        boolean used = false;
+        for(Card c : this.nonGroupCards){
+            if(c.isWild()) {
+                if (this.weakGroups1 != null) {
+                    for (ArrayList<Card> group : weakGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.weakGroups2 != null) {
+                    for (ArrayList<Card> group : weakGroups2) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups1 != null) {
+                    for (ArrayList<Card> group : viableGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups2 != null) {
+                    for (ArrayList<Card> group : viableGroups2) group.add(c);
+                    used = true;
+                }
+            }
+            if(used = true) nonGroupCards.remove(c);
+        }
+        return true;
     }
 
-    public boolean makeColorGroups(ArrayList<Card> hand, int size, int groupNum){ //needs same code                                       ///EMPTY
-        return false;
+    /**
+     * sorts cards into weak and viable color groups
+     *
+     * @param hand (Deep) AI's hand
+     * @param size of phase requirement
+     * @param groupNum 1 or 2 depending on group order
+     * @return true if groups get made
+     */
+    public boolean makeColorGroups(ArrayList<Card> hand, int size, int groupNum){ //same as makeSetGroups but compares color
+        ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
+        ArrayList<Card> temp;
+        int tempLoc;
+        for (int i = 0; i < hand.size(); i++) {
+            //Reset temp
+            temp = new ArrayList<Card>();
+            temp.set(0, hand.get(i));
+            tempLoc = 0;
+            for (int j = i + 1; j < hand.size(); j++) {
+                //Compare card color
+                if (hand.get(j).getColor() == temp.get(0).getColor()) {
+                    temp.set(tempLoc + 1, hand.get(j));
+                    tempLoc++;
+                }
+            }
+            //add as another group to collective of viable and weak groups
+            if (temp.size() > 1) allLowGroups.add(temp);
+        }
+
+        //separate into weak and viable
+        ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
+        ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
+        for (ArrayList<Card> group : allLowGroups) {
+            if(group.size() < 2) allLowGroups.remove(group);
+            if (size == 4 && group.size() == 2) weaks.add(group);
+            if (size > 4 && group.size() <= 3) weaks.add(group);
+            else viables.add(group);
+        }
+
+        //Groups are set to class variables
+        if (groupNum == 1) {
+            if (weaks.size() != 0) {
+                this.weakGroups1 = weaks;
+                for (ArrayList<Card> group : weaks) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d);
+                        }
+                    }
+                }
+                if (viables.size() != 0) {
+                    this.viableGroups1 = viables;
+                    for (ArrayList<Card> group : viables) {
+                        for (Card c : group) {
+                            for (Card d : hand) {
+                                if (c.equals(d)) hand.remove(d);
+                            }
+                        }
+                    }
+                }
+                nonGroupCards = hand;
+            }
+        } else if (groupNum == 2) {
+            if (weaks.size() != 0) {
+                this.weakGroups2 = weaks;
+                for (ArrayList<Card> group : weaks) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d);
+                        }
+                    }
+                }
+            }
+            if (viables.size() != 0) {
+                this.viableGroups2 = viables;
+                for (ArrayList<Card> group : viables) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)) hand.remove(d);
+                        }
+                    }
+                }
+            }
+            this.nonGroupCards = hand;
+        }
+        //Put in wilds
+        boolean used = false;
+        for(Card c : this.nonGroupCards){
+            if(c.isWild()) {
+                if (this.weakGroups1 != null) {
+                    for (ArrayList<Card> group : weakGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.weakGroups2 != null) {
+                    for (ArrayList<Card> group : weakGroups2) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups1 != null) {
+                    for (ArrayList<Card> group : viableGroups1) group.add(c);
+                    used = true;
+                }
+                if (this.viableGroups2 != null) {
+                    for (ArrayList<Card> group : viableGroups2) group.add(c);
+                    used = true;
+                }
+            }
+            if(used = true) nonGroupCards.remove(c);
+        }
+        return true;
     }
 
-    public void findLargestViable(int groupNum, ArrayList<Card> hand){
-        //Find best viable
+    /**
+     * identifies the largest viable group and clears out all overlapping
+     * (may need update in beta)
+     *
+     * cards from other groups
+     * @param groupNum 1 or 2 depending on phase reqs
+     * @param fullHand (deep) copy of hand
+     */
+    public void findLargestViable(int groupNum, ArrayList<Card> fullHand){
         int biggest = 0;
         int loc = 0;
+
+        //Find biggest viable group
         if (viableGroups1.size() > 0) {
             biggest = viableGroups1.get(0).size();
             if (viableGroups1.size() > 1) {
                 for (int i = 1; i < viableGroups1.size(); i++) {
-                    if (viableGroups1.get(i).size() > biggest) loc = i;
+                    if (viableGroups1.get(i).size() > biggest){
+                        loc = i;
+                        biggest = viableGroups1.get(i).size();
+                    }
                 }
             }
 
@@ -309,7 +660,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
             //To eliminate overlap
             for (Card c : viableGroups1.get(0)) {
                 int uniqueness = 0;
-                for (Card d : hand) {
+                for (Card d : fullHand) {
                     if (c.equals(d)) uniqueness++;
                 }
                 //Check cards against cards from weak groups
@@ -359,7 +710,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                 //To eliminate overlap
                 for (Card c : viableGroups2.get(0)) {
                     int uniqueness = 0;
-                    for (Card d : hand) {
+                    for (Card d : fullHand) {
                         if (c.equals(d)) uniqueness++;
                     }
                     //Check cards against cards from weak groups
@@ -391,7 +742,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         }
     }
 
-    public void checkGroupOrg (int size1, int size2) {
+    /**
+     * reorganizes weak/viable/complete/non groups based on size changes
+     * @param size1 group1 size from phase reqs
+     * @param size2 group2 size from phase reqs
+     */
+    public void checkGroupOrg(int size1, int size2) {
         if (weakGroups1 != null) {
             //remove/move groups that no longer fit qualifications
             for (ArrayList<Card> group : weakGroups1) { //remove from weak groups
@@ -495,6 +851,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                     weakGroups2.remove(group);
                 }
             }
+            if(this.weakGroups1.size() == 0) this.weakGroups1 = null;
+            if(this.weakGroups2.size() == 0) this.weakGroups2 = null;
+            if(this.viableGroups1.size() == 0) this.viableGroups1 = null;
+            if(this.viableGroups2.size() == 0) this.viableGroups2 = null;
         }
 
         while (viableGroups2 != null) {
@@ -520,7 +880,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                             weakGroups2.add(group);
                             viableGroups2.remove(group);
                         } else if (group.size() < 2){
-                            for(Card d : group)nonGroupCards.add(d);
+                            for(Card d : group) nonGroupCards.add(d);
                             viableGroups2.remove(group);
                         }
                     }
@@ -537,11 +897,21 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         }
     }
 
+    /**
+     * tests if a complete run exists
+     *
+     * @param hand (deep) AI's hand
+     * @param size size based on phase reqs
+     * @param groupNum which group (1 or 2)
+     * @return true if a complete run exists
+     */
     public boolean testCompleteRun(ArrayList<Card> hand, int size, int groupNum) {
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
         int tempLoc;
+        int notInGroupSize = hand.size() - size;
+
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
@@ -549,6 +919,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
             tempLoc = 0;
             notInGroup = new ArrayList<Card>();
             notInGroupLoc = 0;
+
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
                 if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1) {
@@ -556,11 +927,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
                     tempLoc++;
                     //doesn't work as part of a run
                 } else {
-                    notInGroup.set(notInGroupLoc, hand.get(j));
-                    notInGroupLoc++;
+                    if (notInGroupSize > 0) {
+                        if (notInGroupLoc < notInGroupSize) {
+                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroupLoc++;
+                        } else {
+                            return false; //Not in group cards exceed possible per phase reqs
+                        }
+                    }
                 }
             }
-            if (tempLoc >= size - 1) {
+            if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
                 if (groupNum == 1) {
                     this.completeGroup1 = temp;
@@ -577,11 +954,21 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         }
         return false; //Complete group doesn't exist
     }
-    public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) {
+
+    /**
+     * tests if a complete set exists
+     *
+     * @param hand (deep) AI's hand
+     * @param size size based on phase reqs
+     * @param groupNum which group (1 or 2)
+     * @return true if a complete set exists
+     */
+    public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
         int tempLoc;
+        int notInGroupSize = hand.size() - size;
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
@@ -590,54 +977,20 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
             notInGroup = new ArrayList<Card>();
             notInGroupLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
-                //works as part of a run
+                //works as part of group
                 if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber()) {
                     temp.set(tempLoc + 1, hand.get(j));
                     tempLoc++;
-                    //doesn't work as part of a run
+                    //doesn't work as part of group
                 } else {
-                    notInGroup.set(notInGroupLoc, hand.get(j));
-                    notInGroupLoc++;
-                }
-            }
-            if (tempLoc >= size - 1) {
-                //Place in groups
-                if (groupNum == 1) {
-                    this.completeGroup1 = temp;
-                    this.weakGroups1 = null;
-                    this.viableGroups1 = null;
-                } else if (groupNum == 2) {
-                    this.completeGroup2 = temp;
-                    this.weakGroups2 = null;
-                    this.viableGroups2 = null;
-                }
-                this.nonGroupCards = notInGroup;
-                return true; //Complete group does exist
-            }
-        }
-        return false; //Complete group doesn't exist
-    }
-    public boolean testCompleteColor(ArrayList<Card> hand, int size, int groupNum) {
-        ArrayList<Card> temp;
-        ArrayList<Card> notInGroup;
-        int notInGroupLoc;
-        int tempLoc;
-        for (int i = 0; i < hand.size(); i++) {
-            //Reset temp
-            temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
-            tempLoc = 0;
-            notInGroup = new ArrayList<Card>();
-            notInGroupLoc = 0;
-            for (int j = i + 1; j < hand.size(); j++) {
-                //works as part of a run
-                if (hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
-                    temp.set(tempLoc + 1, hand.get(j));
-                    tempLoc++;
-                    //doesn't work as part of a run
-                } else {
-                    notInGroup.set(notInGroupLoc, hand.get(j));
-                    notInGroupLoc++;
+                    if (notInGroupSize > 0) {
+                        if (notInGroupLoc < notInGroupSize) {
+                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroupLoc++;
+                        } else {
+                            return false;
+                        }
+                    }
                 }
             }
             if (tempLoc >= size - 1) {
@@ -658,62 +1011,192 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         return false; //Complete group doesn't exist
     }
 
-    public boolean checkGrowsGroup(Card card, int phase, ArrayList<Card> fullHand){                                       ///INCOMPLETE
+    /**
+     * tests if a complete color group exists
+     *
+     * @param hand (deep) AI's hand
+     * @param size size based on phase reqs
+     * @param groupNum which group (1 or 2)
+     * @return true if a complete color group exists
+     */
+    public boolean testCompleteColor(ArrayList<Card> hand, int size, int groupNum) { //same as color but compares same color
+        ArrayList<Card> temp;
+        ArrayList<Card> notInGroup;
+        int notInGroupLoc;
+        int tempLoc;
+        for (int i = 0; i < hand.size(); i++) {
+            //Reset temp
+            temp = new ArrayList<Card>();
+            temp.set(0, hand.get(i));
+            tempLoc = 0;
+            notInGroup = new ArrayList<Card>();
+            notInGroupLoc = 0;
+            int notInGroupSize = hand.size() - size;
+            for (int j = i + 1; j < hand.size(); j++) {
+                //works as part of a run
+                if (hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
+                    temp.set(tempLoc + 1, hand.get(j));
+                    tempLoc++;
+                    //doesn't work as part of a run
+                } else {
+                    if(notInGroupSize > 0) {
+                        if(notInGroupLoc < notInGroupSize) {
+                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroupLoc++;
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                }
+            }
+            if (tempLoc >= size - 1) {
+                //Place in groups
+                if (groupNum == 1) {
+                    this.completeGroup1 = temp;
+                    this.weakGroups1 = null;
+                    this.viableGroups1 = null;
+                } else if (groupNum == 2) {
+                    this.completeGroup2 = temp;
+                    this.weakGroups2 = null;
+                    this.viableGroups2 = null;
+                }
+                this.nonGroupCards = notInGroup;
+                return true; //Complete group does exist
+            }
+        }
+        return false; //Complete group doesn't exist
+
+    }
+
+    /**
+     * Checks to see if a card will grow a group based on phase reqs
+     *
+     * @param card the cards that hopefully grows the group
+     * @param phase the AI's current phase
+     * @param fullHand (shallow) AI's hand
+     * @return true if cards successfully grows the group
+     */
+    public boolean checkGrowsGroup(Card card, int phase, ArrayList<Card> fullHand){
         boolean growsSomething = false;
         switch(phase){
             case 1:
-                growsSomething = checkGrowsSet(card,1);                          //Repeat this organization for all switch cases
-                if(!growsSomething) growsSomething = checkGrowsSet(card,2);
-                if(growsSomething) {
-                    findLargestViable(2, fullHand);
-                    checkGroupOrg(3, 3);
+                growsSomething = checkGrowsSet(card,1); //Check first req
+                if(growsSomething)  findLargestViable(1, fullHand);
+                if(!growsSomething){
+                    boolean temp;
+                    temp = checkGrowsSet(card,2); //Check second req
+                    if(temp) findLargestViable(2, fullHand);
+                    growsSomething = temp;
                 }
+                if(growsSomething) checkGroupOrg(3, 3); //Recheck group organizaiton
                 break;
             case 2:
-                checkGrowsSet(card,1);
-                checkGrowsSet(card, 2);
+                growsSomething = checkGrowsRun(card,1, 4);
+                if(growsSomething) findLargestViable(1, fullHand);
+                if(!growsSomething){
+                    boolean temp;
+                    temp = checkGrowsSet(card,2);
+                    if(temp) findLargestViable(2, fullHand);
+                    growsSomething = temp;
+                }
+                if(growsSomething) checkGroupOrg(4, 3);
                 break;
             case 3:
-                checkGrowsRun(card, 1,4);
-                checkGrowsSet(card,2);
+                growsSomething = checkGrowsRun(card,1, 4);
+                if(growsSomething) findLargestViable(1, fullHand);
+                if(!growsSomething){
+                    boolean temp;
+                    temp = checkGrowsSet(card,2);
+                    if(temp)findLargestViable(2, fullHand);
+                    growsSomething = temp;
+                }
+                if(growsSomething)checkGroupOrg(4, 4);
                 break;
             case 4:
-                checkGrowsRun(card, 1, 7);
+                growsSomething = checkGrowsRun(card,1, 7);
                 //no second group
+                if(growsSomething) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(7, 0);
+                }
                 break;
             case 5:
-                checkGrowsRun(card, 1, 8);
+                growsSomething = checkGrowsRun(card, 1, 8);
                 //no second group
+                if(growsSomething) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(8, 0);
+                }
                 break;
             case 6:
-                checkGrowsRun(card, 1, 9);
+                growsSomething = checkGrowsRun(card, 1, 9);
                 //no second group
+                if(growsSomething) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(9, 0);
+                }
                 break;
             case 7:
-                checkGrowsSet(card, 1);
-                checkGrowsSet(card, 2);
+                growsSomething = checkGrowsSet(card,1);
+                if(growsSomething)  findLargestViable(1, fullHand);
+                if(!growsSomething){
+                    boolean temp;
+                    temp = checkGrowsSet(card,2);
+                    if(temp) findLargestViable(2, fullHand);
+                    growsSomething = temp;
+                }
+                if(growsSomething) checkGroupOrg(4, 4);
                 break;
             case 8:
-                checkGrowsColor(card, 1);
+                growsSomething = checkGrowsColor(card, 1);
                 //no second group
+                if(growsSomething) {
+                    findLargestViable(1, fullHand);
+                    checkGroupOrg(7, 0);
+                }
                 break;
             case 9:
-                checkGrowsSet(card,1);
-                checkGrowsSet(card, 2);
+                growsSomething = checkGrowsSet(card,1);
+                if(growsSomething)  findLargestViable(1, fullHand);
+                if(!growsSomething){
+                    boolean temp;
+                    temp = checkGrowsSet(card,2);
+                    if(temp)  findLargestViable(2, fullHand);
+                    growsSomething = temp;
+                }
+                if(growsSomething)checkGroupOrg(5, 2);
                 break;
             case 10:
-                checkGrowsSet(card,1);
-                checkGrowsSet(card, 2);
+                growsSomething = checkGrowsSet(card,1);
+                if(growsSomething) findLargestViable(1, fullHand);
+                if(!growsSomething) {
+                    boolean temp;
+                    temp = checkGrowsSet(card,2);
+                    if(temp) findLargestViable(2, fullHand);
+                    growsSomething = temp;
+                }
+                if(growsSomething) checkGroupOrg(5, 3);
                 break;
             default:
                 break;
         }
         return growsSomething;
     }
-    public boolean checkGrowsRun(Card card, int groupNum, int size){
+
+    /**
+     * checks if a card grows a run group based on phase reqs
+     * (may need updating to handle wilds in beta)
+     *
+     * @param card the card that hopefully grows the group
+     * @param groupNum the group's identity
+     * @param size the group's size
+     * @return true if it successfully grows the group
+     */
+    public boolean checkGrowsRun(Card card, int groupNum, int size){ //I dont think this handles the card being a smaller number than the run
         //check groups1 aren't null
         if(groupNum == 1) {
-            if (this.completeGroup1 != null) { //Will only reach here to test hit
+            if (this.completeGroup1 != null) {
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
                     this.completeGroup1.add(0, card);
@@ -785,6 +1268,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         }
         return false;
     }
+
+    /**
+     * checks if a card grows a set group based on phase reqs
+     * (may need updating to handle wilds in beta)
+     *
+     * @param card the card that hopefully grows the group
+     * @param groupNum the group's identity
+     * @return true if it successfully grows the group
+     */
     public boolean checkGrowsSet(Card card, int groupNum){
         //check groups1 arent null
         if(groupNum == 1) {
@@ -838,6 +1330,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         }
         return false;
     }
+
+    /**
+     * checks if a card grows a color group based on phase reqs
+     * (may need updating to handle wilds in beta)
+     *
+     * @param card the card that hopefully grows the group
+     * @param groupNum the group's identity
+     * @return true if it successfully grows the group
+     */
     public boolean checkGrowsColor(Card card, int groupNum){
         //check groups1 arent null
         if(groupNum == 1) {
@@ -892,82 +1393,446 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer {
         return false;
     }
 
-    public boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
-        boolean drawUp;
-        Card topCard = gameState.getDiscardPile().peek();
-        if(topCard.isWild()) drawUp = true;
-        else if(checkGrowsGroup(topCard, phase, fullHand)){
-            drawUp = true;
+    /**
+     * special boy
+     * sorts the hand by color, made specifically for phase 8
+     *
+     * @param hand the hand being sorted
+     * @return the hand, now sorted
+     */
+    private ArrayList<Card> sortColor(ArrayList<Card> hand){
+        ArrayList<Card> arrL= new ArrayList<Card>();
+        int x = 0;
+        while(x < hand.size()){
+            arrL.set(x, new Card(hand.get(x).getNumber(), hand.get(x).getColor()));
+            x++;
         }
-        else if(hasPhased && checkIsHit(topCard, gameState)) drawUp = true;
-        else drawUp = false;
-        if(drawUp){
-            DrawFaceUpAction act = new DrawFaceUpAction(this);
-            game.sendAction(act);  //Send drawUp!!
+        for (int i = 0; i < arrL.size() - 1; i++){
+            int index = i;
+            for (int j = i + 1; j < arrL.size(); j++){
+                if (arrL.get(i).getColor() < hand.get(i).getColor()) { //lowest "number" color to highest
+                    index = j; //searching for lowest index
+                }
+            }
+            Card smallestColorCard = arrL.get(index);
+            arrL.set(index, arrL.get(i));
+            arrL.set(i, smallestColorCard);
         }
-        else {
-            DrawFaceDownAction act = new DrawFaceDownAction(this);
-            game.sendAction(act); //Send drawDown!!
-        }
-        return true;
+        return arrL;
     }
 
-    public boolean doDiscard(Phase10GameState gameState, boolean hasPhased, int playerId){                                       ///INCOMPLETE
-        for(int i = 0; i < this.nonGroupCards.size(); i++){
-            if(this.nonGroupCards.get(i).isSkip()){ //Skips discarded with highest priority (NON GROUP AH)
-                DiscardAction act = new DiscardAction(this, i);
+    /**
+     * identifies if the AI should draw from the discard or draw piles
+     * executes the draw action and sends it to the game
+     *
+     * @param gameState  (shallow) the phase 10 gameState
+     * @param hasPhased true if the AI has phased
+     * @param phase AI's current phase
+     * @param fullHand (shallow) AI's hand
+     * @return true if the draw action is successfully executed
+     */
+    public boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
+        boolean drawUp; //true means draw from draw pile, false means draw from discard pile
+        Card topCard = gameState.getDiscardPile().peek(); //Top of discard (visible)
+
+        if(topCard.isWild()) drawUp = true; //Always take a wild
+        else if(checkGrowsGroup(topCard, phase, fullHand)){ //Always take the card that grows a group
+            drawUp = true;
+        }
+        else if(hasPhased && checkIsHit(gameState, topCard)) drawUp = true; //If AI has already phase, always take cards that hit
+        else drawUp = false; //Any other condition, draw from the drawPile (not visible, effectively random)
+
+        if(drawUp){ //Draw from discard
+            DrawFaceUpAction act = new DrawFaceUpAction(this);
+            game.sendAction(act);  //Send drawUp!!
+            return true;
+        }
+        else { //Draw from drawpile
+            DrawFaceDownAction act = new DrawFaceDownAction(this);
+            game.sendAction(act); //Send drawDown!!
+            return true;
+        }
+    }
+
+    /**
+     * identifies which card should be discarded from the AI's hand
+     * and executes the discard to send it to the game
+     * (double check wilds handling and highScore from smallest group in beta)
+     *
+     * @param gameState (shallow) copy of phase 10 gamestate
+     * @param hasPhased true if the player has phased
+     * @return true if action successful
+     */
+    public boolean doDiscard(Phase10GameState gameState, boolean hasPhased){
+
+        int j = 0;
+        int highestScore = this.nonGroupCards.get(0).getScore();
+        int highScoreLoc = 0;
+        while(this.nonGroupCards.size() >= j) {
+            if(!this.nonGroupCards.get(j).isWild()) {
+                highestScore = this.nonGroupCards.get(j).getScore();
+                highScoreLoc = j;
+            }
+            j++;
+
+        }
+        if(!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
+            for (int i = 1; i < this.nonGroupCards.size(); i++) {
+                if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
+                    highScoreLoc = i;
+                    i = this.nonGroupCards.size();
+                } else if (!this.nonGroupCards.get(i).isWild()) { //Next priority is the highest score non-wild nongroup card
+                    if (this.nonGroupCards.get(i).getScore() > highestScore){
+                        highScoreLoc = i;
+                        highestScore = this.nonGroupCards.get(i).getScore();
+                    }
+                }
+            }
+            DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
+            game.sendAction(act); //Send Discard!!
+            return true;
+        }
+        //Next priority is a card from the smallest weak group
+        int smallestWeakGroupLoc = -1;
+        int smallWeakSize = -1;
+        int wGroup = 0;
+        if(this.weakGroups1 != null && this.weakGroups1.size() != 1) {
+            smallestWeakGroupLoc = 0;
+            smallWeakSize = this.weakGroups1.get(0).size();
+            for(int i = 1; i < this.weakGroups1.size(); i++) {
+                if(smallWeakSize > this.weakGroups1.get(i).size()){
+                    wGroup = 1;
+                    smallestWeakGroupLoc = i;
+                    smallWeakSize = this.weakGroups1.get(i).size();
+                }
+            }
+        }
+        if(this.weakGroups2 != null && this.weakGroups1.size() != 2){
+            if(smallestWeakGroupLoc == -1 || smallWeakSize == -1){
+                smallestWeakGroupLoc = 0;
+                smallWeakSize = this.weakGroups2.get(0).size();
+                for(int i = 1; i < this.weakGroups2.size(); i++) {
+                    if(smallWeakSize > this.weakGroups2.get(i).size()){
+                        wGroup = 2;
+                        smallestWeakGroupLoc = i;
+                        smallWeakSize = this.weakGroups2.get(i).size();
+                    }
+                }
+            }
+        }
+        if(smallestWeakGroupLoc != -1 && smallWeakSize != -1){
+            if(wGroup == 1) {
+                DiscardAction act = new DiscardAction(this, this.weakGroups1.get(smallestWeakGroupLoc).get(0));
+                game.sendAction(act); //Send Discard!!
+                return true;
+            }
+            else if(wGroup == 2){
+                DiscardAction act = new DiscardAction(this, this.weakGroups2.get(smallestWeakGroupLoc).get(0));
                 game.sendAction(act); //Send Discard!!
                 return true;
             }
         }
+        //Next priority is a card from the smallest viable group
+        int smallestViabGroupLoc = -1;
+        int smallViabSize = -1;
+        int vGroup = 0;
+        if(this.viableGroups1 != null && this.viableGroups1.size() != 1) {
+            smallestViabGroupLoc = 0;
+            smallViabSize = this.viableGroups1.get(0).size();
+            for(int i = 1; i < this.viableGroups1.size(); i++) {
+                if(smallViabSize > this.viableGroups1.get(i).size()){
+                    vGroup = 1;
+                    smallestViabGroupLoc = i;
+                    smallViabSize = this.viableGroups1.get(i).size();
+                }
+            }
+        }
+        if(this.weakGroups2 != null && this.weakGroups1.size() != 2){
+            if(smallestViabGroupLoc == -1 || smallViabSize == -1){
+                smallestViabGroupLoc = 0;
+                smallViabSize = this.viableGroups2.get(0).size();
+                for(int i = 1; i < this.viableGroups2.size(); i++) {
+                    if(smallViabSize > this.viableGroups2.get(i).size()){
+                        vGroup = 2;
+                        smallestViabGroupLoc = i;
+                        smallViabSize = this.viableGroups2.get(i).size();
+                    }
+                }
+            }
+        }
+        if(smallestViabGroupLoc != -1 && smallViabSize != -1){
+            if(vGroup == 1) {
+                DiscardAction act = new DiscardAction(this, this.viableGroups1.get(smallestViabGroupLoc).get(0));
+                game.sendAction(act); //Send Discard!!
+                return true;
+            }
+            else if(vGroup == 2){
+                DiscardAction act = new DiscardAction(this, this.viableGroups2.get(smallestViabGroupLoc).get(0));
+                game.sendAction(act); //Send Discard!!
+                return true;
+            }
+        }
+        if(checkHitsExist()) {  //Lowest priority discard, hit cards (by order of score)
+            int highestScoreLoc = 0;
+            int highScore = this.hitList.get(0).getScore();
+            for(int i = 1; i < this.hitList.size(); i++) {
+                if(highScore > this.hitList.get(i).getScore()){
+                    highestScoreLoc = i;
+                    highScore = this.hitList.get(i).getScore();
+                }
+            }
+            DiscardAction act = new DiscardAction(this, this.hitList.get(highestScoreLoc));
+            game.sendAction(act); //Send Discard!!
+            this.hitList.remove(highestScoreLoc);
+            return true;
+        }
 
-
-        //repeat for player ID 2
-        //check for non-group cards (that arent hits, or wilds)
-        //check for weak groups (that aren't
-        //check for viable groups
-        //discard hit cards
         return false;
     }
 
-    public int checkPhaseReady(Phase10GameState gameState, int phase) {
+    /**
+     * checks if the AI is ready to play phase
+     *
+     * @param gameState (shallow) the phase 10 gamestate
+     * @param phase current AI phase
+     * @return false if not ready to phase, or true if ready
+     */
+    public boolean checkPhaseReady(Phase10GameState gameState, int phase) {
         if(phase == 1 || phase == 2 || phase == 3 ||  phase == 7 ||  phase == 9 ||  phase == 10) {
-            if (completeGroup1 != null && completeGroup2 != null) return 2; //Return 2 groups
+            if (completeGroup1 != null && completeGroup2 != null) return true; //Return 2 groups
         }
         else if(phase == 4 || phase == 5 || phase == 6 || phase == 8) {
-            if (completeGroup1 != null) return 1; //Return 1 group
+            if (completeGroup1 != null) return true; //Return 1 group
         }
-        return 0; //Not ready to phase
-    }
-    public boolean doPhase(int phasing) {
-        if(phasing == 1){ //1 phase group
-            PhaseAction act = new PhaseAction(this, completeGroup1);
-            game.sendAction(act); //Send Phase!!
-            return true;
-        }
-        else if(phasing == 2){ //2 phase groups
-            //Consolidate cards
-            ArrayList<Card> temp = new ArrayList<Card>();
-            for(Card c : completeGroup1) temp.add(c);
-            for(Card c: completeGroup2) temp.add(c);
-
-            PhaseAction act = new PhaseAction(this, temp);
-            game.sendAction(act); //Send Phase!!
-            return true;
-        }
-        return false;
+        return false; //Not ready to phase
     }
 
-    public boolean checkHitReady(Phase10GameState gameState){                                       ///INCOMPLETE
-        //look at hitting on self
-        //Use checkGrowGroup???
-        //if other player has phases, look at hitting on other player
-        return false;
+    /**
+     * send the phase action with appropriate cards
+     *
+     * @param phase AI's current phase
+     * @return true if action sent successfully
+     */
+    public boolean doPhase(int phase) {
+        ArrayList<Card> temp = new ArrayList<Card>();
+        switch(phase){
+            case 1:
+                if(this.completeGroup1.size() >= 3){
+                    for(int i = 0; i < 3; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 3; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                if(this.completeGroup2.size() >= 3){
+                    for(int i = 0; i < 3; i++){
+                        temp.add(this.completeGroup2.get(i));
+                    }
+                    for(int i = 3; i < this.completeGroup2.size(); i++){
+                        this.hitList.add(this.completeGroup2.get(i));
+                    }
+                }
+                else return false;
+                break;
+            case 2:
+                if(this.completeGroup1.size() >= 4){
+                    for(int i = 0; i < 4; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 4; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                if(this.completeGroup2.size() >= 3){
+                    for(int i = 0; i < 3; i++){
+                        temp.add(this.completeGroup2.get(i));
+                    }
+                    for(int i = 3; i < this.completeGroup2.size(); i++){
+                        this.hitList.add(this.completeGroup2.get(i));
+                    }
+                }
+                else return false;
+                break;
+            case 3:
+            case 7:
+                if(this.completeGroup1.size() >= 4){
+                    for(int i = 0; i < 4; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 4; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                if(this.completeGroup2.size() >= 4){
+                    for(int i = 0; i < 4; i++){
+                        temp.add(this.completeGroup2.get(i));
+                    }
+                    for(int i = 4; i < this.completeGroup2.size(); i++){
+                        this.hitList.add(this.completeGroup2.get(i));
+                    }
+                }
+                else return false;
+                break;
+            case 4:
+            case 8:
+                if(this.completeGroup1.size() >= 7){
+                    for(int i = 0; i < 7; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 7; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }else return false;
+                //No second group
+                break;
+            case 5:
+                if(this.completeGroup1.size() >= 8){
+                    for(int i = 0; i < 8; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 8; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                //no second group
+                break;
+            case 6:
+                if(this.completeGroup1.size() >= 9){
+                    for(int i = 0; i < 9; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 9; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                //no second group
+                break;
+            case 9:
+                if(this.completeGroup1.size() >= 5){
+                    for(int i = 0; i < 5; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 5; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                if(this.completeGroup2.size() >= 2){
+                    for(int i = 0; i < 2; i++){
+                        temp.add(this.completeGroup2.get(i));
+                    }
+                    for(int i = 2; i < this.completeGroup2.size(); i++){
+                        this.hitList.add(this.completeGroup2.get(i));
+                    }
+                }
+                else return false;
+                break;
+            case 10:
+                if(this.completeGroup1.size() >= 5){
+                    for(int i = 0; i < 5; i++){
+                        temp.add(this.completeGroup1.get(i));
+                    }
+                    for(int i = 5; i < this.completeGroup1.size(); i++){
+                        this.hitList.add(this.completeGroup1.get(i));
+                    }
+                }
+                else return false;
+                if(this.completeGroup2.size() >= 3){
+                    for(int i = 0; i < 3; i++){
+                        temp.add(this.completeGroup2.get(i));
+                    }
+                    for(int i = 3; i < this.completeGroup2.size(); i++){
+                        this.hitList.add(this.completeGroup2.get(i));
+                    }
+                }
+                else return false;
+                break;
+            default:
+                return false;
+        }
+
+        PhaseAction act = new PhaseAction(this, temp);
+        game.sendAction(act); //Send Phase!!
+        return true;
     }
-    public boolean doHit(Card card, Phase10GameState gameState){                                       ///EMPTY
-        return false;
+
+    /**
+     * checks that there are cards for the AI to hit with
+     *
+     * @return true if hits exist
+     */
+    public boolean checkHitsExist(){
+        if(this.hitList.size() != 0 && this.hitList != null) return true;
+        else return false;
     }
-    public boolean makePotentialHits(ArrayList<Card> hand){                                       ///EMPTY
-        return false;
+
+    /**
+     * executes the hit action in proper coordination with which player to hit on
+     * and with what card
+     *
+     * @param phase the AI's current phase
+     * @param fullHand (shallow) copy of AI's hand
+     * @return true once executed
+     */
+    public boolean doHits(int phase, ArrayList<Card> fullHand){
+        for(int i = 0; i < this.hitList.size(); i++){
+            HitAction act = new HitAction(this, this.hitList.get(i), whereToHitList.get(i));
+            game.sendAction(act); //Send hit!!
+            if(this.playerNum + 1 == whereToHitList.get(i)){
+                checkGrowsGroup(this.hitList.get(i), phase, fullHand); //Add to complete group if self
+            }
+            this.hitList.remove(i);
+            this.whereToHitList.remove(i);
+        }
+        return true;
+    }
+
+    /**
+     * check if a card is allowed to hit on either player phase
+     *
+     * @param gs (shallow) copy of phase 10 gameState
+     * @param c card that is being tested to hit
+     * @return true if hit is possible
+     */
+    public boolean checkIsHit(Phase10GameState gs, Card c){
+        if(gs.phase.checkHitValid(c, 1, true)) return true;
+        else if(gs.phase.checkHitValid(c, 2, true)) return true;
+        else return false;
+    }
+
+    /**
+     * check if any nongroup cards work as hits on either player and organize into
+     * separate list
+     *
+     * @param gs (shallow) the phase 10 gameState
+     * @param phased1 true if player 1 has phased
+     * @param phased2 true if player 2 has phased
+     * @return true when finished
+     */
+    public boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
+        if(phased1) {
+            for (Card c : this.nonGroupCards) {
+                if (gs.phase.checkHitValid(c, 1, true)) {
+                    this.hitList.add(c);
+                    this.nonGroupCards.remove(c);
+                    this.whereToHitList.add((Integer) 1);
+                }
+            }
+        }
+        if(phased2) {
+            for (Card c : this.nonGroupCards) {
+                if (gs.phase.checkHitValid(c, 2, true)) {
+                    this.hitList.add(c);
+                    this.nonGroupCards.remove(c);
+                    this.whereToHitList.add((Integer) 2);
+                }
+            }
+        }
+        return true;
     }
 }
