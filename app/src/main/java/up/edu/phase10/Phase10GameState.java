@@ -173,9 +173,9 @@ public class Phase10GameState extends GameState {
      * also initializes deck/hands with shuffled cards
      */
     public Phase10GameState() {
-        turnId = 0;
+        turnId = (int) Math.random();
         hasGoneOut = -1;
-        goesFirst = 0;
+        goesFirst = turnId;
         playerHasDrawn = false;
         player1HasPhased = false;
         player2HasPhased = false;
@@ -207,6 +207,7 @@ public class Phase10GameState extends GameState {
          test%20the%20program.%20Remember%20on%20each...%20More%20
          Solution: I used the suggested method
          */
+
         Collections.shuffle(drawPile);//shuffle draw pile
 
         //deal cards to players and discard pile from draw pile
