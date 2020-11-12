@@ -26,7 +26,8 @@ import android.view.View.OnClickListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/** @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+/**
+ *  @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  */
 
 public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListener {

@@ -223,6 +223,32 @@ public class Phase10GameState extends GameState {
             drawPile.remove(0);
         }
         //FOR TESTING
+
+
+//        this.player1Phase = 2;
+//        this.player2Phase = 2;
+//        player1Hand.add(new Card(7,1));
+//        player1Hand.add(new Card(8,1));
+//        player1Hand.add(new Card(9,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//
+//        player2Hand.add(new Card(2,1));
+//        player2Hand.add(new Card(3,1));
+//        player2Hand.add(new Card(4,1));
+//        player2Hand.add(new Card(5,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+
         //        player1Hand.add(new Card(10,1));
 //        player1Hand.add(new Card(10,1));
 //        player1Hand.add(new Card(10,1));

@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Stack;
 
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
@@ -146,9 +147,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (checkPhaseReady(copy, phase)){
                 doPhase(phase); //Phase action in here
                 hasPhased = true;
+                sortGroups(hand, phase, fullHand, copy);
             }
         }
-        sortGroups(hand, phase, fullHand, copy);
+
 
         /* HIT */
         if (hasPhased && checkHitsExist()) {
@@ -158,7 +160,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
         /* DISCARD */
         doDiscard(copy, hasPhased);
-
+        if(hand != null){
+            Iterator<Card> it = hand.iterator();
+            while(it.hasNext()){
+                Card c = it.next();
+                if(c.equals(copy.getDiscardPile().peek())){
+                    hand.remove(c);
+                    break;
+                }
+            }
+        }
+        return;
     }
 
     /**
@@ -997,8 +1009,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     }
                     if (group.size() >= size1) {
                         for (Card c : group) {
-                            if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
-                            completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+                            if(this.completeGroup1 == null) {
+                                this.completeGroup1 = new ArrayList<Card>();
+                                completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+                            }
                         }
                         viableGroups1 = null;
                         weakGroups1 = null;
@@ -1112,8 +1126,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if (group.size() >= size2) {
                     for (Card c : group) {
-                        if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
-                        completeGroup2.add(new Card(c.getNumber(), c.getColor()));
+                        if(this.completeGroup2 == null) {
+                            this.completeGroup2 = new ArrayList<Card>();
+                            completeGroup2.add(new Card(c.getNumber(), c.getColor()));
+                        }
                     }
                     viableGroups2 = null;
                     weakGroups2 = null;
@@ -1239,6 +1255,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 //                    Iterator<Card> temp2 = hand.iterator();
 //                    while(temp2.hasNext()){
 //                        Card d = temp2.next();
+//                        //Card d = new Card(temp2.getNumber(), temp2.getColor());
 //                        for(Card c : completeGroup1){
 //                            if(c.getNumber()==d.getNumber() && c.getColor() == d.getColor()){
 //                                hand.remove(d);
@@ -1697,13 +1714,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(drawUp){ //Draw from discard
             DrawFaceUpAction act = new DrawFaceUpAction(this);
             game.sendAction(act);  //Send drawUp!!
-            fullHand.add(new Card(gameState.getDiscardPile().peek().getNumber(),gameState.getDiscardPile().peek().getColor()));
+//            fullHand.add(new Card(gameState.getDiscardPile().peek().getNumber(),gameState.getDiscardPile().peek().getColor()));
+//            gameState.getDiscardPile().pop();
             return true;
         }
         else { //Draw from drawpile
             DrawFaceDownAction act = new DrawFaceDownAction(this);
             game.sendAction(act); //Send drawDown!!
-            fullHand.add(new Card(gameState.getDrawPile().get(0).getNumber(),gameState.getDrawPile().get(0).getColor()));
+//            fullHand.add(new Card(gameState.getDrawPile().get(0).getNumber(),gameState.getDrawPile().get(0).getColor()));
+//            gameState.getDiscardPile().pop();
             return true;
         }
     }
@@ -1745,6 +1764,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
                 game.sendAction(act); //Send Discard!!
+//                Stack<Card> temp = gameState.getDiscardPile();
+//                temp.add(this.nonGroupCards.get(highScoreLoc));
+//                gameState.setDiscardPile(temp);
                 return true;
             }
         }
@@ -1839,7 +1861,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             DiscardAction act = new DiscardAction(this, this.hitList.get(highestScoreLoc));
             game.sendAction(act); //Send Discard!!
-            this.hitList.remove(highestScoreLoc);
+            //this.hitList.remove(highestScoreLoc);
             return true;
         }
 
@@ -2053,7 +2075,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for(int i = 0; i < this.hitList.size(); i++){
             HitAction act = new HitAction(this, this.hitList.get(i), whereToHitList.get(i));
             game.sendAction(act); //Send hit!!
-            if(this.playerNum + 1 == whereToHitList.get(i)){
+            if(this.playerNum == whereToHitList.get(i)){
                 checkGrowsGroup(this.hitList.get(i), phase, fullHand); //Add to complete group if self
             }
             this.hitList.remove(i);
@@ -2070,8 +2092,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if hit is possible
      */
     public boolean checkIsHit(Phase10GameState gs, Card c){
-        if(gs.phase.checkHitValid(c, 1, true)) return true;
-        else if(gs.phase.checkHitValid(c, 2, true)) return true;
+        if(gs.phase.checkHitValid(c, 0, true)) return true;
+        else if(gs.phase.checkHitValid(c, 1, true)) return true;
         else return false;
     }
 
@@ -2093,13 +2115,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
                     Card b = it.next();
                     Card c = new Card(b.getNumber(), b.getColor());
-                    if (gs.phase.checkHitValid(c, 1, true)) {
+                    if (gs.phase.checkHitValid(c, 0, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)
                             this.whereToHitList = new ArrayList<Integer>();
                         this.hitList.add(c);
                         this.nonGroupCards.remove(c);
-                        this.whereToHitList.add((Integer) 1);
+                        this.whereToHitList.add((Integer) 0);
                     }
                 }
             }
@@ -2111,13 +2133,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
                     Card b = it.next();
                     Card c = new Card(b.getNumber(), b.getColor());
-                    if (gs.phase.checkHitValid(c, 2, true)) {
+                    if (gs.phase.checkHitValid(c, 1, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)
                             this.whereToHitList = new ArrayList<Integer>();
                         this.hitList.add(c);
                         this.nonGroupCards.remove(c);
-                        this.whereToHitList.add((Integer) 2);
+                        this.whereToHitList.add((Integer) 1);
                     }
                 }
             }

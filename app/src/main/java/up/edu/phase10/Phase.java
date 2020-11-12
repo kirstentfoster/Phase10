@@ -409,7 +409,7 @@ public class Phase { //Wild card handling will be added in beta release
                             notInSetLoc++;
                         }
                         else{
-                            return null;
+                            break;
                         }
                     }
                 }
@@ -513,7 +513,7 @@ public class Phase { //Wild card handling will be added in beta release
                             notInRunLoc++;
                         }
                         else{
-                            return null;
+                            break;
                         }
                     }
                 }
