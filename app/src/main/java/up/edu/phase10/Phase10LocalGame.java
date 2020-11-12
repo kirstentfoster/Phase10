@@ -57,6 +57,7 @@ public class Phase10LocalGame extends LocalGame {
             return true;
         } else if (action instanceof DiscardAction) {
             this.pgs.discard(this.pgs.getTurnId(), ((DiscardAction) action).getCard());
+            this.roundOver();
             return true;
         } else if (action instanceof HitAction) {
             this.pgs.hitPlayer(this.pgs.getTurnId(), ((HitAction) action).getCard(), ((HitAction) action).getHitPlayer());
@@ -128,7 +129,6 @@ public class Phase10LocalGame extends LocalGame {
         }
         else return null;
     }
-
     /**
      * ROUND HANDLING - if a player has gone out and the other player has done their last turn
      * then the round is over, and the board has to be reset and the scores updated
@@ -152,63 +152,54 @@ public class Phase10LocalGame extends LocalGame {
             }
         }
         //Check if game over
-            if(checkIfGameOver() == null){
-
-                //Increase phases
-                if(pgs.getPlayer1HasPhased()) pgs.setPlayer1Phase(pgs.getPlayer1Phase()+1);
-                if(pgs.getPlayer2HasPhased()) pgs.setPlayer2Phase(pgs.getPlayer2Phase()+1);
-
-                //Clear phase contents
-                if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
-                if(pgs.getPlayer2PhaseContent().size() != 0) pgs.setPlayer2PhaseContent(new ArrayList<Card>());
-
-                //Reset variables
-                if(pgs.getGoesFirst() == 0) pgs.setTurnId(1);
-                else if(pgs.getGoesFirst() == 1) pgs.setTurnId(0);
-                pgs.setHasGoneOut(-1);
-
-                pgs.setPlayerHasDrawn(false);
-                pgs.setPlayer1HasPhased(false);
-                pgs.setPlayer2HasPhased(false);
-
-                //Re-deal Cards
-                ArrayList<Card> tempDeck = new ArrayList<Card>();
-                for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
-                    for (int j = 1; j <= 4; j++) {
-                        tempDeck.add(new Card(i, j));
-                        tempDeck.add(new Card(i, j));
-                    }
+        if(checkIfGameOver() == null){
+            //Increase phases
+            if(pgs.getPlayer1HasPhased()) pgs.setPlayer1Phase(pgs.getPlayer1Phase()+1);
+            if(pgs.getPlayer2HasPhased()) pgs.setPlayer2Phase(pgs.getPlayer2Phase()+1);
+            //Clear phase contents
+            if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
+            if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
+            //Reset variables
+            if(pgs.getGoesFirst() == 0) pgs.setTurnId(1);
+            else if(pgs.getGoesFirst() == 1) pgs.setTurnId(0);
+            pgs.setHasGoneOut(-1);
+            pgs.setPlayerHasDrawn(false);
+            pgs.setPlayer1HasPhased(false);
+            pgs.setPlayer2HasPhased(false);
+            //Re-deal Cards
+            ArrayList<Card> tempDeck = new ArrayList<Card>();
+            for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
+                for (int j = 1; j <= 4; j++) {
+                    tempDeck.add(new Card(i, j));
+                    tempDeck.add(new Card(i, j));
                 }
+            }
 //            for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            tempDeck.add(new Card(0, 0));
 //        }
-                for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-                    tempDeck.add(new Card(-1, -1));
-                }
-
-                Stack<Card> tempDiscard = new Stack<Card>();
-                tempDiscard.push(tempDeck.get(0));
-                tempDiscard.push(tempDeck.get(1));
-                tempDeck.remove(0);
-                tempDeck.remove(1);
-
-                ArrayList<Card> tempP1Hand = new ArrayList<Card>();
-                ArrayList<Card> tempP2Hand = new ArrayList<Card>();
-                for (int i = 0; i < 10; i++) {
-                    tempP1Hand.add(tempDeck.get(0));
-                    tempDeck.remove(0);
-                    tempP2Hand.add(tempDeck.get(0));
-                    tempDeck.remove(0);
-                }
-                Collections.shuffle(tempDeck);
-
-                pgs.setDrawPile(tempDeck);
-                pgs.setDiscardPile(tempDiscard);
-                pgs.setPlayer1Hand(tempP1Hand);
-                pgs.setPlayer2Hand(tempP2Hand);
-
-                return false;
+            for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+                tempDeck.add(new Card(-1, -1));
             }
+            Stack<Card> tempDiscard = new Stack<Card>();
+            tempDiscard.push(tempDeck.get(0));
+            tempDiscard.push(tempDeck.get(1));
+            tempDeck.remove(0);
+            tempDeck.remove(1);
+            ArrayList<Card> tempP1Hand = new ArrayList<Card>();
+            ArrayList<Card> tempP2Hand = new ArrayList<Card>();
+            for (int i = 0; i < 10; i++) {
+                tempP1Hand.add(tempDeck.get(0));
+                tempDeck.remove(0);
+                tempP2Hand.add(tempDeck.get(0));
+                tempDeck.remove(0);
+            }
+            Collections.shuffle(tempDeck);
+            pgs.setDrawPile(tempDeck);
+            pgs.setDiscardPile(tempDiscard);
+            pgs.setPlayer1Hand(tempP1Hand);
+            pgs.setPlayer2Hand(tempP2Hand);
+            return false;
+        }
         return true;
     }
 
