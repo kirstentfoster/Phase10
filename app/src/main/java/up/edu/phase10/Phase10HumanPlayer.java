@@ -44,7 +44,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
     private Button hitSelfButton = null;
-    public Button discardButton       = null;
+    public Button discardButton = null;
     private Button quitButton = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
