@@ -48,7 +48,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private Button quitButton = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
-
     private ImageButton Hand1 = null;
     private ImageButton Hand2 = null;
     private ImageButton Hand3 = null;
@@ -171,12 +170,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
         if(button.equals(hitButton)) {
             if(this.selected.size()==1) {
-                if(this.playerNum==1) {
-                    HitAction p = new HitAction(this, this.selected.get(0), 2);
+                if(this.playerNum==0) {
+                    HitAction p = new HitAction(this, this.selected.get(0), 1);
                     game.sendAction(p);
                 }
-                else if(this.playerNum==2) {
-                    HitAction p = new HitAction(this, this.selected.get(0), 1);
+                else if(this.playerNum==1) {
+                    HitAction p = new HitAction(this, this.selected.get(0), 0);
                     game.sendAction(p);
                 }
             }
@@ -703,7 +702,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     }
 
 
-    //Face down AI hand
+//    Face down AI hand
     private void createAIHand(Phase10GameState gs){
         if(this.playerNum+1==2) {
             if(gs.getPlayer1Hand().size()<1){
@@ -843,7 +842,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
     }
 
-    //Shows face up AI hand
+//    Shows face up AI hand
 //    private void createAIHand(Phase10GameState gs){
 //        if(this.playerNum+1==2) {
 //            if(gs.getPlayer1Hand().size()<1){

@@ -158,9 +158,10 @@ public class Phase10LocalGame extends LocalGame {
             if(pgs.getPlayer2HasPhased()) pgs.setPlayer2Phase(pgs.getPlayer2Phase()+1);
             //Clear phase contents
             if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
-            if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
+            if(pgs.getPlayer2PhaseContent().size() != 0) pgs.setPlayer2PhaseContent(new ArrayList<Card>());
             //Reset variables
-            if(pgs.getGoesFirst() == 0) pgs.setTurnId(1);
+            //TODO allow AI to go first
+            if(pgs.getGoesFirst() == 0) pgs.setTurnId(0);
             else if(pgs.getGoesFirst() == 1) pgs.setTurnId(0);
             pgs.setHasGoneOut(-1);
             pgs.setPlayerHasDrawn(false);
@@ -174,12 +175,14 @@ public class Phase10LocalGame extends LocalGame {
                     tempDeck.add(new Card(i, j));
                 }
             }
+            //TODO for Beta
 //            for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            tempDeck.add(new Card(0, 0));
 //        }
-            for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-                tempDeck.add(new Card(-1, -1));
-            }
+//            for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+//                tempDeck.add(new Card(-1, -1));
+//            }
+            Collections.shuffle(tempDeck);
             Stack<Card> tempDiscard = new Stack<Card>();
             tempDiscard.push(tempDeck.get(0));
             tempDiscard.push(tempDeck.get(1));
@@ -193,7 +196,7 @@ public class Phase10LocalGame extends LocalGame {
                 tempP2Hand.add(tempDeck.get(0));
                 tempDeck.remove(0);
             }
-            Collections.shuffle(tempDeck);
+            tempP2Hand.remove(0); //??extra card
             pgs.setDrawPile(tempDeck);
             pgs.setDiscardPile(tempDiscard);
             pgs.setPlayer1Hand(tempP1Hand);

@@ -131,11 +131,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,3,playerNum,2, false) != null){ //Second set
 
                 //set other phase qualifiers as null
-                if(playerNum == 1) {
+                if(playerNum == 0) {
                     this.play1Run = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2) {
+                else if(playerNum == 1) {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
@@ -160,11 +160,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,3,playerNum,1, false) != null){ //Check for set
 
                 //set other phase qualifiers as null
-                if(playerNum == 1) {
+                if(playerNum == 0) {
                     this.play1Set2 = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     this.play2Set2 = null;
                     this.play2Color = null;
                 }
@@ -189,11 +189,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,4,playerNum,1, false) != null){ //Check for set
 
                 //set other phase qualifiers as null
-                if(playerNum == 1){
+                if(playerNum == 0){
                     this.play1Set2 = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     this.play2Set2 = null;
                     this.play2Color = null;
                 }
@@ -216,12 +216,12 @@ public class Phase { //Wild card handling will be added in beta release
         else{
 
             //set other phase qualifiers as null
-            if(playerNum == 1) {
+            if(playerNum == 0) {
                 this.play1Set1 = null;
                 this.play1Set2 = null;
                 this.play1Color = null;
             }
-            else if(playerNum == 2){
+            else if(playerNum == 1){
                 this.play2Set1 = null;
                 this.play2Set2 = null;
                 this.play2Color = null;
@@ -243,12 +243,12 @@ public class Phase { //Wild card handling will be added in beta release
         if(isRun(phaseContent,8,playerNum, false) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
-            if(playerNum == 1) {
+            if(playerNum == 0) {
                 this.play1Set1 = null;
                 this.play1Set2 = null;
                 this.play1Color = null;
             }
-            else if(playerNum == 2){
+            else if(playerNum == 1){
                 this.play2Set1 = null;
                 this.play2Set2 = null;
                 this.play2Color = null;
@@ -270,12 +270,12 @@ public class Phase { //Wild card handling will be added in beta release
         if(isRun(phaseContent,9,playerNum, false) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
-            if(playerNum == 1) {
+            if(playerNum == 0) {
                 this.play1Set1 = null;
                 this.play1Set2 = null;
                 this.play1Color = null;
             }
-            else if(playerNum == 2){
+            else if(playerNum == 1){
                 this.play2Set1 = null;
                 this.play2Set2 = null;
                 this.play2Color = null;
@@ -300,11 +300,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,4,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
-                if(playerNum == 1){
+                if(playerNum == 0){
                     this.play1Run = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     this.play2Run = null;
                     this.play2Color = null;
                 }
@@ -330,11 +330,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,2,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
-                if(playerNum == 1) {
+                if(playerNum == 0) {
                     this.play1Run = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2) {
+                else if(playerNum == 1) {
                     this.play2Run = null;
                     this.play2Color = null;
                 }
@@ -359,11 +359,11 @@ public class Phase { //Wild card handling will be added in beta release
             if(isSet(temp,3,playerNum,2, false) != null){ //Check for set 2
 
                 //set other phase qualifiers as null
-                if(playerNum == 1){
+                if(playerNum == 0){
                     this.play1Run = null;
                     this.play1Color = null;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     this.play2Run = null;
                     this.play2Color = null;
                 }
@@ -399,7 +399,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInSet = new Card[checkForSet.length-size];
             notInSetLoc = 0;
             for (int j = i + 1; j < checkForSet.length; j++) {
-                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc<size-1) {
+                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc < size-1) {
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
                 } else {
@@ -415,7 +415,7 @@ public class Phase { //Wild card handling will be added in beta release
                 }
             }
             if(tempLoc >= temp.length -1){
-                if(playerNum == 1) {
+                if(playerNum == 0) {
                     for(int b = 0; b < i; b++){
                         while(notInSetLoc < notInSet.length) {
                             notInSet[notInSetLoc] = checkForSet[b];
@@ -444,7 +444,7 @@ public class Phase { //Wild card handling will be added in beta release
                     }
 
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     for(int b = 0; b < i; b++){
                         while(notInSetLoc < notInSet.length) {
                             notInSet[notInSetLoc] = checkForSet[b];
@@ -469,9 +469,10 @@ public class Phase { //Wild card handling will be added in beta release
                         if(notInSetLoc == 0){
                             return checkForSet;
                         }
-                        if(notInSet.length > 0) {
-                            return notInSet;
-                        }
+                        return notInSet;
+//                        if(notInSet.length > 0) {
+//                            return notInSet;
+//                        }
                     }
                 }
             }
@@ -502,7 +503,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInRun = new Card[checkForRun.length-size];
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
-                if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1 && tempLoc<size-1) {
+                if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
                     temp[tempLoc + 1] = checkForRun[j];
                     tempLoc++;
                 } else {
@@ -525,7 +526,7 @@ public class Phase { //Wild card handling will be added in beta release
                     test1[0] = new Card(40,40);
                     return test1;}
 
-                if(playerNum == 1) {
+                if(playerNum == 0) {
 
                     for(int b = 0; b < i; b++){
                         while(notInRunLoc < notInRun.length) {
@@ -539,7 +540,7 @@ public class Phase { //Wild card handling will be added in beta release
                     }
                     return notInRun;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     for(int b = 0; b < i; b++){
                         while(notInRunLoc < notInRun.length) {
                             notInRun[notInRunLoc] = checkForRun[b];
@@ -585,7 +586,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInColorLoc = 0;
             for (int j = i + 1; j < checkForColor.length; j++) {
 
-                if (checkForColor[j].getColor() == temp[tempLoc].getColor() && tempLoc<size-1) {
+                if (checkForColor[j].getColor() == temp[tempLoc].getColor()) {
                     temp[tempLoc + 1] = checkForColor[j];
                     tempLoc++;
                 } else {
@@ -608,7 +609,7 @@ public class Phase { //Wild card handling will be added in beta release
                     test1[0] = new Card(40,40);
                     return test1;}
 
-                if(playerNum == 1) {
+                if(playerNum == 0) {
                     for(int b = 0; b < i; b++){
                         while(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[b];
@@ -621,7 +622,7 @@ public class Phase { //Wild card handling will be added in beta release
                     }
                     return notInColor;
                 }
-                else if(playerNum == 2){
+                else if(playerNum == 1){
                     for(int b = 0; b < i; b++){
                         while(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[b];
@@ -708,7 +709,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if hit is successful
      */
     public boolean checkHitValid(Card selectedCard, int playerNum, boolean test) {
-        if (playerNum == 1) {
+        if (playerNum == 0) {
             //Runs
             if(this.play1Run != null) {
                 Card[] tempPlay1Run = new Card[play1Run.length + 1];
@@ -717,9 +718,6 @@ public class Phase { //Wild card handling will be added in beta release
                 }
                 tempPlay1Run[play1Run.length] = selectedCard;
                 if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test) == null)) return true;
-                else{
-                    return false;
-                }
             }
             //Sets
             if(this.play1Set1 != null) {
@@ -728,9 +726,8 @@ public class Phase { //Wild card handling will be added in beta release
                     tempPlay1Set1[i] = play1Set1[i];
                 }
                 tempPlay1Set1[play1Set1.length] = selectedCard;
-                if(!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum,1, test)==null)) return true;
-                else{
-                    return false;
+                if(!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum,1, test)==null)){
+                    return true;
                 }
             }
             if(this.play1Set2 != null) {
@@ -740,9 +737,6 @@ public class Phase { //Wild card handling will be added in beta release
                 }
                 tempPlay1Set2[play1Set2.length] = selectedCard;
                 if(!(isSet(tempPlay1Set2, tempPlay1Set2.length, playerNum, 2, test)==null)) return true;
-                else{
-                    return false;
-                }
             }
 
 
@@ -756,9 +750,8 @@ public class Phase { //Wild card handling will be added in beta release
 
                 if (!(isColorGroup(tempPlay1Color, tempPlay1Color.length, playerNum, test) == null))
                     return true;
-                else return false;
             }
-        } else if (playerNum == 2) {
+        } else if (playerNum == 1) {
 
             //Runs
             if(this.play2Run != null) {
@@ -768,9 +761,6 @@ public class Phase { //Wild card handling will be added in beta release
                 }
                 tempPlay2Run[play2Run.length] = selectedCard;
                 if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum, test) == null)) return true;
-                else{
-                    return false;
-                }
             }
 
             //Sets
@@ -781,9 +771,6 @@ public class Phase { //Wild card handling will be added in beta release
                 }
                 tempPlay2Set1[play2Set1.length] = selectedCard;
                 if(!(isSet(tempPlay2Set1, tempPlay2Set1.length, playerNum,1, test)==null)) return true;
-                else{
-                    return false;
-                }
             }
             if(this.play2Set2 != null) {
                 Card[] tempPlay2Set2 = new Card[play2Set2.length + 1];
@@ -792,9 +779,6 @@ public class Phase { //Wild card handling will be added in beta release
                 }
                 tempPlay2Set2[play2Set2.length] = selectedCard;
                 if(!(isSet(tempPlay2Set2, tempPlay2Set2.length, playerNum, 2, test)==null)) return true;
-                else{
-                    return false;
-                }
             }
 
             //Colors
@@ -807,7 +791,6 @@ public class Phase { //Wild card handling will be added in beta release
 
                 if (!(isColorGroup(tempPlay2Color, tempPlay2Color.length, playerNum, test) == null))
                     return true;
-                else return false;
             }
         }
         return false;
