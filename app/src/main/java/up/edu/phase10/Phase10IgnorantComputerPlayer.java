@@ -339,8 +339,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups1 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d); //Remove from (deep) hand
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -348,8 +353,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     this.viableGroups1 = viables;
                     for (ArrayList<Card> group : viables) {
                         for (Card c : group) {
-                            for (Card d : hand) {
-                                if (c.equals(d)) hand.remove(d);  //Remove from (deep) hand
+                            Iterator<Card> it = hand.iterator();
+                            while (it.hasNext()) {
+                                Card d = it.next();
+                                if (c.equals(d)){
+                                    hand.remove(d); //Remove from (deep) hand
+                                    it = null;
+                                }
                             }
                         }
                     }
@@ -361,8 +371,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups2 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -371,8 +386,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.viableGroups2 = viables;
                 for (ArrayList<Card> group : viables) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -463,8 +483,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups1 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -473,9 +498,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.viableGroups1 = viables;
                 for (ArrayList<Card> group : viables) {
                     for (Card c : group) {
-                        for (Card d : hand) {
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
                             if (c.equals(d)){
-                                hand.remove(d);
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
                             }
                         }
                     }
@@ -488,8 +516,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups2 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -498,8 +531,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.viableGroups2 = viables;
                 for (ArrayList<Card> group : viables) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -576,8 +614,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups1 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -585,8 +628,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     this.viableGroups1 = viables;
                     for (ArrayList<Card> group : viables) {
                         for (Card c : group) {
-                            for (Card d : hand) {
-                                if (c.equals(d)) hand.remove(d);
+                            Iterator<Card> it = hand.iterator();
+                            while (it.hasNext()) {
+                                Card d = it.next();
+                                if (c.equals(d)){
+                                    hand.remove(d); //Remove from (deep) hand
+                                    it = null;
+                                }
                             }
                         }
                     }
@@ -598,8 +646,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.weakGroups2 = weaks;
                 for (ArrayList<Card> group : weaks) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -608,8 +661,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.viableGroups2 = viables;
                 for (ArrayList<Card> group : viables) {
                     for (Card c : group) {
-                        for (Card d : hand) {
-                            if (c.equals(d)) hand.remove(d);
+                        Iterator<Card> it = hand.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
+                            if (c.equals(d)){
+                                hand.remove(d); //Remove from (deep) hand
+                                it = null;
+                            }
                         }
                     }
                 }
@@ -682,7 +740,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (weakGroups1.size() > 0) {
                     for (ArrayList<Card> group : weakGroups1) {
                         int copies = 0;
-                        for (Card d : group) {
+                        Iterator<Card> it = group.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
                             if (c.equals(d)) copies++;
                         }
                         while (copies > uniqueness - 1) {
@@ -694,7 +754,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (viableGroups1.size() > 1) {
                     for (ArrayList<Card> group : viableGroups1) {
                         int copies = 0;
-                        for (Card d : group) {
+                        Iterator<Card> it = group.iterator();
+                        while (it.hasNext()) {
+                            Card d = it.next();
                             if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
                         }
                         while (copies > uniqueness - 1) {
@@ -732,8 +794,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     if (weakGroups2.size() > 0) {
                         for (ArrayList<Card> group : weakGroups2) {
                             int copies = 0;
-                            for (Card d : group) {
-                                if (c.equals(d)) copies++;
+                            Iterator<Card> it = group.iterator();
+                            while (it.hasNext()) {
+                                Card d = it.next();
+                                if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
                             }
                             while (copies > uniqueness - 1) {
                                 group.remove(c);
@@ -744,8 +808,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     if (viableGroups2.size() > 1) {
                         for (ArrayList<Card> group : viableGroups2) {
                             int copies = 0;
-                            for (Card d : group) {
-                                if (c.equals(d) && !(group.equals(viableGroups2.get(0)))) copies++;
+                            Iterator<Card> it = group.iterator();
+                            while (it.hasNext()) {
+                                Card d = it.next();
+                                if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
                             }
                             while (copies > uniqueness - 1) {
                                 group.remove(c);
@@ -763,53 +829,76 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param size2 group2 size from phase reqs
      */
     public void checkGroupOrg(int size1, int size2) {
-        if (weakGroups1 != null) {
-            //remove/move groups that no longer fit qualifications
-            for (ArrayList<Card> group : weakGroups1) { //remove from weak groups
+        while(weakGroups1 != null) {//remove/move groups that no longer fit qualifications
+                Iterator<ArrayList<Card>> it = this.weakGroups1.iterator();
+                while (it.hasNext()) {//remove from weak groups
+                ArrayList<Card> group = it.next();
                 if (size1 < 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups1.remove(group);
                     }
                 } else if (group.size() >= 2) {
+                    if(this.viableGroups1== null) this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                     viableGroups1.add(group);
                     weakGroups1.remove(group);
                 }
                 if (size1 == 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups1.remove(group);
                     }
                     else if (group.size() > 2) {
+                        if(this.viableGroups1 == null) this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                         viableGroups1.add(group);
                         weakGroups1.remove(group);
                     }
                 }
                 if (size1 > 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups1.remove(group);
                     }
                 } else if (group.size() > 3) {
+                    if(this.viableGroups1 == null) this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                     viableGroups1.add(group);
                     weakGroups1.remove(group);
                 }
+                if(this.weakGroups1.size() == 0) this.weakGroups1 = null;
             }
         }
 
-        while (viableGroups1 != null) {
-            for (ArrayList<Card> group : viableGroups1) { //remove or move from viable groups
+        while (viableGroups1 != null) {//remove or move from viable groups
+                Iterator<ArrayList<Card>> it = this.viableGroups1.iterator();
+                while (it.hasNext()) {//remove from weak groups
+                    ArrayList<Card> group = it.next();
                 if (size1 < 4) if (group.size() < 2){
-                    for(Card d : group)nonGroupCards.add(d);
+                    for(Card d : group){
+                        if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                        nonGroupCards.add(d);
+                    }
                     viableGroups1.remove(group);
                 }
                 if (size1 == 4) {
                     if (group.size() < 3) {
                         if (group.size() == 2) { //If group could still be weak, it will be moved there
+                            if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
                             weakGroups1.add(group);
                             viableGroups1.remove(group);
                         } else if (group.size() < 2){
-                            for(Card d : group)nonGroupCards.add(d);
+                            for(Card d : group){
+                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                nonGroupCards.add(d);
+                            }
                             viableGroups1.remove(group);
                         }
                     }
@@ -817,16 +906,22 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (size1 > 4) {
                     if (group.size() < 4) { //If group could still be weak, it will be moved there
                         if (group.size() == 3 || group.size() == 2) {
+                            if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
                             weakGroups1.add(group);
                             viableGroups1.remove(group);
                         } else if (group.size() < 2){
-                            for(Card d : group)nonGroupCards.add(d);
+                            for(Card d : group){
+                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                nonGroupCards.add(d);
+                            }
                             viableGroups1.remove(group);
                         }
                     }
                 }
+                if(this.viableGroups1.size() == 0) this.viableGroups1 = null;
                 if (group.size() >= size1) {
                     for (Card c : group) {
+                        if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                         completeGroup1.add(new Card(c.getNumber(), c.getColor()));
                     }
                     viableGroups1 = null;
@@ -834,79 +929,103 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
-        if (weakGroups2 != null) {
-            //remove/move groups that no longer fit qualifications
-            for (ArrayList<Card> group : weakGroups2) { //remove from weak groups
+        while(weakGroups2 != null) {//remove/move groups that no longer fit qualifications
+            Iterator<ArrayList<Card>> it = this.weakGroups2.iterator();
+            while (it.hasNext()) {//remove from weak groups
+                ArrayList<Card> group = it.next();
                 if (size1 < 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups2.remove(group);
                     }
                 } else if (group.size() >= 2) {
+                    if(this.viableGroups2 == null) this.viableGroups2 = new ArrayList<ArrayList<Card>>();
                     viableGroups2.add(group);
-                    weakGroups1.remove(group);
+                    weakGroups2.remove(group);
                 }
                 if (size1 == 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups2.remove(group);
                     }
                     else if (group.size() > 2) {
+                        if(this.viableGroups2 == null) this.viableGroups2 = new ArrayList<ArrayList<Card>>();
                         viableGroups2.add(group);
                         weakGroups2.remove(group);
                     }
                 }
                 if (size1 > 4) {
                     if (group.size() < 2){
-                        for(Card d : group)nonGroupCards.add(d);
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
                         weakGroups2.remove(group);
                     }
                 } else if (group.size() > 3) {
+                    if(this.viableGroups2 == null) this.viableGroups2 = new ArrayList<ArrayList<Card>>();
                     viableGroups2.add(group);
                     weakGroups2.remove(group);
                 }
+                if(this.weakGroups2.size() == 0) this.weakGroups2 = null;
             }
-            if(this.weakGroups1.size() == 0) this.weakGroups1 = null;
-            if(this.weakGroups2.size() == 0) this.weakGroups2 = null;
-            if(this.viableGroups1.size() == 0) this.viableGroups1 = null;
-            if(this.viableGroups2.size() == 0) this.viableGroups2 = null;
         }
 
-        while (viableGroups2 != null) {
-            for (ArrayList<Card> group : viableGroups2) { //remove or move from viable groups
-                if (size2 < 4) if (group.size() < 2){
-                    for(Card d : group)nonGroupCards.add(d);
+        while (viableGroups2 != null) {//remove or move from viable groups
+            Iterator<ArrayList<Card>> it = this.viableGroups2.iterator();
+            while (it.hasNext()) {//remove from weak groups
+                ArrayList<Card> group = it.next();
+                if (size1 < 4) if (group.size() < 2){
+                    for(Card d : group){
+                        if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                        nonGroupCards.add(d);
+                    }
                     viableGroups2.remove(group);
                 }
-                if (size2 == 4) {
+                if (size1 == 4) {
                     if (group.size() < 3) {
                         if (group.size() == 2) { //If group could still be weak, it will be moved there
+                            if(this.weakGroups2 == null) this.weakGroups2 = new ArrayList<ArrayList<Card>>();
                             weakGroups2.add(group);
                             viableGroups2.remove(group);
                         } else if (group.size() < 2){
-                            for(Card d : group)nonGroupCards.add(d);
+                            for(Card d : group){
+                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                nonGroupCards.add(d);
+                            }
                             viableGroups2.remove(group);
                         }
                     }
                 }
-                if (size2 > 4) {
+                if (size1 > 4) {
                     if (group.size() < 4) { //If group could still be weak, it will be moved there
                         if (group.size() == 3 || group.size() == 2) {
+                            if(this.weakGroups2 == null) this.weakGroups2 = new ArrayList<ArrayList<Card>>();
                             weakGroups2.add(group);
                             viableGroups2.remove(group);
                         } else if (group.size() < 2){
-                            for(Card d : group) nonGroupCards.add(d);
+                            for(Card d : group){
+                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                nonGroupCards.add(d);
+                            }
                             viableGroups2.remove(group);
                         }
                     }
                 }
-                if (group.size() >= size2) {
+                if(this.viableGroups2.size() == 0) this.viableGroups2 = null;
+                if (group.size() >= size1) {
                     for (Card c : group) {
+                        if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
                         completeGroup2.add(new Card(c.getNumber(), c.getColor()));
                     }
                     viableGroups2 = null;
                     weakGroups2 = null;
-
                 }
             }
         }
@@ -955,14 +1074,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
                 if (groupNum == 1) {
+                    if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
                 } else if (groupNum == 2) {
+                    if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
                     this.weakGroups2 = null;
                     this.viableGroups2 = null;
                 }
+                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
                 return true; //Complete group does exist
             }
@@ -1011,14 +1133,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (tempLoc >= size - 1) {
                 //Place in groups
                 if (groupNum == 1) {
+                    if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
                 } else if (groupNum == 2) {
+                    if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
                     this.weakGroups2 = null;
                     this.viableGroups2 = null;
                 }
+                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
                 return true; //Complete group does exist
             }
@@ -1068,14 +1193,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (tempLoc >= size - 1) {
                 //Place in groups
                 if (groupNum == 1) {
+                    if(this.completeGroup1 == null) this.completeGroup2 = new ArrayList<Card>();
                     this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
                 } else if (groupNum == 2) {
+                    if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
                     this.weakGroups2 = null;
                     this.viableGroups2 = null;
                 }
+                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
                 return true; //Complete group does exist
             }
@@ -1249,12 +1377,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         else if(groupNum == 2) {
             if (this.completeGroup2 != null) { //Will only reach here to test hit
                 //Does card add to either end of complete group?
-                if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
-                    this.completeGroup1.add(0, card);
+                if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
+                    this.completeGroup2.add(0, card);
                     return true;
                 }
-                if(card.getNumber() == this.completeGroup1.get(0).getNumber() + 1){
-                    this.completeGroup1.add(card);
+                if(card.getNumber() == this.completeGroup2.get(0).getNumber() + 1){
+                    this.completeGroup2.add(card);
                     return true;
                 }
             }
@@ -1481,31 +1609,32 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     public boolean doDiscard(Phase10GameState gameState, boolean hasPhased){
 
         int j = 0;
-        int highestScore = this.nonGroupCards.get(0).getScore();
-        int highScoreLoc = 0;
-        while(this.nonGroupCards.size() >= j) {
-            if(!this.nonGroupCards.get(j).isWild()) {
-                highestScore = this.nonGroupCards.get(j).getScore();
-                highScoreLoc = j;
+        if(this.nonGroupCards != null) {
+            int highestScore = this.nonGroupCards.get(0).getScore();
+            int highScoreLoc = 0;
+            while (this.nonGroupCards.size() >= j) {
+                if (!this.nonGroupCards.get(j).isWild()) {
+                    highestScore = this.nonGroupCards.get(j).getScore();
+                    highScoreLoc = j;
+                }
+                j++;
             }
-            j++;
-
-        }
-        if(!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
-            for (int i = 1; i < this.nonGroupCards.size(); i++) {
-                if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
-                    highScoreLoc = i;
-                    i = this.nonGroupCards.size();
-                } else if (!this.nonGroupCards.get(i).isWild()) { //Next priority is the highest score non-wild nongroup card
-                    if (this.nonGroupCards.get(i).getScore() > highestScore){
+            if (!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
+                for (int i = 1; i < this.nonGroupCards.size(); i++) {
+                    if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
                         highScoreLoc = i;
-                        highestScore = this.nonGroupCards.get(i).getScore();
+                        i = this.nonGroupCards.size();
+                    } else if (!this.nonGroupCards.get(i).isWild()) { //Next priority is the highest score non-wild nongroup card
+                        if (this.nonGroupCards.get(i).getScore() > highestScore) {
+                            highScoreLoc = i;
+                            highestScore = this.nonGroupCards.get(i).getScore();
+                        }
                     }
                 }
+                DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
+                game.sendAction(act); //Send Discard!!
+                return true;
             }
-            DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
-            game.sendAction(act); //Send Discard!!
-            return true;
         }
         //Next priority is a card from the smallest weak group
         int smallestWeakGroupLoc = -1;
@@ -1522,7 +1651,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
-        if(this.weakGroups2 != null && this.weakGroups1.size() != 2){
+        if(this.weakGroups2 != null && this.weakGroups2.size() != 2){
             if(smallestWeakGroupLoc == -1 || smallWeakSize == -1){
                 smallestWeakGroupLoc = 0;
                 smallWeakSize = this.weakGroups2.get(0).size();
@@ -1562,7 +1691,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
-        if(this.weakGroups2 != null && this.weakGroups1.size() != 2){
+        if(this.weakGroups2 != null && this.weakGroups2.size() != 2){
             if(smallestViabGroupLoc == -1 || smallViabSize == -1){
                 smallestViabGroupLoc = 0;
                 smallViabSize = this.viableGroups2.get(0).size();
@@ -1637,6 +1766,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 3; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1646,6 +1776,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup2.get(i));
                     }
                     for(int i = 3; i < this.completeGroup2.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
@@ -1657,6 +1788,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 4; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1666,6 +1798,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup2.get(i));
                     }
                     for(int i = 3; i < this.completeGroup2.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
@@ -1678,6 +1811,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 4; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1687,6 +1821,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup2.get(i));
                     }
                     for(int i = 4; i < this.completeGroup2.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
@@ -1699,6 +1834,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 7; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }else return false;
@@ -1710,6 +1846,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 8; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1722,6 +1859,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 9; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1733,6 +1871,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 5; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1742,6 +1881,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup2.get(i));
                     }
                     for(int i = 2; i < this.completeGroup2.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
@@ -1753,6 +1893,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup1.get(i));
                     }
                     for(int i = 5; i < this.completeGroup1.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
@@ -1762,6 +1903,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         temp.add(this.completeGroup2.get(i));
                     }
                     for(int i = 3; i < this.completeGroup2.size(); i++){
+                        if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
@@ -1831,20 +1973,35 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
         if(phased1) {
-            for (Card c : this.nonGroupCards) {
-                if (gs.phase.checkHitValid(c, 1, true)) {
-                    this.hitList.add(c);
-                    this.nonGroupCards.remove(c);
-                    this.whereToHitList.add((Integer) 1);
+            if(this.nonGroupCards != null) {
+                this.hitList = new ArrayList<Card>();
+                Iterator<Card> it = this.nonGroupCards.iterator();
+                while (it.hasNext()) {
+                    Card c = it.next();
+                    if (gs.phase.checkHitValid(c, 1, true)) {
+                        if (this.hitList == null) this.hitList = new ArrayList<Card>();
+                        if (this.whereToHitList == null)
+                            this.whereToHitList = new ArrayList<Integer>();
+                        this.hitList.add(c);
+                        this.nonGroupCards.remove(c);
+                        this.whereToHitList.add((Integer) 1);
+                    }
                 }
             }
         }
         if(phased2) {
-            for (Card c : this.nonGroupCards) {
-                if (gs.phase.checkHitValid(c, 2, true)) {
-                    this.hitList.add(c);
-                    this.nonGroupCards.remove(c);
-                    this.whereToHitList.add((Integer) 2);
+            if(this.nonGroupCards != null) {
+                Iterator<Card> it = this.nonGroupCards.iterator();
+                while (it.hasNext()) {
+                    Card c = it.next();
+                    if (gs.phase.checkHitValid(c, 2, true)) {
+                        if (this.hitList == null) this.hitList = new ArrayList<Card>();
+                        if (this.whereToHitList == null)
+                            this.whereToHitList = new ArrayList<Integer>();
+                        this.hitList.add(c);
+                        this.nonGroupCards.remove(c);
+                        this.whereToHitList.add((Integer) 2);
+                    }
                 }
             }
         }
