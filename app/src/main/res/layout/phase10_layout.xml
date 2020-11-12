@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="100000"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
@@ -130,14 +130,6 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:src="@drawable/yellow6" />
-
-            <ImageView
-                android:id="@+id/AIPhaseCard1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/green9" />
 
         </LinearLayout>
 
@@ -235,7 +227,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="100000"
+            android:layout_weight="1"
             android:baselineAligned="false"
             android:orientation="horizontal">
 

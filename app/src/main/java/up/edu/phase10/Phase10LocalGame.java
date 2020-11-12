@@ -52,7 +52,7 @@ public class Phase10LocalGame extends LocalGame {
             this.pgs.playPhase(this.pgs.getTurnId(), ((PhaseAction) action).getPhaseContent());
             return true;
         } else if (action instanceof DiscardAction) {
-            //this.pgs.discard(this.pgs.getTurnId(), ((DiscardAction) action).getCard()); //TO BE FIXED
+            this.pgs.discard(this.pgs.getTurnId(), ((DiscardAction) action).getCard());
             return true;
         } else if (action instanceof HitAction) {
             this.pgs.hitPlayer(this.pgs.getTurnId(), ((HitAction) action).getCard(), ((HitAction) action).getHitPlayer());

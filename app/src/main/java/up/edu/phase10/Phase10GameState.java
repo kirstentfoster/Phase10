@@ -174,15 +174,15 @@ public class Phase10GameState extends GameState {
      */
     public Phase10GameState() {
         turnId = 0;
-        hasGoneOut = 0;
+        hasGoneOut = -1;
         goesFirst = 0;
         playerHasDrawn = false;
         player1HasPhased = false;
         player2HasPhased = false;
         player1Score = 0;
         player2Score = 0;
-        player1Phase = 0;
-        player2Phase = 0;
+        player1Phase = 1;
+        player2Phase = 1;
         for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
             for (int j = 1; j <= 4; j++) {
                 drawPile.add(new Card(i, j));
@@ -290,10 +290,10 @@ public class Phase10GameState extends GameState {
         this.playerHasDrawn = true;
 
         //determine which player hand it goes to
-        if (playerId == 1) {
+        if (playerId == 0) {
             this.player1Hand.add(drawn); //add to hand
             return true;
-        } else if (playerId == 2) {
+        } else if (playerId == 1) {
             this.player2Hand.add(drawn); //add to hand
             return true;
         } else return false;
@@ -338,14 +338,14 @@ public class Phase10GameState extends GameState {
         int cardLoc = 0;
         boolean notFound = true;
         while (notFound) {
-            if (playerId == 1) {
+            if (playerId == 0) {
                 for (int i = 0; i < this.player1Hand.size(); i++) {
                     if (card.equals(this.player1Hand.get(i))) {
                         cardLoc = i;
                         notFound = false;
                     }
                 }
-            } else if (playerId == 2) {
+            } else if (playerId == 1) {
                 for (int i = 0; i < this.player2Hand.size(); i++) {
                     if (card.equals(this.player2Hand.get(i))) {
                         cardLoc = i;
@@ -355,7 +355,7 @@ public class Phase10GameState extends GameState {
             } else return false;
         }
         //determine which player is discarding
-        if (playerId == 1) {
+        if (playerId == 0) {
             if (this.player1Hand.size() < cardLoc) return false;
 
             discardPile.push(this.player1Hand.remove(cardLoc)); //discard to discard pile
@@ -363,16 +363,16 @@ public class Phase10GameState extends GameState {
             if (this.player1Hand.size() == 0)
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
             if (!discardPile.peek().isSkip())
-                this.turnId = 2; //Skips in 2 player mode allow current player to take 2 back-to-back turns
+                this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
 
             return true;
-        } else if (playerId == 2) {
+        } else if (playerId == 1) {
             if (this.player2Hand.size() < cardLoc) return false;
 
             discardPile.push(this.player2Hand.remove(cardLoc)); //discard to discard pile
 
             if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
-            if (!discardPile.peek().isSkip()) this.turnId = 1;
+            if (!discardPile.peek().isSkip()) this.turnId = 0;
 
             return true;
         } else return false;

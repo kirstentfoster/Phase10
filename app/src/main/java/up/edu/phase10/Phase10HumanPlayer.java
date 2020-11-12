@@ -56,7 +56,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageButton Hand9 = null;
     private ImageButton Hand10 = null;
     private ImageButton Hand11 = null;
-    private ArrayList<Card> selected = null;
+    private ArrayList<Card> selected = new ArrayList<Card>();
 
     private Phase10GameState state;
 
@@ -95,6 +95,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             flash(Color.RED, 500);
             return;
         }
+        state = (Phase10GameState) info;
         createHand((Phase10GameState) info);
         ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
@@ -109,6 +110,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      * 		the button that was clicked
      */
     public void onClick(View button) {
+
+        if(state==null){return;}
         if(button.equals(phaseButton)) {
             PhaseAction p = new PhaseAction(this, this.selected); //Need to get info of phaseContent from gui
             selected.clear();
@@ -119,7 +122,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             selected.clear();
             game.sendAction(p);
         }
-        if(button.equals(discardButton)) {
+        if(button.equals(discardButton) && this.selected.size()==1) {
             DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
             selected.clear();
             game.sendAction(p);
@@ -169,6 +172,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         if(button.equals(Hand10)){
             selected.add(state.getPlayer1Hand().get(9));
         }
+        if(button.equals(Hand11)){
+            selected.add(state.getPlayer1Hand().get(10));
+        }
     }// onClick
 
     /**
@@ -192,18 +198,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.hitButton= (Button)activity.findViewById(R.id.HitButton);
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
         this.discardButton = activity.findViewById(R.id.DiscardButton);
-
-
-        //Listen for button presses
-        drawFaceUpImageButton.setOnClickListener(this);
-        drawFaceDownImageButton.setOnClickListener(this);
-        hitButton.setOnClickListener(this);
-        phaseButton.setOnClickListener(this);
-        discardButton.setOnClickListener(this);
-
-    }//setAsGui
-
-    private void createHand(Phase10GameState gs){
         Hand1 = myActivity.findViewById(R.id.PlayerHand1);
         Hand2 = myActivity.findViewById(R.id.PlayerHand2);
         Hand3 = myActivity.findViewById(R.id.PlayerHand3);
@@ -215,6 +209,30 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand9 = myActivity.findViewById(R.id.PlayerHand9);
         Hand10 = myActivity.findViewById(R.id.PlayerHand10);
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
+
+
+        //Listen for button presses
+        drawFaceUpImageButton.setOnClickListener(this);
+        drawFaceDownImageButton.setOnClickListener(this);
+        hitButton.setOnClickListener(this);
+        phaseButton.setOnClickListener(this);
+        discardButton.setOnClickListener(this);
+        Hand1.setOnClickListener(this);
+        Hand2.setOnClickListener(this);
+        Hand3.setOnClickListener(this);
+        Hand4.setOnClickListener(this);
+        Hand5.setOnClickListener(this);
+        Hand6.setOnClickListener(this);
+        Hand7.setOnClickListener(this);
+        Hand8.setOnClickListener(this);
+        Hand9.setOnClickListener(this);
+        Hand10.setOnClickListener(this);
+        Hand11.setOnClickListener(this);
+
+    }//setAsGui
+
+    private void createHand(Phase10GameState gs){
+
         if(this.playerNum+1==1) {
             Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
             Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
@@ -226,6 +244,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             Hand8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
             Hand9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
             Hand10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+            if(gs.getPlayer1Hand().size()<11){
+                Hand11.setImageResource(0);
+            }
+            else {
+                Hand11.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(10)));
+            }
         }
         else{
             Hand1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
@@ -238,8 +262,14 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             Hand8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
             Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
             Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+            if(gs.getPlayer2Hand().size()<11){
+                Hand11.setImageResource(0);
+            }
+            else {
+                Hand11.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(10)));
+            }
         }
-        Hand11.setImageResource(0);
+
 
     }
 

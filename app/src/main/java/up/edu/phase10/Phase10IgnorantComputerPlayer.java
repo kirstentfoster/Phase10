@@ -47,7 +47,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
-        if (copy.getTurnId() != this.playerNum + 1) return;
+        if (copy.getTurnId() != this.playerNum) return;
         // gameFramework uses 0/1 player ID
         // Phase 10 code handles based on 1/2 player ID
 
@@ -61,7 +61,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             ArrayList<Card> hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer1Hand().iterator();
             while (it.hasNext()) {
-                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+                Card c = it.next();
+                hand.add(new Card(c.getNumber(), c.getColor()));
             }
 
             //Separated to eliminate redundant playerNum tests/
@@ -80,7 +81,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             ArrayList<Card> hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer2Hand().iterator();
             while (it.hasNext()) {
-                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+                Card c = it.next();
+                hand.add(new Card(c.getNumber(), c.getColor()));
             }
 
             //Separated to eliminate redundant playerNum tests
@@ -305,13 +307,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) { //Look through hand
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
 
             for (int j = i + 1; j < hand.size(); j++) {//Compare card is within run Size of initial card
 
                 if (hand.get(j).getNumber() <= temp.get(0).getNumber() + size && hand.get(j).getNumber() != temp.get(tempLoc).getNumber()) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                 }
             }
@@ -423,26 +425,36 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) { //Look at each card
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {//Compare card number
                 if (hand.get(j).getNumber() == temp.get(0).getNumber()) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                 }
             }
             //add as another group to collective of viable and weak groups
-            if (temp.size() > 1) allLowGroups.add(temp);
+            if (temp.size() > 1) {
+                allLowGroups.add(temp);
+            }
         }
 
         //separate into weak and viable
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
         ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
         for (ArrayList<Card> group : allLowGroups) {
-            if(group.size() < 2) allLowGroups.remove(group);
-            if (size == 4 && group.size() == 2) weaks.add(group);
-            if (size > 4 && group.size() <= 3) weaks.add(group);
-            else viables.add(group);
+            if(group.size() < 2) {
+                allLowGroups.remove(group);
+            }
+            else if (size == 4 && group.size() == 2) {
+                weaks.add(group);
+            }
+            else if (size > 4 && group.size() <= 3){
+                weaks.add(group);
+            }
+            else{
+                viables.add(group);
+            }
         }
 
         //Groups are set to class variables
@@ -456,19 +468,22 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         }
                     }
                 }
-                if (viables.size() != 0) {
-                    this.viableGroups1 = viables;
-                    for (ArrayList<Card> group : viables) {
-                        for (Card c : group) {
-                            for (Card d : hand) {
-                                if (c.equals(d)) hand.remove(d);
+            }
+            if (viables.size() != 0) {
+                this.viableGroups1 = viables;
+                for (ArrayList<Card> group : viables) {
+                    for (Card c : group) {
+                        for (Card d : hand) {
+                            if (c.equals(d)){
+                                hand.remove(d);
                             }
                         }
                     }
                 }
-                nonGroupCards = hand;
             }
-        } else if (groupNum == 2) {
+           this.nonGroupCards = hand;
+        }
+        else if (groupNum == 2) {
             if (weaks.size() != 0) {
                 this.weakGroups2 = weaks;
                 for (ArrayList<Card> group : weaks) {
@@ -532,12 +547,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
                 //Compare card color
                 if (hand.get(j).getColor() == temp.get(0).getColor()) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                 }
             }
@@ -915,7 +930,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
             notInGroup = new ArrayList<Card>();
             notInGroupLoc = 0;
@@ -923,13 +938,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
                 if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run
                 } else {
                     if (notInGroupSize > 0) {
                         if (notInGroupLoc < notInGroupSize) {
-                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
                             return false; //Not in group cards exceed possible per phase reqs
@@ -972,20 +987,20 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
             notInGroup = new ArrayList<Card>();
             notInGroupLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of group
                 if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber()) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of group
                 } else {
                     if (notInGroupSize > 0) {
                         if (notInGroupLoc < notInGroupSize) {
-                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
                             return false;
@@ -1027,7 +1042,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
-            temp.set(0, hand.get(i));
+            temp.add(hand.get(i));
             tempLoc = 0;
             notInGroup = new ArrayList<Card>();
             notInGroupLoc = 0;
@@ -1035,13 +1050,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
                 if (hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
-                    temp.set(tempLoc + 1, hand.get(j));
+                    temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run
                 } else {
                     if(notInGroupSize > 0) {
                         if(notInGroupLoc < notInGroupSize) {
-                            notInGroup.set(notInGroupLoc, hand.get(j));
+                            notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         }
                         else{
@@ -1404,7 +1419,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         ArrayList<Card> arrL= new ArrayList<Card>();
         int x = 0;
         while(x < hand.size()){
-            arrL.set(x, new Card(hand.get(x).getNumber(), hand.get(x).getColor()));
+            arrL.add(new Card(hand.get(x).getNumber(), hand.get(x).getColor()));
             x++;
         }
         for (int i = 0; i < arrL.size() - 1; i++){
