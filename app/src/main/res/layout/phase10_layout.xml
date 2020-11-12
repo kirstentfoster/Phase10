@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="900"
+            android:layout_weight="50000"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="700"
+            android:layout_weight="100000"
             android:orientation="horizontal">
 
             <Button
@@ -79,21 +79,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/rednine" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/red9" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/yellownine" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow9" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/rednine" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/red9" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard5"
@@ -101,35 +104,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
-                android:src="@drawable/yellowthree" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/redfour" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/red4" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/yellowfive" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow5" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/yellowsix" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow6" />
 
             <ImageView
                 android:id="@+id/AIPhaseCard1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/greennine" />
+                android:adjustViewBounds="true"
+                android:src="@drawable/green9" />
 
         </LinearLayout>
 
@@ -227,7 +235,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="-600"
+            android:layout_weight="100000"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -291,7 +299,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
             <ImageButton

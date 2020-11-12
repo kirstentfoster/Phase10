@@ -215,7 +215,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand9 = myActivity.findViewById(R.id.PlayerHand9);
         Hand10 = myActivity.findViewById(R.id.PlayerHand10);
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
-        Hand11.setImageDrawable(null);
         if(this.playerNum+1==1) {
             Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
             Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
@@ -240,6 +239,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
             Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
         }
+        Hand11.setImageResource(0);
+
     }
 
 
