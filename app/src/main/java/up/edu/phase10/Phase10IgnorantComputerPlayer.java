@@ -8,6 +8,8 @@ import java.util.Iterator;
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
+//Think about one card is best groups
+
 public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends blah blah blah*/ {
 
     private ArrayList<Card> hitList = null;
@@ -24,7 +26,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     private ArrayList<Card> nonGroupCards = null;
 
     private Phase10GameState copy = null;
-
+    private ArrayList<Card> phaseContent = null;
 
     public Phase10IgnorantComputerPlayer(String name) {
         super(name);
@@ -146,6 +148,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 hasPhased = true;
             }
         }
+        sortGroups(hand, phase, fullHand, copy);
 
         /* HIT */
         if (hasPhased && checkHitsExist()) {
@@ -173,42 +176,75 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         boolean complete1 = false;
         boolean complete2 = false;
         boolean sorted = false;
+        ArrayList<Card> temp = null;
+        ArrayList<Card> temp2 = null;
 
         //Runs are always checked first (runs are hard to make)
         //Bigger sets are checked before smaller sets
         switch (phase) {
             case 1:
                 //test if the groups are complete first
-                complete1 = testCompleteSet(hand, 3, 1);
-                complete2 = testCompleteSet(hand, 3, 2);
+                temp = testCompleteSet(hand, 3, 1);
+//                ArrayList<Card> handCopy = new ArrayList<Card>();
+//                if(complete1){
+//                    for(Card c : hand){
+//                        handCopy.add(new Card(c.getNumber(), c.getColor()));
+//                    }
+//                    Iterator<Card> it = handCopy.iterator();
+//                    while(it.hasNext()){
+//                        Card c = it.next();
+//                        for(Card d : completeGroup1){
+//                            if(d.getColor() == c.getColor() && d.getNumber() == c.getNumber()){
+//                                handCopy.remove(d);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                else{
+//                    handCopy = hand;
+//                }
+                if(temp!=null){
+                    complete1 = true;
+                    temp2 = testCompleteSet(temp, 3, 2);
+                    if(temp2!=null){
+                        complete2 = true;
+                    }
+                }
                 //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
                 //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, true);
                     checkGroupOrg(3, 3); //Reorganize to accommodate largest viable
                 }
                 sorted = true; //Sort successful
                 break;
             case 2:
                 complete1 = testCompleteRun(hand, 4, 1);
-                complete2 = testCompleteSet(hand, 3, 2);
+                    temp2 = testCompleteSet(hand, 3, 2);
+                    if(temp2!=null){
+                        complete2 = true;
+                    }
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, false);
                     checkGroupOrg(4, 3);
                 }
                 sorted = true;
                 break;
             case 3:
                 complete1 = testCompleteRun(hand, 4, 1);
-                complete2 = testCompleteSet(hand, 4, 2);
+                temp2 = testCompleteSet(hand, 4, 2);
+                    if(temp2!=null) {
+                        complete2 = true;
+                    }
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, false);
                     checkGroupOrg(4, 4);
                 }
                 sorted = true;
@@ -218,7 +254,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (!complete1) makeRunGroups(hand, 7, 1);
                 //no second group
                 if(!complete1) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(7, 0);
                 }
                 sorted = true;
@@ -228,7 +264,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (!complete1) makeRunGroups(hand, 8, 1);
                 //no second group
                 if(!complete1 ){
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand,false);
                     checkGroupOrg(8, 0);
                 }
                 sorted = true;
@@ -238,18 +274,24 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (!complete1) makeRunGroups(hand, 9, 1);
                 //no second group
                 if(!complete1) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(9, 0);
                 }
                 sorted = true;
                 break;
             case 7:
-                complete1 = testCompleteSet(hand, 4, 1);
-                complete2 = testCompleteSet(hand, 4, 2);
+                temp = testCompleteSet(hand, 4, 1);
+                if(temp!=null){
+                    complete1 = true;
+                    temp2 = testCompleteSet(temp, 4, 2);
+                    if(temp2!=null){
+                        complete2 = true;
+                    }
+                }
                 if (!complete1) makeSetGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, true);
                     checkGroupOrg(4, 4);
                 }
                 sorted = true;
@@ -259,29 +301,41 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (!complete1) makeColorGroups(hand, 7, 1);
                 //no second group
                 if(!complete1) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(7, 0);
                 }
                 sorted = true;
                 break;
             case 9:
-                complete1 = testCompleteSet(hand, 5, 1);
-                complete2 = testCompleteSet(hand, 2, 2);
+                temp = testCompleteSet(hand, 5, 1);
+                if(temp!=null){
+                    complete1 = true;
+                    temp2 = testCompleteSet(temp, 2, 2);
+                    if(temp2!=null){
+                        complete2 = true;
+                    }
+                }
                 if (!complete1) makeSetGroups(hand, 5, 1);
                 if (!complete2) makeSetGroups(hand, 2, 2);
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, true);
                     checkGroupOrg(5, 2);
                 }
                 sorted = true;
                 break;
             case 10:
-                complete1 = testCompleteSet(hand, 5, 1);
-                complete2 = testCompleteSet(hand, 3, 2);
+                temp = testCompleteSet(hand, 5, 1);
+                if(temp!=null){
+                    complete1 = true;
+                    temp2 = testCompleteSet(temp, 3, 2);
+                    if(temp2!=null){
+                        complete2 = true;
+                    }
+                }
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand);
+                    findLargestViable(2, fullHand, true);
                     checkGroupOrg(5, 3);
                 }
                 sorted = true;
@@ -716,8 +770,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * cards from other groups
      * @param groupNum 1 or 2 depending on phase reqs
      * @param fullHand (deep) copy of hand
+     * @param same true if Phase requirements are the same
      */
-    public void findLargestViable(int groupNum, ArrayList<Card> fullHand){
+    public void findLargestViable(int groupNum, ArrayList<Card> fullHand, boolean same){
         int biggest = 0;
         int loc = 0;
         if(viableGroups1!=null) {
@@ -737,6 +792,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 ArrayList<Card> tempHold = viableGroups1.get(0);
                 viableGroups1.set(0, viableGroups1.get(loc));
                 viableGroups1.set(loc, tempHold);
+//                if(same && viableGroups2!=null){
+//                    viableGroups2.remove(loc);
+//                }
 
                 //Remove the cards of the biggest viable group from other groups
                 //To eliminate overlap
@@ -1186,7 +1244,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if a complete set exists
      * Known issues: Needs to handle wild cards
      */
-    public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
+    public ArrayList<Card> testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
@@ -1211,7 +1269,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
-                            return false;
+                            return null;
                         }
                     }
                 }
@@ -1231,10 +1289,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
-                return true; //Complete group does exist
+                return notInGroup; //Complete group does exist
             }
         }
-        return false; //Complete group doesn't exist
+        return null; //Complete group doesn't exist
     }
 
     /**
@@ -1311,33 +1369,33 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         switch(phase){
             case 1:
                 growsSomething = checkGrowsSet(card,1); //Check first req
-                if(growsSomething)  findLargestViable(1, fullHand);
+                if(growsSomething)  findLargestViable(1, fullHand, true);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2); //Check second req
-                    if(temp) findLargestViable(2, fullHand);
+                    if(temp) findLargestViable(2, fullHand, true);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(3, 3); //Recheck group organizaiton
                 break;
             case 2:
                 growsSomething = checkGrowsRun(card,1, 4);
-                if(growsSomething) findLargestViable(1, fullHand);
+                if(growsSomething) findLargestViable(1, fullHand, false);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);
-                    if(temp) findLargestViable(2, fullHand);
+                    if(temp) findLargestViable(2, fullHand, false);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(4, 3);
                 break;
             case 3:
                 growsSomething = checkGrowsRun(card,1, 4);
-                if(growsSomething) findLargestViable(1, fullHand);
+                if(growsSomething) findLargestViable(1, fullHand, false);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);
-                    if(temp)findLargestViable(2, fullHand);
+                    if(temp)findLargestViable(2, fullHand, false);
                     growsSomething = temp;
                 }
                 if(growsSomething)checkGroupOrg(4, 4);
@@ -1346,7 +1404,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 growsSomething = checkGrowsRun(card,1, 7);
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(7, 0);
                 }
                 break;
@@ -1354,7 +1412,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 growsSomething = checkGrowsRun(card, 1, 8);
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(8, 0);
                 }
                 break;
@@ -1362,17 +1420,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 growsSomething = checkGrowsRun(card, 1, 9);
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(9, 0);
                 }
                 break;
             case 7:
                 growsSomething = checkGrowsSet(card,1);
-                if(growsSomething)  findLargestViable(1, fullHand);
+                if(growsSomething)  findLargestViable(1, fullHand, true);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);
-                    if(temp) findLargestViable(2, fullHand);
+                    if(temp) findLargestViable(2, fullHand, true);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(4, 4);
@@ -1381,28 +1439,28 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 growsSomething = checkGrowsColor(card, 1);
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand);
+                    findLargestViable(1, fullHand, false);
                     checkGroupOrg(7, 0);
                 }
                 break;
             case 9:
                 growsSomething = checkGrowsSet(card,1);
-                if(growsSomething)  findLargestViable(1, fullHand);
+                if(growsSomething)  findLargestViable(1, fullHand, true);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);
-                    if(temp)  findLargestViable(2, fullHand);
+                    if(temp)  findLargestViable(2, fullHand, true);
                     growsSomething = temp;
                 }
                 if(growsSomething)checkGroupOrg(5, 2);
                 break;
             case 10:
                 growsSomething = checkGrowsSet(card,1);
-                if(growsSomething) findLargestViable(1, fullHand);
+                if(growsSomething) findLargestViable(1, fullHand, true);
                 if(!growsSomething) {
                     boolean temp;
                     temp = checkGrowsSet(card,2);
-                    if(temp) findLargestViable(2, fullHand);
+                    if(temp) findLargestViable(2, fullHand, true);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(5, 3);
@@ -2002,6 +2060,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 return false;
         }
 
+        phaseContent = temp;
         PhaseAction act = new PhaseAction(this, temp);
         game.sendAction(act); //Send Phase!!
         return true;

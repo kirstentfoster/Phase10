@@ -189,12 +189,14 @@ public class Phase10GameState extends GameState {
                 drawPile.add(new Card(i, j));
             }
         }
+
+        //TODO Beta
 //        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            drawPile.add(new Card(0, 0));
 //        }
-        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-            drawPile.add(new Card(-1, -1));
-        }
+//        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+//            drawPile.add(new Card(-1, -1));
+//        }
 
 
         /**
@@ -213,33 +215,34 @@ public class Phase10GameState extends GameState {
         discardPile.add(drawPile.get(0));
         discardPile.add(drawPile.get(0)); //FOR ALPHA ONLY
         drawPile.remove(0);
-//        for (int i = 0; i < 10; i++) {
-//            player1Hand.add(drawPile.get(0));
-//            drawPile.remove(0);
-//            player2Hand.add(drawPile.get(0));
-//            drawPile.remove(0);
-//        }
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-        player1Hand.add(new Card(1,1));
-
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
-        player2Hand.add(new Card(1,1));
+        for (int i = 0; i < 10; i++) {
+            player1Hand.add(drawPile.get(0));
+            drawPile.remove(0);
+            player2Hand.add(drawPile.get(0));
+            drawPile.remove(0);
+        }
+        //FOR TESTING
+        //        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(10,1));
+//
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
 
     }
 
@@ -387,7 +390,9 @@ public class Phase10GameState extends GameState {
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
             if (!discardPile.peek().isSkip())
                 this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
-
+            else{
+                this.turnId = 0;
+            }
             this.playerHasDrawn = false;
             return true;
         } else if (playerId == 1) {
@@ -397,6 +402,9 @@ public class Phase10GameState extends GameState {
 
             if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
             if (!discardPile.peek().isSkip()) this.turnId = 0;
+            else{
+                this.turnId = 1;
+            }
 
             this.playerHasDrawn = false;
             return true;
@@ -429,7 +437,7 @@ public class Phase10GameState extends GameState {
         }
         //checks if valid, player num == playerId, needs to have not phased
         if (playerNum == 0) {
-            if (phase.checkPhase(player1Phase, phaseContent, playerNum+1) && !player1HasPhased) {
+            if (phase.checkPhase(player1Phase, phaseContent, playerNum) && !player1HasPhased) {
                 for (Card c : phaseContent) {
                     int j = 0;
                     for(int i=0; i<player1Hand.size(); i++){
@@ -445,7 +453,7 @@ public class Phase10GameState extends GameState {
                 return true;
             }
         } else if (playerNum == 1) {
-            if (phase.checkPhase(player2Phase, phaseContent, playerNum+1) && !player2HasPhased) {
+            if (phase.checkPhase(player2Phase, phaseContent, playerNum) && !player2HasPhased) {
                 for (Card c : phaseContent) {
                     int j = 0;
                     for(int i=0; i<player2Hand.size(); i++){
@@ -473,6 +481,9 @@ public class Phase10GameState extends GameState {
      * @return if hit successful
      */
     public boolean hitPlayer(int playerNum, Card selectedCard, int hitOnPlayer) {
+        if(!playerHasDrawn){
+            return false;
+        }
         //validity checks
         //checks if player num == same as id
         //checks if player has phased (if not return false)
@@ -484,7 +495,15 @@ public class Phase10GameState extends GameState {
                     if (player2HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
-                            player1Hand.remove(selectedCard);
+                            int j = 0;
+                            for(int i=0; i<player1Hand.size(); i++){
+                                if(player1Hand.get(i).getColor()==selectedCard.getColor() &&
+                                        player1Hand.get(i).getNumber()==selectedCard.getNumber()){
+                                    j = i;
+                                    break;
+                                }
+                            }
+                            player1Hand.remove(j);
                             return true;
                         } else return false;
                     }
@@ -492,7 +511,15 @@ public class Phase10GameState extends GameState {
                     if (player1HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
-                            player2Hand.remove(selectedCard);
+                            int j = 0;
+                            for(int i=0; i<player2Hand.size(); i++){
+                                if(player2Hand.get(i).getColor()==selectedCard.getColor() &&
+                                        player2Hand.get(i).getNumber()==selectedCard.getNumber()){
+                                    j = i;
+                                    break;
+                                }
+                            }
+                            player2Hand.remove(j);
                             return true;
                         } else return false;
                     }
@@ -502,7 +529,15 @@ public class Phase10GameState extends GameState {
                     if (player1HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
-                            player1Hand.remove(selectedCard);
+                            int j = 0;
+                            for(int i=0; i<player1Hand.size(); i++){
+                                if(player1Hand.get(i).getColor()==selectedCard.getColor()
+                                        && player1Hand.get(i).getNumber()==selectedCard.getNumber()){
+                                    j = i;
+                                    break;
+                                }
+                            }
+                            player1Hand.remove(j);
                             return true;
                         } else return false;
                     }
@@ -511,7 +546,15 @@ public class Phase10GameState extends GameState {
                     if (player2HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
-                            player2Hand.remove(selectedCard);
+                            int j = 0;
+                            for(int i=0; i<player2Hand.size(); i++){
+                                if(player2Hand.get(i).getColor()==selectedCard.getColor()
+                                        && player2Hand.get(i).getNumber()==selectedCard.getNumber()){
+                                    j = i;
+                                    break;
+                                }
+                            }
+                            player2Hand.remove(j);
                             return true;
                         } else return false;
                     }
