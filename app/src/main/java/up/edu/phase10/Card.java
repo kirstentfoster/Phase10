@@ -86,16 +86,16 @@ public class Card implements Comparable{
         }
         else{
             if(this.getColor()==1){
-                color = "yellow";
+                color = "red";
             }
             else if(this.getColor()==2){
-                color = "green";
-            }
-            else if(this.getColor()==3){
                 color = "blue";
             }
+            else if(this.getColor()==3){
+                color = "green";
+            }
             else if(this.getColor()==4){
-                color = "red";
+                color = "yellow";
             }
             return color + " " + this.getNumber();
         }

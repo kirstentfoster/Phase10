@@ -23,6 +23,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
     private ArrayList<Card> nonGroupCards = null;
 
+    private Phase10GameState copy = null;
+
 
     public Phase10IgnorantComputerPlayer(String name) {
         super(name);
@@ -46,7 +48,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
 
-        Phase10GameState copy = (Phase10GameState) info; //Shallow copy
+        this.copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
         // gameFramework uses 0/1 player ID
@@ -1139,7 +1141,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
-                if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1) {
+                if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1 && tempLoc<size-1) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run
@@ -1199,7 +1201,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             notInGroupLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of group
-                if (!hand.get(j).isSkip() && hand.get(j).getNumber() == temp.get(tempLoc).getNumber()) {
+                if (!hand.get(j).isSkip() && hand.get(j).getNumber() == temp.get(tempLoc).getNumber() && tempLoc<size-1) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of group
@@ -1258,7 +1260,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             int notInGroupSize = hand.size() - size;
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
-                if (!hand.get(j).isSkip() && hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
+                if (!hand.get(j).isSkip() && hand.get(j).getColor() == temp.get(tempLoc).getColor() && tempLoc<size-1) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run

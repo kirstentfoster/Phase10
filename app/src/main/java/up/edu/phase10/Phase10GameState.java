@@ -213,12 +213,34 @@ public class Phase10GameState extends GameState {
         discardPile.add(drawPile.get(0));
         discardPile.add(drawPile.get(0)); //FOR ALPHA ONLY
         drawPile.remove(0);
-        for (int i = 0; i < 10; i++) {
-            player1Hand.add(drawPile.get(0));
-            drawPile.remove(0);
-            player2Hand.add(drawPile.get(0));
-            drawPile.remove(0);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            player1Hand.add(drawPile.get(0));
+//            drawPile.remove(0);
+//            player2Hand.add(drawPile.get(0));
+//            drawPile.remove(0);
+//        }
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+        player1Hand.add(new Card(1,1));
+
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+        player2Hand.add(new Card(1,1));
+
     }
 
     /**
@@ -335,7 +357,7 @@ public class Phase10GameState extends GameState {
      * @return true if the action was successful, else will return false
      */
     public boolean discard(int playerId, Card card) {
-        if (playerId != this.turnId || this.hasGoneOut == playerId) return false;
+        if (playerId != this.turnId || this.hasGoneOut == playerId || !this.playerHasDrawn) return false;
         int cardLoc = 0;
         boolean notFound = true;
         while (notFound) {
@@ -402,20 +424,37 @@ public class Phase10GameState extends GameState {
      * @return if phasing was successful
      */
     public boolean playPhase(int playerNum, ArrayList<Card> phaseContent) {
+        if(!playerHasDrawn) {
+            return false;
+        }
         //checks if valid, player num == playerId, needs to have not phased
-        if (playerNum == 1) {
-            if (phase.checkPhase(player1Phase, phaseContent, playerNum) && !player1HasPhased) {
+        if (playerNum == 0) {
+            if (phase.checkPhase(player1Phase, phaseContent, playerNum+1) && !player1HasPhased) {
                 for (Card c : phaseContent) {
-                    player1Hand.remove(c);
+                    int j = 0;
+                    for(int i=0; i<player1Hand.size(); i++){
+                        if(player1Hand.get(i).getColor()==c.getColor() && player1Hand.get(i).getNumber()==c.getNumber()){
+                            j = i;
+                            break;
+                        }
+                    }
+                    player1Hand.remove(j);
                     player1PhaseContent.add(c);
                 }
                 player1HasPhased = true;
                 return true;
             }
-        } else if (playerNum == 2) {
-            if (phase.checkPhase(player2Phase, phaseContent, playerNum) && !player2HasPhased) {
+        } else if (playerNum == 1) {
+            if (phase.checkPhase(player2Phase, phaseContent, playerNum+1) && !player2HasPhased) {
                 for (Card c : phaseContent) {
-                    player2Hand.remove(c);
+                    int j = 0;
+                    for(int i=0; i<player2Hand.size(); i++){
+                        if(player2Hand.get(i).getColor()==c.getColor() && player2Hand.get(i).getNumber()==c.getNumber()){
+                            j = i;
+                            break;
+                        }
+                    }
+                    player2Hand.remove(j);
                     player2PhaseContent.add(c);
                 }
                 player2HasPhased = true;
@@ -441,7 +480,7 @@ public class Phase10GameState extends GameState {
         //else, if hitOnPlayer != player num, and != other player number return false
         if (playerNum == this.turnId) {
             if (hitOnPlayer != playerNum) { //if this is false in a 2 player game, player is hitting on opposite player phase
-                if (playerNum == 1 && player1HasPhased) {
+                if (playerNum == 0 && player1HasPhased) {
                     if (player2HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
@@ -449,7 +488,7 @@ public class Phase10GameState extends GameState {
                             return true;
                         } else return false;
                     }
-                } else if (playerNum == 2 && player2HasPhased) {
+                } else if (playerNum == 1 && player2HasPhased) {
                     if (player1HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
@@ -459,7 +498,7 @@ public class Phase10GameState extends GameState {
                     }
                 }
             }else if (hitOnPlayer == playerNum) { // if hitOnPlayer is the same as playerNum then the player hits on their own phaseContext
-                if (playerNum == 1) {
+                if (playerNum == 0) {
                     if (player1HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
@@ -468,7 +507,7 @@ public class Phase10GameState extends GameState {
                         } else return false;
                     }
                 }
-                if (playerNum == 2) {
+                if (playerNum == 1) {
                     if (player2HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);

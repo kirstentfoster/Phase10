@@ -19,6 +19,7 @@ import android.media.Image;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -42,10 +43,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private TextView    messageTextView     = null;
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
+    private Button hitSelfButton = null;
     public Button discardButton       = null;
     private Button quitButton = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
+
     private ImageButton Hand1 = null;
     private ImageButton Hand2 = null;
     private ImageButton Hand3 = null;
@@ -57,6 +60,49 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageButton Hand9 = null;
     private ImageButton Hand10 = null;
     private ImageButton Hand11 = null;
+
+    private ImageView AIPhase1 = null;
+    private ImageView AIPhase2 = null;
+    private ImageView AIPhase3 = null;
+    private ImageView AIPhase4 = null;
+    private ImageView AIPhase5 = null;
+    private ImageView AIPhase6 = null;
+    private ImageView AIPhase7 = null;
+    private ImageView AIPhase8 = null;
+    private ImageView AIPhase9 = null;
+    private ImageView AIPhase10 = null;
+    private ImageView AIPhase11 = null;
+    private ImageView AIPhase12 = null;
+    private ImageView AIPhase13 = null;
+    private ImageView AIPhase14 = null;
+
+    private ImageView PlayerPhase1 = null;
+    private ImageView PlayerPhase2 = null;
+    private ImageView PlayerPhase3 = null;
+    private ImageView PlayerPhase4 = null;
+    private ImageView PlayerPhase5 = null;
+    private ImageView PlayerPhase6 = null;
+    private ImageView PlayerPhase7 = null;
+    private ImageView PlayerPhase8 = null;
+    private ImageView PlayerPhase9 = null;
+    private ImageView PlayerPhase10 = null;
+    private ImageView PlayerPhase11 = null;
+    private ImageView PlayerPhase12 = null;
+    private ImageView PlayerPhase13 = null;
+    private ImageView PlayerPhase14 = null;
+
+    private ImageView AIDeckCard1 = null;
+    private ImageView AIDeckCard2 = null;
+    private ImageView AIDeckCard3 = null;
+    private ImageView AIDeckCard4 = null;
+    private ImageView AIDeckCard5 = null;
+    private ImageView AIDeckCard6 = null;
+    private ImageView AIDeckCard7 = null;
+    private ImageView AIDeckCard8 = null;
+    private ImageView AIDeckCard9 = null;
+    private ImageView AIDeckCard10 = null;
+    private ImageView AIDeckCard11 = null;
+
     private ArrayList<Card> selected = new ArrayList<Card>();
 
     private Phase10GameState state;
@@ -98,6 +144,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
         state = (Phase10GameState) info;
         createHand((Phase10GameState) info);
+        createAIPhase((Phase10GameState) info);
+        createPlayerPhase((Phase10GameState) info);
+        createAIHand((Phase10GameState) info);
         ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
     }//receiveInfo
@@ -114,20 +163,39 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
         if(state==null){return;}
         if(button.equals(phaseButton)) {
-            PhaseAction p = new PhaseAction(this, this.selected); //Need to get info of phaseContent from gui
+            if(this.selected.size()>1) {
+                PhaseAction p = new PhaseAction(this, this.selected);
+                game.sendAction(p);
+            }
             selected.clear();
-            game.sendAction(p);
         }
         if(button.equals(hitButton)) {
-            HitAction p = new HitAction(this, this.selected.get(0), 1); //need to get info of hit card and player to hit from gui
+            if(this.selected.size()==1) {
+                if(this.playerNum==1) {
+                    HitAction p = new HitAction(this, this.selected.get(0), 2);
+                    game.sendAction(p);
+                }
+                else if(this.playerNum==2) {
+                    HitAction p = new HitAction(this, this.selected.get(0), 1);
+                    game.sendAction(p);
+                }
+            }
             selected.clear();
-            game.sendAction(p);
         }
-        if(button.equals(discardButton) && this.selected.size()==1) {
-            DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
+        if(button.equals(hitSelfButton)){
+            if(this.selected.size()==1){
+                HitAction p = new HitAction(this, this.selected.get(0), this.playerNum);
+                game.sendAction(p);
+            }
             selected.clear();
-            game.sendAction(p);
+        }
 
+        if(button.equals(discardButton)) {
+            if(this.selected.size()==1) {
+                DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
+                game.sendAction(p);
+            }
+            selected.clear();
         }
 
         if(button.equals(quitButton)){
@@ -201,8 +269,10 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.drawFaceUpImageButton= (ImageButton)activity.findViewById(R.id.DiscardPile);
         this.drawFaceDownImageButton= (ImageButton)activity.findViewById(R.id.DrawPile);
         this.hitButton= (Button)activity.findViewById(R.id.HitButton);
+        this.hitSelfButton = (Button) activity.findViewById(R.id.hitOnMe);
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
         this.discardButton = activity.findViewById(R.id.DiscardButton);
+
         Hand1 = myActivity.findViewById(R.id.PlayerHand1);
         Hand2 = myActivity.findViewById(R.id.PlayerHand2);
         Hand3 = myActivity.findViewById(R.id.PlayerHand3);
@@ -216,11 +286,53 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
         this.quitButton = activity.findViewById(R.id.QuitButton);
 
+        AIPhase1 = myActivity.findViewById(R.id.AIPhase1);
+        AIPhase2 = myActivity.findViewById(R.id.AIPhase2);
+        AIPhase3 = myActivity.findViewById(R.id.AIPhase3);
+        AIPhase4 = myActivity.findViewById(R.id.AIPhase4);
+        AIPhase5 = myActivity.findViewById(R.id.AIPhase5);
+        AIPhase6 = myActivity.findViewById(R.id.AIPhase6);
+        AIPhase7 = myActivity.findViewById(R.id.AIPhase7);
+        AIPhase8 = myActivity.findViewById(R.id.AIPhase8);
+        AIPhase9 = myActivity.findViewById(R.id.AIPhase9);
+        AIPhase10 = myActivity.findViewById(R.id.AIPhase10);
+        AIPhase11 = myActivity.findViewById(R.id.AIPhase11);
+        AIPhase12 = myActivity.findViewById(R.id.AIPhase12);
+        AIPhase13 = myActivity.findViewById(R.id.AIPhase13);
+        AIPhase14 = myActivity.findViewById(R.id.AIPhase14);
+
+        PlayerPhase1 = myActivity.findViewById(R.id.playerPhase1);
+        PlayerPhase2 = myActivity.findViewById(R.id.playerPhase2);
+        PlayerPhase3 = myActivity.findViewById(R.id.playerPhase3);
+        PlayerPhase4 = myActivity.findViewById(R.id.playerPhase4);
+        PlayerPhase5 = myActivity.findViewById(R.id.playerPhase5);
+        PlayerPhase6 = myActivity.findViewById(R.id.playerPhase6);
+        PlayerPhase7 = myActivity.findViewById(R.id.playerPhase7);
+        PlayerPhase8 = myActivity.findViewById(R.id.playerPhase8);
+        PlayerPhase9 = myActivity.findViewById(R.id.playerPhase9);
+        PlayerPhase10 = myActivity.findViewById(R.id.playerPhase10);
+        PlayerPhase11 = myActivity.findViewById(R.id.playerPhase11);
+        PlayerPhase12 = myActivity.findViewById(R.id.playerPhase12);
+        PlayerPhase13 = myActivity.findViewById(R.id.playerPhase13);
+        PlayerPhase14 = myActivity.findViewById(R.id.playerPhase14);
+
+        AIDeckCard1 = myActivity.findViewById(R.id.AIDeckCard1);
+        AIDeckCard2 = myActivity.findViewById(R.id.AIDeckCard2);
+        AIDeckCard3 = myActivity.findViewById(R.id.AIDeckCard3);
+        AIDeckCard4 = myActivity.findViewById(R.id.AIDeckCard4);
+        AIDeckCard5 = myActivity.findViewById(R.id.AIDeckCard5);
+        AIDeckCard6 = myActivity.findViewById(R.id.AIDeckCard6);
+        AIDeckCard7 = myActivity.findViewById(R.id.AIDeckCard7);
+        AIDeckCard8 = myActivity.findViewById(R.id.AIDeckCard8);
+        AIDeckCard9 = myActivity.findViewById(R.id.AIDeckCard9);
+        AIDeckCard10 = myActivity.findViewById(R.id.AIDeckCard10);
+        AIDeckCard11 = myActivity.findViewById(R.id.AIDeckCard11);
 
         //Listen for button presses
         drawFaceUpImageButton.setOnClickListener(this);
         drawFaceDownImageButton.setOnClickListener(this);
         hitButton.setOnClickListener(this);
+        hitSelfButton.setOnClickListener(this);
         phaseButton.setOnClickListener(this);
         discardButton.setOnClickListener(this);
         quitButton.setOnClickListener(this);
@@ -238,19 +350,703 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
     }//setAsGui
 
+    private void createAIPhase(Phase10GameState gs){
+
+        if(this.playerNum+1==2) {
+            if(gs.getPlayer1PhaseContent().size()<1){
+                AIPhase1.setImageResource(0);
+            }
+            else {
+                AIPhase1.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(0)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<2){
+                AIPhase2.setImageResource(0);
+            }
+            else {
+                AIPhase2.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(1)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<3){
+                AIPhase3.setImageResource(0);
+            }
+            else {
+                AIPhase3.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(2)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<4){
+                AIPhase4.setImageResource(0);
+            }
+            else {
+                AIPhase4.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(3)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<5){
+                AIPhase5.setImageResource(0);
+            }
+            else {
+                AIPhase5.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(4)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<6){
+                AIPhase6.setImageResource(0);
+            }
+            else {
+                AIPhase6.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(5)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<7){
+                AIPhase7.setImageResource(0);
+            }
+            else {
+                AIPhase7.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(6)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<8){
+                AIPhase8.setImageResource(0);
+            }
+            else {
+                AIPhase8.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(7)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<9){
+                AIPhase9.setImageResource(0);
+            }
+            else {
+                AIPhase9.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(8)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<10){
+                AIPhase10.setImageResource(0);
+            }
+            else {
+                AIPhase10.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(9)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<11){
+                AIPhase11.setImageResource(0);
+            }
+            else {
+                AIPhase11.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(10)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<12){
+                AIPhase12.setImageResource(0);
+            }
+            else {
+                AIPhase12.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(11)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<13){
+                AIPhase13.setImageResource(0);
+            }
+            else {
+                AIPhase13.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(12)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<14){
+                AIPhase14.setImageResource(0);
+            }
+            else {
+                AIPhase14.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(13)));
+            }
+        }
+        else{
+            if(gs.getPlayer2PhaseContent().size()<1){
+                AIPhase1.setImageResource(0);
+            }
+            else {
+                AIPhase1.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(0)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<2){
+                AIPhase2.setImageResource(0);
+            }
+            else {
+                AIPhase2.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(1)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<3){
+                AIPhase3.setImageResource(0);
+            }
+            else {
+                AIPhase3.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(2)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<4){
+                AIPhase4.setImageResource(0);
+            }
+            else {
+                AIPhase4.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(3)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<5){
+                AIPhase5.setImageResource(0);
+            }
+            else {
+                AIPhase5.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(4)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<6){
+                AIPhase6.setImageResource(0);
+            }
+            else {
+                AIPhase6.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(5)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<7){
+                AIPhase7.setImageResource(0);
+            }
+            else {
+                AIPhase7.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(6)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<8){
+                AIPhase8.setImageResource(0);
+            }
+            else {
+                AIPhase8.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(7)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<9){
+                AIPhase9.setImageResource(0);
+            }
+            else {
+                AIPhase9.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(8)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<10){
+                AIPhase10.setImageResource(0);
+            }
+            else {
+                AIPhase10.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(9)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<11){
+                AIPhase11.setImageResource(0);
+            }
+            else {
+                AIPhase11.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(10)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<12){
+                AIPhase12.setImageResource(0);
+            }
+            else {
+                AIPhase12.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(11)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<13){
+                AIPhase13.setImageResource(0);
+            }
+            else {
+                AIPhase13.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(12)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<14){
+                AIPhase14.setImageResource(0);
+            }
+            else {
+                AIPhase14.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(13)));
+            }
+        }
+    }
+
+    private void createPlayerPhase(Phase10GameState gs){
+
+        if(this.playerNum+1==1) {
+            if(gs.getPlayer1PhaseContent().size()<1){
+                PlayerPhase1.setImageResource(0);
+            }
+            else {
+                PlayerPhase1.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(0)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<2){
+                PlayerPhase2.setImageResource(0);
+            }
+            else {
+                PlayerPhase2.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(1)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<3){
+                PlayerPhase3.setImageResource(0);
+            }
+            else {
+                PlayerPhase3.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(2)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<4){
+                PlayerPhase4.setImageResource(0);
+            }
+            else {
+                PlayerPhase4.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(3)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<5){
+                PlayerPhase5.setImageResource(0);
+            }
+            else {
+                PlayerPhase5.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(4)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<6){
+                PlayerPhase6.setImageResource(0);
+            }
+            else {
+                PlayerPhase6.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(5)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<7){
+                PlayerPhase7.setImageResource(0);
+            }
+            else {
+                PlayerPhase7.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(6)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<8){
+                PlayerPhase8.setImageResource(0);
+            }
+            else {
+                PlayerPhase8.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(7)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<9){
+                PlayerPhase9.setImageResource(0);
+            }
+            else {
+                PlayerPhase9.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(8)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<10){
+                PlayerPhase10.setImageResource(0);
+            }
+            else {
+                PlayerPhase10.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(9)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<11){
+                PlayerPhase11.setImageResource(0);
+            }
+            else {
+                PlayerPhase11.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(10)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<12){
+                PlayerPhase12.setImageResource(0);
+            }
+            else {
+                PlayerPhase12.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(11)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<13){
+                PlayerPhase13.setImageResource(0);
+            }
+            else {
+                PlayerPhase13.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(12)));
+            }
+            if(gs.getPlayer1PhaseContent().size()<14){
+                PlayerPhase14.setImageResource(0);
+            }
+            else {
+                PlayerPhase14.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(13)));
+            }
+        }
+        else{
+            if(gs.getPlayer2PhaseContent().size()<1){
+                PlayerPhase1.setImageResource(0);
+            }
+            else {
+                PlayerPhase1.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(0)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<2){
+                PlayerPhase2.setImageResource(0);
+            }
+            else {
+                PlayerPhase2.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(1)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<3){
+                PlayerPhase3.setImageResource(0);
+            }
+            else {
+                PlayerPhase3.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(2)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<4){
+                PlayerPhase4.setImageResource(0);
+            }
+            else {
+                PlayerPhase4.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(3)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<5){
+                PlayerPhase5.setImageResource(0);
+            }
+            else {
+                PlayerPhase5.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(4)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<6){
+                PlayerPhase6.setImageResource(0);
+            }
+            else {
+                PlayerPhase6.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(5)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<7){
+                PlayerPhase7.setImageResource(0);
+            }
+            else {
+                PlayerPhase7.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(6)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<8){
+                PlayerPhase8.setImageResource(0);
+            }
+            else {
+                PlayerPhase8.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(7)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<9){
+                PlayerPhase9.setImageResource(0);
+            }
+            else {
+                PlayerPhase9.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(8)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<10){
+                PlayerPhase10.setImageResource(0);
+            }
+            else {
+                PlayerPhase10.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(9)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<11){
+                PlayerPhase11.setImageResource(0);
+            }
+            else {
+                PlayerPhase11.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(10)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<12){
+                PlayerPhase12.setImageResource(0);
+            }
+            else {
+                PlayerPhase12.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(11)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<13){
+                PlayerPhase13.setImageResource(0);
+            }
+            else {
+                PlayerPhase13.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(12)));
+            }
+            if(gs.getPlayer2PhaseContent().size()<14){
+                PlayerPhase14.setImageResource(0);
+            }
+            else {
+                PlayerPhase14.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(13)));
+            }
+        }
+    }
+
+
+    //Face down AI hand
+    private void createAIHand(Phase10GameState gs){
+        if(this.playerNum+1==2) {
+            if(gs.getPlayer1Hand().size()<1){
+                AIDeckCard1.setImageResource(0);
+            }
+            else {
+                AIDeckCard1.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<2){
+                AIDeckCard2.setImageResource(0);
+            }
+            else {
+                AIDeckCard2.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<3){
+                AIDeckCard3.setImageResource(0);
+            }
+            else {
+                AIDeckCard3.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<4){
+                AIDeckCard4.setImageResource(0);
+            }
+            else {
+                AIDeckCard4.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<5){
+                AIDeckCard5.setImageResource(0);
+            }
+            else {
+                AIDeckCard5.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<6){
+                AIDeckCard6.setImageResource(0);
+            }
+            else {
+                AIDeckCard6.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<7){
+                AIDeckCard7.setImageResource(0);
+            }
+            else {
+                AIDeckCard7.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<8){
+                AIDeckCard8.setImageResource(0);
+            }
+            else {
+                AIDeckCard8.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<9){
+                AIDeckCard9.setImageResource(0);
+            }
+            else {
+                AIDeckCard9.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<10){
+                AIDeckCard10.setImageResource(0);
+            }
+            else {
+                AIDeckCard10.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer1Hand().size()<11){
+                AIDeckCard11.setImageResource(0);
+            }
+            else {
+                AIDeckCard11.setImageResource(R.drawable.cardback);
+            }
+        }
+        else{
+            if(gs.getPlayer2Hand().size()<1){
+                AIDeckCard1.setImageResource(0);
+            }
+            else {
+                AIDeckCard1.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<2){
+                AIDeckCard2.setImageResource(0);
+            }
+            else {
+                AIDeckCard2.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<3){
+                AIDeckCard3.setImageResource(0);
+            }
+            else {
+                AIDeckCard3.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<4){
+                AIDeckCard4.setImageResource(0);
+            }
+            else {
+                AIDeckCard4.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<5){
+                AIDeckCard5.setImageResource(0);
+            }
+            else {
+                AIDeckCard5.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<6){
+                AIDeckCard6.setImageResource(0);
+            }
+            else {
+                AIDeckCard6.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<7){
+                AIDeckCard7.setImageResource(0);
+            }
+            else {
+                AIDeckCard7.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<8){
+                AIDeckCard8.setImageResource(0);
+            }
+            else {
+                AIDeckCard8.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<9){
+                AIDeckCard9.setImageResource(0);
+            }
+            else {
+                AIDeckCard9.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<10){
+                AIDeckCard10.setImageResource(0);
+            }
+            else {
+                AIDeckCard10.setImageResource(R.drawable.cardback);
+            }
+            if(gs.getPlayer2Hand().size()<11){
+                AIDeckCard11.setImageResource(0);
+            }
+            else {
+                AIDeckCard11.setImageResource(R.drawable.cardback);
+            }
+        }
+    }
+
+    //Shows face up AI hand
+//    private void createAIHand(Phase10GameState gs){
+//        if(this.playerNum+1==2) {
+//            if(gs.getPlayer1Hand().size()<1){
+//                AIDeckCard1.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
+//            }
+//            if(gs.getPlayer1Hand().size()<2){
+//                AIDeckCard2.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
+//            }
+//            if(gs.getPlayer1Hand().size()<3){
+//                AIDeckCard3.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
+//            }
+//            if(gs.getPlayer1Hand().size()<4){
+//                AIDeckCard4.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
+//            }
+//            if(gs.getPlayer1Hand().size()<5){
+//                AIDeckCard5.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
+//            }
+//            if(gs.getPlayer1Hand().size()<6){
+//                AIDeckCard6.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
+//            }
+//            if(gs.getPlayer1Hand().size()<7){
+//                AIDeckCard7.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
+//            }
+//            if(gs.getPlayer1Hand().size()<8){
+//                AIDeckCard8.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
+//            }
+//            if(gs.getPlayer1Hand().size()<9){
+//                AIDeckCard9.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
+//            }
+//            if(gs.getPlayer1Hand().size()<10){
+//                AIDeckCard10.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+//            }
+//            if(gs.getPlayer1Hand().size()<11){
+//                AIDeckCard11.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard11.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(10)));
+//            }
+//        }
+//        else{
+//            if(gs.getPlayer2Hand().size()<1){
+//                AIDeckCard1.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
+//            }
+//            if(gs.getPlayer2Hand().size()<2){
+//                AIDeckCard2.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
+//            }
+//            if(gs.getPlayer2Hand().size()<3){
+//                AIDeckCard3.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
+//            }
+//            if(gs.getPlayer2Hand().size()<4){
+//                AIDeckCard4.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
+//            }
+//            if(gs.getPlayer2Hand().size()<5){
+//                AIDeckCard5.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
+//            }
+//            if(gs.getPlayer2Hand().size()<6){
+//                AIDeckCard6.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
+//            }
+//            if(gs.getPlayer2Hand().size()<7){
+//                AIDeckCard7.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
+//            }
+//            if(gs.getPlayer2Hand().size()<8){
+//                AIDeckCard8.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
+//            }
+//            if(gs.getPlayer2Hand().size()<9){
+//                AIDeckCard9.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
+//            }
+//            if(gs.getPlayer2Hand().size()<10){
+//                AIDeckCard10.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+//            }
+//            if(gs.getPlayer2Hand().size()<11){
+//                AIDeckCard11.setImageResource(0);
+//            }
+//            else {
+//                AIDeckCard11.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(10)));
+//            }
+//        }
+//    }
+
+
     private void createHand(Phase10GameState gs){
 
         if(this.playerNum+1==1) {
-            Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
-            Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
-            Hand3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
-            Hand4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
-            Hand5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
-            Hand6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
-            Hand7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
-            Hand8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
-            Hand9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
-            Hand10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+            if(gs.getPlayer1Hand().size()<1){
+                Hand1.setImageResource(0);
+            }
+            else {
+                Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
+            }
+            if(gs.getPlayer1Hand().size()<2){
+                Hand2.setImageResource(0);
+            }
+            else {
+                Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
+            }
+            if(gs.getPlayer1Hand().size()<3){
+                Hand3.setImageResource(0);
+            }
+            else {
+                Hand3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
+            }
+            if(gs.getPlayer1Hand().size()<4){
+                Hand4.setImageResource(0);
+            }
+            else {
+                Hand4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
+            }
+            if(gs.getPlayer1Hand().size()<5){
+                Hand5.setImageResource(0);
+            }
+            else {
+                Hand5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
+            }
+            if(gs.getPlayer1Hand().size()<6){
+                Hand6.setImageResource(0);
+            }
+            else {
+                Hand6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
+            }
+            if(gs.getPlayer1Hand().size()<7){
+                Hand7.setImageResource(0);
+            }
+            else {
+                Hand7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
+            }
+            if(gs.getPlayer1Hand().size()<8){
+                Hand8.setImageResource(0);
+            }
+            else {
+                Hand8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
+            }
+            if(gs.getPlayer1Hand().size()<9){
+                Hand9.setImageResource(0);
+            }
+            else {
+                Hand9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
+            }
+            if(gs.getPlayer1Hand().size()<10){
+                Hand10.setImageResource(0);
+            }
+            else {
+                Hand10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+            }
             if(gs.getPlayer1Hand().size()<11){
                 Hand11.setImageResource(0);
             }
@@ -259,16 +1055,66 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
         }
         else{
-            Hand1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
-            Hand2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
-            Hand3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
-            Hand4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
-            Hand5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
-            Hand6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
-            Hand7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
-            Hand8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
-            Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
-            Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+            if(gs.getPlayer2Hand().size()<1){
+                Hand1.setImageResource(0);
+            }
+            else {
+                Hand1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
+            }
+            if(gs.getPlayer2Hand().size()<2){
+                Hand2.setImageResource(0);
+            }
+            else {
+                Hand2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
+            }
+            if(gs.getPlayer2Hand().size()<3){
+                Hand3.setImageResource(0);
+            }
+            else {
+                Hand3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
+            }
+            if(gs.getPlayer2Hand().size()<4){
+                Hand4.setImageResource(0);
+            }
+            else {
+                Hand4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
+            }
+            if(gs.getPlayer2Hand().size()<5){
+                Hand5.setImageResource(0);
+            }
+            else {
+                Hand5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
+            }
+            if(gs.getPlayer2Hand().size()<6){
+                Hand6.setImageResource(0);
+            }
+            else {
+                Hand6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
+            }
+            if(gs.getPlayer2Hand().size()<7){
+                Hand7.setImageResource(0);
+            }
+            else {
+                Hand7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
+            }
+            if(gs.getPlayer2Hand().size()<8){
+                Hand8.setImageResource(0);
+            }
+            else {
+                Hand8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
+            }
+            if(gs.getPlayer2Hand().size()<9){
+                Hand9.setImageResource(0);
+            }
+            else {
+                Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
+            }
+            if(gs.getPlayer2Hand().size()<10){
+                Hand10.setImageResource(0);
+            }
+            else {
+                Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+            }
             if(gs.getPlayer2Hand().size()<11){
                 Hand11.setImageResource(0);
             }
