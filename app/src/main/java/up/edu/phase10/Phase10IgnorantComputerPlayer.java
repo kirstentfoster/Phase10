@@ -1,5 +1,6 @@
 package up.edu.phase10;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -61,7 +62,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             ArrayList<Card> hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer1Hand().iterator();
             while (it.hasNext()) {
-                Card c = it.next();
+
+                Card b = it.next();
+                Card c = new Card(b.getNumber(), b.getColor());
                 hand.add(new Card(c.getNumber(), c.getColor()));
             }
 
@@ -81,7 +84,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             ArrayList<Card> hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer2Hand().iterator();
             while (it.hasNext()) {
-                Card c = it.next();
+
+                Card b = it.next();
+                Card c = new Card(b.getNumber(), b.getColor());
                 hand.add(new Card(c.getNumber(), c.getColor()));
             }
 
@@ -108,20 +113,22 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(this.playerNum + 1 == 1){
             //Deep copy again with new card
             hand = new ArrayList<Card>();
-            Iterator<Card> it = copy.getPlayer1Hand().iterator();
+            Iterator<Card> it = fullHand.iterator(); //copy.getPlayer1Hand().iterator();
             while (it.hasNext()) {
-                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+                Card c = it.next();
+                hand.add(new Card(c.getNumber(), c.getColor()));
             }
-            fullHand = copy.getPlayer1Hand();//update
+//            fullHand = copy.getPlayer1Hand();//update Shallow copy not working?
         }
         else if(this.playerNum + 1 == 2){
             //Deep copy again with new card
             hand = new ArrayList<Card>();
-            Iterator<Card> it = copy.getPlayer2Hand().iterator();
+            Iterator<Card> it = fullHand.iterator();
             while (it.hasNext()) {
-                hand.add(new Card(it.next().getNumber(), it.next().getColor()));
+                Card c = it.next();
+                hand.add(new Card(c.getNumber(), c.getColor()));
             }
-            fullHand = copy.getPlayer2Hand();//update
+//            fullHand = copy.getPlayer2Hand();//update Shallow Copy Not working!
         }
 
         //Do resort
@@ -139,7 +146,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
 
         /* HIT */
-        if (hasPhased & checkHitsExist()) {
+        if (hasPhased && checkHitsExist()) {
             doHits(phase, fullHand); //Hit action in here
         }
 
@@ -178,7 +185,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand);
-                    checkGroupOrg(3, 3); //Reorganize to accomodate largest viable
+                    checkGroupOrg(3, 3); //Reorganize to accommodate largest viable
                 }
                 sorted = true; //Sort successful
                 break;
@@ -344,7 +351,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -358,7 +365,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                                 Card d = it.next();
                                 if (c.equals(d)){
                                     hand.remove(d); //Remove from (deep) hand
-                                    it = null;
+                                    break;
                                 }
                             }
                         }
@@ -376,7 +383,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -391,7 +398,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -488,7 +495,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -503,7 +510,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -521,7 +528,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -536,7 +543,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -544,29 +551,29 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             this.nonGroupCards = hand;
         }
-        //Put in wilds
-        boolean used = false;
-        for(Card c : this.nonGroupCards){
-            if(c.isWild()) {
-                if (this.weakGroups1 != null) {
-                    for (ArrayList<Card> group : weakGroups1) group.add(c);
-                    used = true;
-                }
-                if (this.weakGroups2 != null) {
-                    for (ArrayList<Card> group : weakGroups2) group.add(c);
-                    used = true;
-                }
-                if (this.viableGroups1 != null) {
-                    for (ArrayList<Card> group : viableGroups1) group.add(c);
-                    used = true;
-                }
-                if (this.viableGroups2 != null) {
-                    for (ArrayList<Card> group : viableGroups2) group.add(c);
-                    used = true;
-                }
-            }
-            if(used = true) nonGroupCards.remove(c);
-        }
+        //Put in wilds PROBLEM FOR BETA
+//        boolean used = false;
+//        for(Card c : this.nonGroupCards){
+//            if(c.isWild()) {
+//                if (this.weakGroups1 != null) {
+//                    for (ArrayList<Card> group : weakGroups1) group.add(c);
+//                    used = true;
+//                }
+//                if (this.weakGroups2 != null) {
+//                    for (ArrayList<Card> group : weakGroups2) group.add(c);
+//                    used = true;
+//                }
+//                if (this.viableGroups1 != null) {
+//                    for (ArrayList<Card> group : viableGroups1) group.add(c);
+//                    used = true;
+//                }
+//                if (this.viableGroups2 != null) {
+//                    for (ArrayList<Card> group : viableGroups2) group.add(c);
+//                    used = true;
+//                }
+//            }
+//            if(used = true) nonGroupCards.remove(c);
+//        }
         return true;
     }
 
@@ -619,7 +626,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -633,7 +640,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                                 Card d = it.next();
                                 if (c.equals(d)){
                                     hand.remove(d); //Remove from (deep) hand
-                                    it = null;
+                                    break;
                                 }
                             }
                         }
@@ -651,7 +658,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -666,7 +673,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             Card d = it.next();
                             if (c.equals(d)){
                                 hand.remove(d); //Remove from (deep) hand
-                                it = null;
+                                break;
                             }
                         }
                     }
@@ -711,66 +718,90 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     public void findLargestViable(int groupNum, ArrayList<Card> fullHand){
         int biggest = 0;
         int loc = 0;
-
-        //Find biggest viable group
-        if (viableGroups1.size() > 0) {
-            biggest = viableGroups1.get(0).size();
-            if (viableGroups1.size() > 1) {
-                for (int i = 1; i < viableGroups1.size(); i++) {
-                    if (viableGroups1.get(i).size() > biggest){
-                        loc = i;
-                        biggest = viableGroups1.get(i).size();
-                    }
-                }
-            }
-
-            //put best viable group at beginning
-            ArrayList<Card> tempHold = viableGroups1.get(0);
-            viableGroups1.set(0, viableGroups1.get(loc));
-            viableGroups1.set(loc, tempHold);
-
-            //Remove the cards of the biggest viable group from other groups
-            //To eliminate overlap
-            for (Card c : viableGroups1.get(0)) {
-                int uniqueness = 0;
-                for (Card d : fullHand) {
-                    if (c.equals(d)) uniqueness++;
-                }
-                //Check cards against cards from weak groups
-                if (weakGroups1.size() > 0) {
-                    for (ArrayList<Card> group : weakGroups1) {
-                        int copies = 0;
-                        Iterator<Card> it = group.iterator();
-                        while (it.hasNext()) {
-                            Card d = it.next();
-                            if (c.equals(d)) copies++;
-                        }
-                        while (copies > uniqueness - 1) {
-                            group.remove(c);
-                        }
-                    }
-                }
-                //Check cards against cards from viable groups (excluding biggest viable)
+        if(viableGroups1!=null) {
+            //Find biggest viable group
+            if (viableGroups1.size() > 0) {
+                biggest = viableGroups1.get(0).size();
                 if (viableGroups1.size() > 1) {
-                    for (ArrayList<Card> group : viableGroups1) {
-                        int copies = 0;
-                        Iterator<Card> it = group.iterator();
-                        while (it.hasNext()) {
-                            Card d = it.next();
-                            if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
+                    for (int i = 1; i < viableGroups1.size(); i++) {
+                        if (viableGroups1.get(i).size() > biggest) {
+                            loc = i;
+                            biggest = viableGroups1.get(i).size();
                         }
-                        while (copies > uniqueness - 1) {
-                            group.remove(c);
+                    }
+                }
+
+                //put best viable group at beginning
+                ArrayList<Card> tempHold = viableGroups1.get(0);
+                viableGroups1.set(0, viableGroups1.get(loc));
+                viableGroups1.set(loc, tempHold);
+
+                //Remove the cards of the biggest viable group from other groups
+                //To eliminate overlap
+                if(viableGroups1!=null) {
+                    Iterator<Card> it2 = this.viableGroups1.get(0).iterator();
+                    while (it2.hasNext()) {
+                        Card b = it2.next();
+                        Card c = new Card(b.getNumber(), b.getColor());
+                        int uniqueness = 0;
+                        for (Card d : fullHand) {
+                            if (c.equals(d)) uniqueness++;
+                        }
+                        //Check cards against cards from weak groups
+                        if (weakGroups1 != null && weakGroups1.size() > 0) {
+                            Iterator<ArrayList<Card>> it1 = this.weakGroups1.iterator();
+                            while (it1.hasNext()) {
+                                ArrayList<Card> grp = it1.next();
+                                ArrayList<Card> group = new ArrayList<Card>();
+                                for(Card cd : grp) {
+                                    group.add(new Card(cd.getNumber(), cd.getColor()));
+                                }
+                                int copies = 0;
+                                Iterator<Card> it = group.iterator();
+                                while (it.hasNext()) {
+                                    Card d = it.next();
+                                    if (c.equals(d)) copies++;
+                                }
+                                while (copies > uniqueness - 1) {
+                                    group.remove(c);
+                                    copies--;
+                                }
+                            }
+                        }
+                        //Check cards against cards from viable groups (excluding biggest viable)
+                        if (viableGroups1 != null && viableGroups1.size() > 1) {
+                            Iterator<ArrayList<Card>> it1 = this.viableGroups1.iterator();
+                            while (it1.hasNext()) {
+                                ArrayList<Card> grp = it1.next();
+                                ArrayList<Card> group = new ArrayList<Card>();
+                                for(Card cd : grp) {
+                                    group.add(new Card(cd.getNumber(), cd.getColor()));
+                                }
+                                int copies = 0;
+                                Iterator<Card> it = group.iterator();
+                                while (it.hasNext()) {
+                                    Card d = it.next();
+                                    if (c.equals(d) && !(group.equals(viableGroups1.get(0))))
+                                        copies++;
+                                }
+                                while (copies > uniqueness - 1) {
+                                    group.remove(c);
+                                    copies--;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
         if(groupNum == 2){
+            if(viableGroups2==null){
+                return;
+            }
             //Find best viable
             biggest = 0;
             loc = 0;
-            if (viableGroups2.size() > 0) {
+            if (viableGroups2 != null && viableGroups2.size() > 0) {
                 biggest = viableGroups2.get(0).size();
                 if (viableGroups2.size() > 1) {
                     for (int i = 1; i < viableGroups2.size(); i++) {
@@ -783,38 +814,60 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 viableGroups2.set(0, viableGroups2.get(loc));
                 viableGroups2.set(loc, tempHold);
 
-                //Remove the cards of the biggest viable group from other groups
-                //To eliminate overlap
-                for (Card c : viableGroups2.get(0)) {
-                    int uniqueness = 0;
-                    for (Card d : fullHand) {
-                        if (c.equals(d)) uniqueness++;
-                    }
-                    //Check cards against cards from weak groups
-                    if (weakGroups2.size() > 0) {
-                        for (ArrayList<Card> group : weakGroups2) {
-                            int copies = 0;
-                            Iterator<Card> it = group.iterator();
-                            while (it.hasNext()) {
-                                Card d = it.next();
-                                if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
-                            }
-                            while (copies > uniqueness - 1) {
-                                group.remove(c);
+                if(viableGroups2!=null) {
+                    //Remove the cards of the biggest viable group from other groups
+                    //To eliminate overlap
+                    Iterator<Card> it2 = this.viableGroups2.get(0).iterator();
+                    while (it2.hasNext()) {
+
+                        Card b = it2.next();
+                        Card c = new Card(b.getNumber(), b.getColor());
+                        int uniqueness = 0;
+                        for (Card d : fullHand) {
+                            if (c.equals(d)) uniqueness++;
+                        }
+                        //Check cards against cards from weak groups
+                        if (weakGroups2 != null && weakGroups2.size() > 0) {
+                            Iterator<ArrayList<Card>> it1 = this.weakGroups2.iterator();
+                            while (it1.hasNext()) {
+                                ArrayList<Card> grp = it1.next();
+                                ArrayList<Card> group = new ArrayList<Card>();
+                                for(Card cd : grp) {
+                                    group.add(new Card(cd.getNumber(), cd.getColor()));
+                                }
+                                int copies = 0;
+                                Iterator<Card> it = group.iterator();
+                                while (it.hasNext()) {
+                                    Card d = it.next();
+                                    if (c.equals(d) && !(group.equals(viableGroups1.get(0))))
+                                        copies++;
+                                }
+                                while (copies > uniqueness - 1) {
+                                    group.remove(c);
+                                    copies--;
+                                }
                             }
                         }
-                    }
-                    //Check cards against cards from viable groups (excluding biggest viable)
-                    if (viableGroups2.size() > 1) {
-                        for (ArrayList<Card> group : viableGroups2) {
-                            int copies = 0;
-                            Iterator<Card> it = group.iterator();
-                            while (it.hasNext()) {
-                                Card d = it.next();
-                                if (c.equals(d) && !(group.equals(viableGroups1.get(0)))) copies++;
-                            }
-                            while (copies > uniqueness - 1) {
-                                group.remove(c);
+                        //Check cards against cards from viable groups (excluding biggest viable)
+                        if (viableGroups2 != null && viableGroups2.size() > 1) {
+                            Iterator<ArrayList<Card>> it1 = this.viableGroups2.iterator();
+                            while (it1.hasNext()) {
+                                ArrayList<Card> grp = it1.next();
+                                ArrayList<Card> group = new ArrayList<Card>();
+                                for(Card cd : grp) {
+                                    group.add(new Card(cd.getNumber(), cd.getColor()));
+                                }
+                                int copies = 0;
+                                Iterator<Card> it = group.iterator();
+                                while (it.hasNext()) {
+                                    Card d = it.next();
+                                    if (c.equals(d) && !(group.equals(viableGroups1.get(0))))
+                                        copies++;
+                                }
+                                while (copies > uniqueness - 1) {
+                                    group.remove(c);
+                                    copies--;
+                                }
                             }
                         }
                     }
@@ -829,11 +882,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param size2 group2 size from phase reqs
      */
     public void checkGroupOrg(int size1, int size2) {
-        while(weakGroups1 != null) {//remove/move groups that no longer fit qualifications
+        if(weakGroups1 != null) {//remove/move groups that no longer fit qualifications
                 Iterator<ArrayList<Card>> it = this.weakGroups1.iterator();
                 while (it.hasNext()) {//remove from weak groups
-                ArrayList<Card> group = it.next();
-                if (size1 < 4) {
+                    ArrayList<Card> grp = it.next();
+                    ArrayList<Card> group = new ArrayList<Card>();
+                    for(Card cd : grp) {
+                        group.add(new Card(cd.getNumber(), cd.getColor()));
+                    }
+                    if (size1 < 4) {
                     if (group.size() < 2){
                         for(Card d : group){
                             if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
@@ -873,67 +930,82 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     viableGroups1.add(group);
                     weakGroups1.remove(group);
                 }
-                if(this.weakGroups1.size() == 0) this.weakGroups1 = null;
+                if(this.weakGroups1.size() == 0) {
+                    this.weakGroups1 = null;
+                    break;
+                }
             }
         }
 
-        while (viableGroups1 != null) {//remove or move from viable groups
+        if (viableGroups1 != null) {//remove or move from viable groups
                 Iterator<ArrayList<Card>> it = this.viableGroups1.iterator();
                 while (it.hasNext()) {//remove from weak groups
-                    ArrayList<Card> group = it.next();
-                if (size1 < 4) if (group.size() < 2){
-                    for(Card d : group){
-                        if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
-                        nonGroupCards.add(d);
+                    ArrayList<Card> grp = it.next();
+                    ArrayList<Card> group = new ArrayList<Card>();
+                    for(Card c : grp) {
+                        group.add(new Card(c.getNumber(), c.getColor()));
                     }
-                    viableGroups1.remove(group);
-                }
-                if (size1 == 4) {
-                    if (group.size() < 3) {
-                        if (group.size() == 2) { //If group could still be weak, it will be moved there
-                            if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
-                            weakGroups1.add(group);
-                            viableGroups1.remove(group);
-                        } else if (group.size() < 2){
-                            for(Card d : group){
-                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
-                                nonGroupCards.add(d);
+                    if (size1 < 4) if (group.size() < 2){
+                        for(Card d : group){
+                            if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                            nonGroupCards.add(d);
+                        }
+                        viableGroups1.remove(group);
+                    }
+                    if (size1 == 4) {
+                        if (group.size() < 3) {
+                            if (group.size() == 2) { //If group could still be weak, it will be moved there
+                                if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
+                                weakGroups1.add(group);
+                                viableGroups1.remove(group);
+                            } else if (group.size() < 2){
+                                for(Card d : group){
+                                    if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                    nonGroupCards.add(d);
+                                }
+                                viableGroups1.remove(group);
                             }
-                            viableGroups1.remove(group);
                         }
                     }
-                }
-                if (size1 > 4) {
-                    if (group.size() < 4) { //If group could still be weak, it will be moved there
-                        if (group.size() == 3 || group.size() == 2) {
-                            if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
-                            weakGroups1.add(group);
-                            viableGroups1.remove(group);
-                        } else if (group.size() < 2){
-                            for(Card d : group){
-                                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
-                                nonGroupCards.add(d);
+                    if (size1 > 4) {
+                        if (group.size() < 4) { //If group could still be weak, it will be moved there
+                            if (group.size() == 3 || group.size() == 2) {
+                                if(this.weakGroups1 == null) this.weakGroups1 = new ArrayList<ArrayList<Card>>();
+                                weakGroups1.add(group);
+                                viableGroups1.remove(group);
+                            } else if (group.size() < 2){
+                                for(Card d : group){
+                                    if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                                    nonGroupCards.add(d);
+                                }
+                                viableGroups1.remove(group);
                             }
-                            viableGroups1.remove(group);
                         }
                     }
-                }
-                if(this.viableGroups1.size() == 0) this.viableGroups1 = null;
-                if (group.size() >= size1) {
-                    for (Card c : group) {
-                        if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
-                        completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+                    if(this.viableGroups1.size() == 0) {
+                        this.viableGroups1 = null;
+                        break;
                     }
-                    viableGroups1 = null;
-                    weakGroups1 = null;
+                    if (group.size() >= size1) {
+                        for (Card c : group) {
+                            if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
+                            completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+                        }
+                        viableGroups1 = null;
+                        weakGroups1 = null;
+                        break;
+                    }
                 }
             }
-        }
-        while(weakGroups2 != null) {//remove/move groups that no longer fit qualifications
+        if(weakGroups2 != null) {//remove/move groups that no longer fit qualifications
             Iterator<ArrayList<Card>> it = this.weakGroups2.iterator();
             while (it.hasNext()) {//remove from weak groups
-                ArrayList<Card> group = it.next();
-                if (size1 < 4) {
+                ArrayList<Card> grp = it.next();
+                ArrayList<Card> group = new ArrayList<Card>();
+                for(Card c : grp) {
+                    group.add(new Card(c.getNumber(), c.getColor()));
+                }
+                if (size2 < 4) {
                     if (group.size() < 2){
                         for(Card d : group){
                             if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
@@ -946,7 +1018,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     viableGroups2.add(group);
                     weakGroups2.remove(group);
                 }
-                if (size1 == 4) {
+                if (size2 == 4) {
                     if (group.size() < 2){
                         for(Card d : group){
                             if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
@@ -960,7 +1032,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         weakGroups2.remove(group);
                     }
                 }
-                if (size1 > 4) {
+                if (size2 > 4) {
                     if (group.size() < 2){
                         for(Card d : group){
                             if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
@@ -973,22 +1045,29 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     viableGroups2.add(group);
                     weakGroups2.remove(group);
                 }
-                if(this.weakGroups2.size() == 0) this.weakGroups2 = null;
+                if(this.weakGroups2.size() == 0){
+                    this.weakGroups2 = null;
+                    break;
+                }
             }
         }
 
-        while (viableGroups2 != null) {//remove or move from viable groups
+        if (viableGroups2 != null) {//remove or move from viable groups
             Iterator<ArrayList<Card>> it = this.viableGroups2.iterator();
             while (it.hasNext()) {//remove from weak groups
-                ArrayList<Card> group = it.next();
-                if (size1 < 4) if (group.size() < 2){
+                ArrayList<Card> grp = it.next();
+                ArrayList<Card> group = new ArrayList<Card>();
+                for(Card c : grp) {
+                    group.add(new Card(c.getNumber(), c.getColor()));
+                }
+                if (size2 < 4) if (group.size() < 2){
                     for(Card d : group){
                         if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                         nonGroupCards.add(d);
                     }
                     viableGroups2.remove(group);
                 }
-                if (size1 == 4) {
+                if (size2 == 4) {
                     if (group.size() < 3) {
                         if (group.size() == 2) { //If group could still be weak, it will be moved there
                             if(this.weakGroups2 == null) this.weakGroups2 = new ArrayList<ArrayList<Card>>();
@@ -1003,7 +1082,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         }
                     }
                 }
-                if (size1 > 4) {
+                if (size2 > 4) {
                     if (group.size() < 4) { //If group could still be weak, it will be moved there
                         if (group.size() == 3 || group.size() == 2) {
                             if(this.weakGroups2 == null) this.weakGroups2 = new ArrayList<ArrayList<Card>>();
@@ -1018,14 +1097,18 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         }
                     }
                 }
-                if(this.viableGroups2.size() == 0) this.viableGroups2 = null;
-                if (group.size() >= size1) {
+                if(this.viableGroups2.size() == 0) {
+                    this.viableGroups2 = null;
+                    break;
+                }
+                if (group.size() >= size2) {
                     for (Card c : group) {
                         if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
                         completeGroup2.add(new Card(c.getNumber(), c.getColor()));
                     }
                     viableGroups2 = null;
                     weakGroups2 = null;
+                    break;
                 }
             }
         }
@@ -1099,6 +1182,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param size size based on phase reqs
      * @param groupNum which group (1 or 2)
      * @return true if a complete set exists
+     * Known issues: Needs to handle wild cards
      */
     public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
         ArrayList<Card> temp;
@@ -1115,7 +1199,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             notInGroupLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of group
-                if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber()) {
+                if (!hand.get(j).isSkip() && hand.get(j).getNumber() == temp.get(tempLoc).getNumber()) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of group
@@ -1174,7 +1258,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             int notInGroupSize = hand.size() - size;
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
-                if (hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
+                if (!hand.get(j).isSkip() && hand.get(j).getColor() == temp.get(tempLoc).getColor()) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run
@@ -1575,7 +1659,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if the draw action is successfully executed
      */
     public boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
-        boolean drawUp; //true means draw from draw pile, false means draw from discard pile
+        boolean drawUp = false; //true means draw from draw pile, false means draw from discard pile
         Card topCard = gameState.getDiscardPile().peek(); //Top of discard (visible)
 
         if(topCard.isWild()) drawUp = true; //Always take a wild
@@ -1588,11 +1672,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(drawUp){ //Draw from discard
             DrawFaceUpAction act = new DrawFaceUpAction(this);
             game.sendAction(act);  //Send drawUp!!
+            fullHand.add(new Card(gameState.getDiscardPile().peek().getNumber(),gameState.getDiscardPile().peek().getColor()));
             return true;
         }
         else { //Draw from drawpile
             DrawFaceDownAction act = new DrawFaceDownAction(this);
             game.sendAction(act); //Send drawDown!!
+            fullHand.add(new Card(gameState.getDrawPile().get(0).getNumber(),gameState.getDrawPile().get(0).getColor()));
             return true;
         }
     }
@@ -1612,14 +1698,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(this.nonGroupCards != null) {
             int highestScore = this.nonGroupCards.get(0).getScore();
             int highScoreLoc = 0;
-            while (this.nonGroupCards.size() >= j) {
-                if (!this.nonGroupCards.get(j).isWild()) {
-                    highestScore = this.nonGroupCards.get(j).getScore();
-                    highScoreLoc = j;
-                }
-                j++;
-            }
-            if (!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
+//            while (this.nonGroupCards.size() > j) {
+//                if (!this.nonGroupCards.get(j).isWild()) {
+//                    highestScore = this.nonGroupCards.get(j).getScore();
+//                    highScoreLoc = j;
+//                }
+//                j++;
+//            }
+//            if (!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
+            if(this.nonGroupCards!=null){
                 for (int i = 1; i < this.nonGroupCards.size(); i++) {
                     if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
                         highScoreLoc = i;
@@ -1924,7 +2011,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if hits exist
      */
     public boolean checkHitsExist(){
-        if(this.hitList.size() != 0 && this.hitList != null) return true;
+        if(this.hitList != null && this.hitList.size() != 0) return true;
         else return false;
     }
 
@@ -1977,7 +2064,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.hitList = new ArrayList<Card>();
                 Iterator<Card> it = this.nonGroupCards.iterator();
                 while (it.hasNext()) {
-                    Card c = it.next();
+
+                    Card b = it.next();
+                    Card c = new Card(b.getNumber(), b.getColor());
                     if (gs.phase.checkHitValid(c, 1, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)
@@ -1993,7 +2082,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if(this.nonGroupCards != null) {
                 Iterator<Card> it = this.nonGroupCards.iterator();
                 while (it.hasNext()) {
-                    Card c = it.next();
+
+                    Card b = it.next();
+                    Card c = new Card(b.getNumber(), b.getColor());
                     if (gs.phase.checkHitValid(c, 2, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)

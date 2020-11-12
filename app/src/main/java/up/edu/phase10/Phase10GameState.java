@@ -211,6 +211,7 @@ public class Phase10GameState extends GameState {
 
         //deal cards to players and discard pile from draw pile
         discardPile.add(drawPile.get(0));
+        discardPile.add(drawPile.get(0)); //FOR ALPHA ONLY
         drawPile.remove(0);
         for (int i = 0; i < 10; i++) {
             player1Hand.add(drawPile.get(0));
@@ -238,37 +239,37 @@ public class Phase10GameState extends GameState {
         //set all array lists and stacks using for each loops
         Stack<Card> temp = new Stack<Card>();
         for(Card c : PhaseGS.getDiscardPile()){
-            temp.push(c);
+            temp.push(new Card(c.getNumber(),c.getColor()));
         }
         this.setDiscardPile(temp);
 
         ArrayList<Card> temp1 = new ArrayList<Card>();
         for(Card c : PhaseGS.getDrawPile()){
-            temp1.add(c);
+            temp1.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setDrawPile(temp1);
 
         ArrayList<Card> temp3 = new ArrayList<Card>();
         for(Card c : PhaseGS.getPlayer1Hand()){
-            temp3.add(c);
+            temp3.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer1Hand(temp3);
 
         ArrayList<Card> temp4 = new ArrayList<Card>();
         for(Card c : PhaseGS.getPlayer2Hand()){
-            temp4.add(c);
+            temp4.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer2Hand(temp4);
 
         ArrayList<Card> temp5 = new ArrayList<Card>();
         for(Card c : PhaseGS.getPlayer1PhaseContent()){
-            temp5.add(c);
+            temp5.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer1PhaseContent(temp5);
 
         ArrayList<Card> temp6 = new ArrayList<Card>();
         for(Card c : PhaseGS.getPlayer2PhaseContent()){
-            temp6.add(c);
+            temp6.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer2PhaseContent(temp6);
     }
@@ -316,10 +317,10 @@ public class Phase10GameState extends GameState {
         this.playerHasDrawn = true;
 
         //determine which player hand it goes to
-        if (playerId == 1) {
+        if (playerId == 0) {
             this.player1Hand.add(drawn); //add to hand
             return true;
-        } else if (playerId == 2) {
+        } else if (playerId == 1) {
             this.player2Hand.add(drawn); //add to hand
             return true;
         } else return false;
@@ -340,14 +341,14 @@ public class Phase10GameState extends GameState {
         while (notFound) {
             if (playerId == 0) {
                 for (int i = 0; i < this.player1Hand.size(); i++) {
-                    if (card.equals(this.player1Hand.get(i))) {
+                    if (card.getNumber()==this.player1Hand.get(i).getNumber() && card.getColor() == this.player1Hand.get(i).getColor()) {
                         cardLoc = i;
                         notFound = false;
                     }
                 }
             } else if (playerId == 1) {
                 for (int i = 0; i < this.player2Hand.size(); i++) {
-                    if (card.equals(this.player2Hand.get(i))) {
+                    if (card.getNumber()==this.player2Hand.get(i).getNumber() && card.getColor() == this.player2Hand.get(i).getColor()) {
                         cardLoc = i;
                         notFound = false;
                     }
@@ -365,6 +366,7 @@ public class Phase10GameState extends GameState {
             if (!discardPile.peek().isSkip())
                 this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
 
+            this.playerHasDrawn = false;
             return true;
         } else if (playerId == 1) {
             if (this.player2Hand.size() < cardLoc) return false;
@@ -374,6 +376,7 @@ public class Phase10GameState extends GameState {
             if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
             if (!discardPile.peek().isSkip()) this.turnId = 0;
 
+            this.playerHasDrawn = false;
             return true;
         } else return false;
     }

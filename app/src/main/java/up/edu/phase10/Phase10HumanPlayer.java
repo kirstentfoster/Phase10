@@ -43,6 +43,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
     public Button discardButton       = null;
+    private Button quitButton = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
     private ImageButton Hand1 = null;
@@ -129,6 +130,10 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
         }
 
+        if(button.equals(quitButton)){
+            //?????????????????????????????
+        }
+
         // for the drawFaceDown && drawFace up : click a card, in a specific area (i.e. should the
         // onClick area be fixed like drawPile area is??
 
@@ -209,6 +214,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand9 = myActivity.findViewById(R.id.PlayerHand9);
         Hand10 = myActivity.findViewById(R.id.PlayerHand10);
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
+        this.quitButton = activity.findViewById(R.id.QuitButton);
 
 
         //Listen for button presses
@@ -217,6 +223,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         hitButton.setOnClickListener(this);
         phaseButton.setOnClickListener(this);
         discardButton.setOnClickListener(this);
+        quitButton.setOnClickListener(this);
         Hand1.setOnClickListener(this);
         Hand2.setOnClickListener(this);
         Hand3.setOnClickListener(this);
