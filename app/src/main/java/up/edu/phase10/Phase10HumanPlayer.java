@@ -41,7 +41,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private TextView    messageTextView     = null;
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
-    public Button discardButton       = null;
+   // public Button discardButton       = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
     private ImageButton Hand1 = null;
@@ -94,7 +94,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             return;
         }
         createHand((Phase10GameState) info);
-        ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
+    //    ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
     }//receiveInfo
 
@@ -117,12 +117,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             selected.clear();
             game.sendAction(p);
         }
-        if(button.equals(discardButton)) {
-            DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
-            selected.clear();
-            game.sendAction(p);
+  //      if(button.equals(discardButton)) {
+   //         DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
+     //       selected.clear();
+       //     game.sendAction(p);
 
-        }
+     //   }
 
         // for the drawFaceDown && drawFace up : click a card, in a specific area (i.e. should the
         // onClick area be fixed like drawPile area is??
@@ -196,7 +196,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         drawFaceDownImageButton.setOnClickListener(this);
         hitButton.setOnClickListener(this);
         phaseButton.setOnClickListener(this);
-        discardButton.setOnClickListener(this);
+ //       discardButton.setOnClickListener(this);
 
     }//setAsGui
 
