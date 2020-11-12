@@ -294,7 +294,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
 
         //If somebody has phased, non-group cards will be organized into hits
-        if(this.nonGroupCards.size() != 0 && (gameState.getPlayer1HasPhased() || gameState.getPlayer2HasPhased()) ) {
+        if(this.nonGroupCards !=null && this.nonGroupCards.size() != 0 && (gameState.getPlayer1HasPhased() || gameState.getPlayer2HasPhased()) ) {
             makeHits(gameState, gameState.getPlayer1HasPhased(), gameState.getPlayer2HasPhased());
             sorted = true;
         }
@@ -741,9 +741,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 ArrayList<Card> tempHold = viableGroups1.get(0);
                 viableGroups1.set(0, viableGroups1.get(loc));
                 viableGroups1.set(loc, tempHold);
-//                if(same && viableGroups2!=null){
-//                    viableGroups2.remove(loc);
-//                }
+                if(same && viableGroups2!=null){
+                    viableGroups2.remove(loc);
+                }
 
                 //Remove the cards of the biggest viable group from other groups
                 //To eliminate overlap
@@ -1121,6 +1121,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
+        if (this.nonGroupCards.size() == 0){
+            this.nonGroupCards = null;
+        }
     }
 
     /**
@@ -1227,9 +1230,22 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 //Place in groups
                 if (groupNum == 1) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
+//                    for(Card c : temp){
+//                        completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+//                    }
                     this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
+//                    Iterator<Card> temp2 = hand.iterator();
+//                    while(temp2.hasNext()){
+//                        Card d = temp2.next();
+//                        for(Card c : completeGroup1){
+//                            if(c.getNumber()==d.getNumber() && c.getColor() == d.getColor()){
+//                                hand.remove(d);
+//                                break;
+//                            }
+//                        }
+//                    }
                 } else if (groupNum == 2) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
@@ -1704,7 +1720,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     public boolean doDiscard(Phase10GameState gameState, boolean hasPhased){
 
         int j = 0;
-        if(this.nonGroupCards != null) {
+        if(this.nonGroupCards != null && this.nonGroupCards.size() > 0) {
             int highestScore = this.nonGroupCards.get(0).getScore();
             int highScoreLoc = 0;
 //            while (this.nonGroupCards.size() > j) {
@@ -1715,7 +1731,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 //                j++;
 //            }
 //            if (!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
-            if(this.nonGroupCards!=null){
+            if(this.nonGroupCards!=null && this.nonGroupCards.size() > 0){
                 for (int i = 1; i < this.nonGroupCards.size(); i++) {
                     if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
                         highScoreLoc = i;

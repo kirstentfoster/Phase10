@@ -399,7 +399,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInSet = new Card[checkForSet.length-size];
             notInSetLoc = 0;
             for (int j = i + 1; j < checkForSet.length; j++) {
-                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber()) {
+                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc < size-1) {
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
                 } else {
