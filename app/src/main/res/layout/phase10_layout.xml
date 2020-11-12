@@ -33,9 +33,9 @@
         <LinearLayout
             android:id="@+id/AIDeck"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="50000"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -57,220 +57,6 @@
                 android:foregroundGravity="center"
                 android:src="@drawable/cardback" />
 
-            <ImageView
-                android:id="@+id/AIDeckCard3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-            <ImageView
-                android:id="@+id/AIDeckCard11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:foregroundGravity="center"
-                android:src="@drawable/cardback" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/AIPhase1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow5" />
-
-            <ImageView
-                android:id="@+id/AIPhase2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
-            <ImageView
-                android:id="@+id/AIPhase14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@drawable/yellow3" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -287,6 +73,63 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:text="Hit" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/red9" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow9" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/red9" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow3" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/red4" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow5" />
+
+            <ImageView
+                android:id="@+id/AIPhaseCard8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow6" />
 
         </LinearLayout>
 
@@ -312,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="3100"
             android:orientation="horizontal">
 
             <ImageButton
@@ -336,10 +179,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/PlayButtons"
+            android:id="@+id/PlayerPhase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:layout_weight="900"
+            android:gravity="bottom|right"
             android:orientation="horizontal">
 
             <Button
@@ -348,11 +193,13 @@
                 android:layout_height="wrap_content"
                 android:text="Discard" />
 
-            <TextView
-                android:id="@+id/textView"
+            <ImageView
+                android:id="@+id/InvisiblePhase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="2"
+                android:src="@drawable/cardback"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -372,149 +219,13 @@
                     android:layout_height="wrap_content"
                     android:text="Play Phase" />
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/PlayerPhase"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="bottom|right"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/playerPhase1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase7"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase9"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase10"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase11"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase12"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase13"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
-
-            <ImageView
-                android:id="@+id/playerPhase14"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/yellow9" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/PlayerDeck"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:baselineAligned="false"
@@ -616,7 +327,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:paddingRight="50dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
         </LinearLayout>

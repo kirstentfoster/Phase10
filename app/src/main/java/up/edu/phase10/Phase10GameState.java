@@ -390,9 +390,7 @@ public class Phase10GameState extends GameState {
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
             if (!discardPile.peek().isSkip())
                 this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
-            else{
-                this.turnId = 0;
-            }
+
             this.playerHasDrawn = false;
             return true;
         } else if (playerId == 1) {
@@ -402,9 +400,6 @@ public class Phase10GameState extends GameState {
 
             if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
             if (!discardPile.peek().isSkip()) this.turnId = 0;
-            else{
-                this.turnId = 1;
-            }
 
             this.playerHasDrawn = false;
             return true;

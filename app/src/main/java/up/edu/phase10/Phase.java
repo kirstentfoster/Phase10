@@ -399,7 +399,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInSet = new Card[checkForSet.length-size];
             notInSetLoc = 0;
             for (int j = i + 1; j < checkForSet.length; j++) {
-                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc<size-1) {
+                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber()) {
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
                 } else {
@@ -503,7 +503,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInRun = new Card[checkForRun.length-size];
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
-                if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1 && tempLoc<size-1) {
+                if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
                     temp[tempLoc + 1] = checkForRun[j];
                     tempLoc++;
                 } else {
@@ -586,7 +586,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInColorLoc = 0;
             for (int j = i + 1; j < checkForColor.length; j++) {
 
-                if (checkForColor[j].getColor() == temp[tempLoc].getColor() && tempLoc<size-1) {
+                if (checkForColor[j].getColor() == temp[tempLoc].getColor()) {
                     temp[tempLoc + 1] = checkForColor[j];
                     tempLoc++;
                 } else {

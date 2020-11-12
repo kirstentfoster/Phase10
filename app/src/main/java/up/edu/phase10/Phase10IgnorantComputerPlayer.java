@@ -176,41 +176,14 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         boolean complete1 = false;
         boolean complete2 = false;
         boolean sorted = false;
-        ArrayList<Card> temp = null;
-        ArrayList<Card> temp2 = null;
 
         //Runs are always checked first (runs are hard to make)
         //Bigger sets are checked before smaller sets
         switch (phase) {
             case 1:
                 //test if the groups are complete first
-                temp = testCompleteSet(hand, 3, 1);
-//                ArrayList<Card> handCopy = new ArrayList<Card>();
-//                if(complete1){
-//                    for(Card c : hand){
-//                        handCopy.add(new Card(c.getNumber(), c.getColor()));
-//                    }
-//                    Iterator<Card> it = handCopy.iterator();
-//                    while(it.hasNext()){
-//                        Card c = it.next();
-//                        for(Card d : completeGroup1){
-//                            if(d.getColor() == c.getColor() && d.getNumber() == c.getNumber()){
-//                                handCopy.remove(d);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//                else{
-//                    handCopy = hand;
-//                }
-                if(temp!=null){
-                    complete1 = true;
-                    temp2 = testCompleteSet(temp, 3, 2);
-                    if(temp2!=null){
-                        complete2 = true;
-                    }
-                }
+                complete1 = testCompleteSet(hand, 3, 1);
+                complete2 = testCompleteSet(hand, 3, 2);
                 //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
@@ -223,10 +196,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 break;
             case 2:
                 complete1 = testCompleteRun(hand, 4, 1);
-                    temp2 = testCompleteSet(hand, 3, 2);
-                    if(temp2!=null){
-                        complete2 = true;
-                    }
+                complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
                 if(!complete1 || !complete2) {
@@ -237,10 +207,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 break;
             case 3:
                 complete1 = testCompleteRun(hand, 4, 1);
-                temp2 = testCompleteSet(hand, 4, 2);
-                    if(temp2!=null) {
-                        complete2 = true;
-                    }
+                complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
                 if(!complete1 || !complete2) {
@@ -280,14 +247,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 7:
-                temp = testCompleteSet(hand, 4, 1);
-                if(temp!=null){
-                    complete1 = true;
-                    temp2 = testCompleteSet(temp, 4, 2);
-                    if(temp2!=null){
-                        complete2 = true;
-                    }
-                }
+                complete1 = testCompleteSet(hand, 4, 1);
+                complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeSetGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
                 if(!complete1 || !complete2) {
@@ -307,14 +268,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 9:
-                temp = testCompleteSet(hand, 5, 1);
-                if(temp!=null){
-                    complete1 = true;
-                    temp2 = testCompleteSet(temp, 2, 2);
-                    if(temp2!=null){
-                        complete2 = true;
-                    }
-                }
+                complete1 = testCompleteSet(hand, 5, 1);
+                complete2 = testCompleteSet(hand, 2, 2);
                 if (!complete1) makeSetGroups(hand, 5, 1);
                 if (!complete2) makeSetGroups(hand, 2, 2);
                 if(!complete1 || !complete2) {
@@ -324,14 +279,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 10:
-                temp = testCompleteSet(hand, 5, 1);
-                if(temp!=null){
-                    complete1 = true;
-                    temp2 = testCompleteSet(temp, 3, 2);
-                    if(temp2!=null){
-                        complete2 = true;
-                    }
-                }
+                complete1 = testCompleteSet(hand, 5, 1);
+                complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
                 if(!complete1 || !complete2) {
@@ -1244,7 +1193,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if a complete set exists
      * Known issues: Needs to handle wild cards
      */
-    public ArrayList<Card> testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
+    public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
@@ -1269,7 +1218,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
-                            return null;
+                            return false;
                         }
                     }
                 }
@@ -1289,10 +1238,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
-                return notInGroup; //Complete group does exist
+                return true; //Complete group does exist
             }
         }
-        return null; //Complete group doesn't exist
+        return false; //Complete group doesn't exist
     }
 
     /**
