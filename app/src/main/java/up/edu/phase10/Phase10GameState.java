@@ -183,6 +183,7 @@ public class Phase10GameState extends GameState {
         player2Score = 0;
         player1Phase = 1;
         player2Phase = 1;
+        phase = new Phase();
         for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
             for (int j = 1; j <= 4; j++) {
                 drawPile.add(new Card(i, j));
@@ -324,6 +325,8 @@ public class Phase10GameState extends GameState {
             temp6.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer2PhaseContent(temp6);
+
+        this.phase = new Phase(PhaseGS.phase);
     }
 
     /**

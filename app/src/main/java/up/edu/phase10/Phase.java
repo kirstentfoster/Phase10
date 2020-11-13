@@ -12,16 +12,16 @@ import java.util.List;
 public class Phase { //Wild card handling will be added in beta release
 
     //Phase Rules
-    private String Phase1 = "2 sets of 3";
-    private String Phase2 = "1 set of 3 and 1 run of 4";
-    private String Phase3 = "1 set of 4 and 1 run of 4";
-    private String Phase4 = "1 run of 7";
-    private String Phase5 = "1 run of 8";
-    private String Phase6 = "1 run of 9";
-    private String Phase7 = "2 sets of 4";
-    private String Phase8 = "7 cards of one color";
-    private String Phase9 = "1 set of 5 and 1 set of 2";
-    private String Phase10 = "1 set of 5 and 1 set of 3";
+    private String Phase1 = null; //"2 sets of 3";
+    private String Phase2 = null; //"1 set of 3 and 1 run of 4";
+    private String Phase3 = null; //"1 set of 4 and 1 run of 4";
+    private String Phase4 = null; //"1 run of 7";
+    private String Phase5 = null; //"1 run of 8";
+    private String Phase6 = null; //"1 run of 9";
+    private String Phase7 = null; //"2 sets of 4";
+    private String Phase8 = null; //"7 cards of one color";
+    private String Phase9 = null; //"1 set of 5 and 1 set of 2";
+    private String Phase10 = null; //"1 set of 5 and 1 set of 3";
 
     //Phase reqs are placed in these variables when phasing happens
 
@@ -37,7 +37,114 @@ public class Phase { //Wild card handling will be added in beta release
     Card[] play2Set2;
     Card[] play2Color;
 
+    public Phase(){
+        Phase1 = "2 sets of 3";
+        Phase2 = "1 set of 3 and 1 run of 4";
+        Phase3 = "1 set of 4 and 1 run of 4";
+        Phase4 = "1 run of 7";
+        Phase5 = "1 run of 8";
+        Phase6 = "1 run of 9";
+        Phase7 = "2 sets of 4";
+        Phase8 = "7 cards of one color";
+        Phase9 = "1 set of 5 and 1 set of 2";
+        Phase10 = "1 set of 5 and 1 set of 3";
+        //Player 1
+        play1Run = null;
+        play1Set1 = null;
+        play1Set2 = null;
+        play1Color = null;
 
+        //Player 2
+        play2Run = null;
+        play2Set1 = null;
+        play2Set2 = null;
+        play2Color = null;
+    }
+
+    public Phase(Phase p){
+        Phase1 = "2 sets of 3";
+        Phase2 = "1 set of 3 and 1 run of 4";
+        Phase3 = "1 set of 4 and 1 run of 4";
+        Phase4 = "1 run of 7";
+        Phase5 = "1 run of 8";
+        Phase6 = "1 run of 9";
+        Phase7 = "2 sets of 4";
+        Phase8 = "7 cards of one color";
+        Phase9 = "1 set of 5 and 1 set of 2";
+        Phase10 = "1 set of 5 and 1 set of 3";
+        if(p.play1Run != null) {
+            this.play1Run = new Card[p.play1Run.length];
+            for (int i = 0; i < this.play1Run.length; i++) {
+                this.play1Run[i] = new Card(p.play1Run[i].getNumber(), p.play1Run[i].getColor());
+            }
+        }
+        else{
+            this.play1Run = null;
+        }
+        if(p.play1Set1 != null) {
+            this.play1Set1 = new Card[p.play1Set1.length];
+            for (int i = 0; i < this.play1Set1.length; i++) {
+                this.play1Set1[i] = new Card(p.play1Set1[i].getNumber(), p.play1Set1[i].getColor());
+            }
+        }
+        else{
+            this.play1Set1 = null;
+        }
+        if(p.play1Set2 != null) {
+            this.play1Set2 = new Card[p.play1Set2.length];
+            for (int i = 0; i < this.play1Set2.length; i++) {
+                this.play1Set2[i] = new Card(p.play1Set2[i].getNumber(), p.play1Set2[i].getColor());
+            }
+        }
+        else{
+            this.play1Set2 = null;
+        }
+        if(p.play1Color != null) {
+            this.play1Color = new Card[p.play1Color.length];
+            for (int i = 0; i < this.play1Color.length; i++) {
+                this.play1Color[i] = new Card(p.play1Color[i].getNumber(), p.play1Color[i].getColor());
+            }
+        }
+        else{
+            this.play1Color = null;
+        }
+        if(p.play2Run != null) {
+            this.play2Run = new Card[p.play2Run.length];
+            for (int i = 0; i < this.play2Run.length; i++) {
+                this.play2Run[i] = new Card(p.play2Run[i].getNumber(), p.play2Run[i].getColor());
+            }
+        }
+        else{
+            this.play2Run = null;
+        }
+        if(p.play2Set1 != null) {
+            this.play2Set1 = new Card[p.play2Set1.length];
+            for (int i = 0; i < this.play2Set1.length; i++) {
+                this.play2Set1[i] = new Card(p.play2Set1[i].getNumber(), p.play2Set1[i].getColor());
+            }
+        }
+        else{
+            this.play2Set1 = null;
+        }
+        if(p.play2Set2 != null) {
+            this.play2Set2 = new Card[p.play2Set2.length];
+            for (int i = 0; i < this.play2Set2.length; i++) {
+                this.play2Set2[i] = new Card(p.play2Set2[i].getNumber(), p.play2Set2[i].getColor());
+            }
+        }
+        else{
+            this.play2Set2 = null;
+        }
+        if(p.play1Color != null) {
+            this.play1Color = new Card[p.play1Color.length];
+            for (int i = 0; i < this.play1Color.length; i++) {
+                this.play1Color[i] = new Card(p.play1Color[i].getNumber(), p.play1Color[i].getColor());
+            }
+        }
+        else{
+            this.play1Color = null;
+        }
+    }
 
 
     /** checks if the play can play a phase, first by seeing what phase

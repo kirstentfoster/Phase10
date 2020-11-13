@@ -48,11 +48,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param info the received info (gameState)
      */
     protected void receiveInfo(GameInfo info) {
-//
-//        if(count > 0){
-//            count = 0;
-//            return;
-//        }
+
+        if(count > 0){
+            count = 0;
+            return;
+        }
 
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
 
@@ -1252,23 +1252,31 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 //Place in groups
                 if (groupNum == 1) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
-//                    for(Card c : temp){
-//                        completeGroup1.add(new Card(c.getNumber(), c.getColor()));
-//                    }
-                    this.completeGroup1 = temp;
+
+
+                    for(Card c : temp){
+                        completeGroup1.add(new Card(c.getNumber(), c.getColor()));
+                    }
+//                    this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
-//                    Iterator<Card> temp2 = hand.iterator();
-//                    while(temp2.hasNext()){
-//                        Card d = temp2.next();
-//                        //Card d = new Card(temp2.getNumber(), temp2.getColor());
-//                        for(Card c : completeGroup1){
-//                            if(c.getNumber()==d.getNumber() && c.getColor() == d.getColor()){
-//                                hand.remove(d);
-//                                break;
-//                            }
-//                        }
-//                    }
+                    Iterator<Card> temp2 = hand.iterator();
+                    while(temp2.hasNext()){
+                        Card b = temp2.next();
+                        int j = 0;
+                        for(Card c : completeGroup1){
+                            for(int x = 0; x<hand.size(); x++){
+                                if(hand.get(x).getColor() == c.getColor() && hand.get(x).getNumber() == c.getNumber()){
+                                    j = x;
+                                    break;
+                                }
+                            }
+                            hand.remove(j);
+                            break;
+                        }
+                    }
+
+
                 } else if (groupNum == 2) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
