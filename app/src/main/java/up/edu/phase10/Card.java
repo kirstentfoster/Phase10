@@ -102,6 +102,11 @@ public class Card implements Comparable{
 
     }
 
+    /**
+     * the purpose of this method is to compare the card numbers for colors and order them
+     * @param o - this object is meant to create an instance of whatever card is looking at
+     * @return to return the number of the object so that it can be ordered
+     */
     @Override
     public int compareTo(Object o) {
         int compareNum = (((Card) o).getNumber());

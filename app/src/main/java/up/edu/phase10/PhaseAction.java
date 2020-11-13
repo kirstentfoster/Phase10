@@ -25,7 +25,6 @@ public class PhaseAction extends GameAction {
     public PhaseAction(GamePlayer player, ArrayList<Card> phaseContent) {
         super(player);
         this.phaseContent=phaseContent;
-
     }
     public ArrayList<Card>  getPhaseContent() {
         return phaseContent;

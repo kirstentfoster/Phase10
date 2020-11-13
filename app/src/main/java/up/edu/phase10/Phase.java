@@ -37,6 +37,10 @@ public class Phase { //Wild card handling will be added in beta release
     Card[] play2Set2;
     Card[] play2Color;
 
+    /**
+     * constructor class, with instance variables
+     **/
+
     public Phase(){
         Phase1 = "2 sets of 3";
         Phase2 = "1 set of 3 and 1 run of 4";
@@ -902,4 +906,4 @@ public class Phase { //Wild card handling will be added in beta release
         }
         return false;
     }//checkHitValid end
-}
+} // end of Phase class

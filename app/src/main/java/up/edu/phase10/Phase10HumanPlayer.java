@@ -153,8 +153,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
 
     /**
-     * this method gets called when the user clicks the die or hold button. It
-     * creates a new phaseAction or hitAction and sends it to the game.
+     * this method gets called when the user clicks the phase button, the hit button, the
+     * discard button, and draws the hands as each hand is created and drawn to the GUI. It
+     * creates a new phaseAction, hitAction, discardAction and sends it to the game.
      *
      * @param button
      * 		the button that was clicked
@@ -202,8 +203,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             //?????????????????????????????
         }
 
-        // for the drawFaceDown && drawFace up : click a card, in a specific area (i.e. should the
-        // onClick area be fixed like drawPile area is??
 
         if(button.equals(drawFaceDownImageButton)) {
             DrawFaceDownAction p = new DrawFaceDownAction(this);
@@ -273,6 +272,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
         this.discardButton = activity.findViewById(R.id.DiscardButton);
 
+        //hands for each player
         Hand1 = myActivity.findViewById(R.id.PlayerHand1);
         Hand2 = myActivity.findViewById(R.id.PlayerHand2);
         Hand3 = myActivity.findViewById(R.id.PlayerHand3);
@@ -286,6 +286,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
         this.quitButton = activity.findViewById(R.id.QuitButton);
 
+        //AI Phase and drawables
         AIPhase1 = myActivity.findViewById(R.id.AIPhase1);
         AIPhase2 = myActivity.findViewById(R.id.AIPhase2);
         AIPhase3 = myActivity.findViewById(R.id.AIPhase3);
@@ -301,6 +302,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         AIPhase13 = myActivity.findViewById(R.id.AIPhase13);
         AIPhase14 = myActivity.findViewById(R.id.AIPhase14);
 
+        //playerPhases and it's drawables
         PlayerPhase1 = myActivity.findViewById(R.id.playerPhase1);
         PlayerPhase2 = myActivity.findViewById(R.id.playerPhase2);
         PlayerPhase3 = myActivity.findViewById(R.id.playerPhase3);
@@ -316,6 +318,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         PlayerPhase13 = myActivity.findViewById(R.id.playerPhase13);
         PlayerPhase14 = myActivity.findViewById(R.id.playerPhase14);
 
+        //AI decks and their drawables
         AIDeckCard1 = myActivity.findViewById(R.id.AIDeckCard1);
         AIDeckCard2 = myActivity.findViewById(R.id.AIDeckCard2);
         AIDeckCard3 = myActivity.findViewById(R.id.AIDeckCard3);
@@ -350,6 +353,15 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
     }//setAsGui
 
+
+    /**
+     *
+     * void method that creates the Phase (i.e. the new phase) for
+     * the AI, and sets the Phase slot in the GUI to cards the AI
+     * has contributed
+     *
+     *
+     */
     private void createAIPhase(){
 
         if(this.playerNum+1==2) {
@@ -526,6 +538,11 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
     }
 
+    /**
+     * void method createPlayerPhase draws the player's selected phase (if valid)
+     * and gets the information, to draw it to the GUI
+     *
+     */
     private void createPlayerPhase(){
 
         if(this.playerNum+1==1) {
@@ -700,9 +717,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 PlayerPhase14.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(13)));
             }
         }
-    }
+    } //create playerPhaseHand
 
-
+    /**
+     *  method that draws all AI card, face down, so that the human player cannot see such
+     *  that the game is more realistic
+     */
 //    Face down AI hand
 //    private void createAIHand(){
 //        if(this.playerNum+1==2) {
@@ -981,9 +1001,15 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 AIDeckCard11.setImageResource(state.testSlot(state.getPlayer2Hand().get(10)));
             }
         }
-    }
+    } //drawFaceUp cards end
 
-
+    /**
+     * this method creates the Hand of each player on the GUI
+     * making sure that the imageResource (the cards) are displayed properly to
+     * their respective information
+     *
+     *
+     */
     private void createHand(){
 
         if(this.playerNum+1==1) {
@@ -1124,7 +1150,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
 
 
-    }
+    } // createHand end
 
 
 
