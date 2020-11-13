@@ -143,11 +143,11 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             return;
         }
         state = (Phase10GameState) info;
-        createHand((Phase10GameState) info);
-        createAIPhase((Phase10GameState) info);
-        createPlayerPhase((Phase10GameState) info);
-        createAIHand((Phase10GameState) info);
-        ((Phase10GameState) info).drawDiscard((MainActivity) myActivity);
+        createHand();
+        createAIPhase();
+        createPlayerPhase();
+        createAIHand();
+        state.drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
     }//receiveInfo
 
@@ -350,423 +350,423 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
     }//setAsGui
 
-    private void createAIPhase(Phase10GameState gs){
+    private void createAIPhase(){
 
         if(this.playerNum+1==2) {
-            if(gs.getPlayer1PhaseContent().size()<1){
+            if(state.getPlayer1PhaseContent().size()<1){
                 AIPhase1.setImageResource(0);
             }
             else {
-                AIPhase1.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(0)));
+                AIPhase1.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(0)));
             }
-            if(gs.getPlayer1PhaseContent().size()<2){
+            if(state.getPlayer1PhaseContent().size()<2){
                 AIPhase2.setImageResource(0);
             }
             else {
-                AIPhase2.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(1)));
+                AIPhase2.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(1)));
             }
-            if(gs.getPlayer1PhaseContent().size()<3){
+            if(state.getPlayer1PhaseContent().size()<3){
                 AIPhase3.setImageResource(0);
             }
             else {
-                AIPhase3.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(2)));
+                AIPhase3.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(2)));
             }
-            if(gs.getPlayer1PhaseContent().size()<4){
+            if(state.getPlayer1PhaseContent().size()<4){
                 AIPhase4.setImageResource(0);
             }
             else {
-                AIPhase4.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(3)));
+                AIPhase4.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(3)));
             }
-            if(gs.getPlayer1PhaseContent().size()<5){
+            if(state.getPlayer1PhaseContent().size()<5){
                 AIPhase5.setImageResource(0);
             }
             else {
-                AIPhase5.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(4)));
+                AIPhase5.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(4)));
             }
-            if(gs.getPlayer1PhaseContent().size()<6){
+            if(state.getPlayer1PhaseContent().size()<6){
                 AIPhase6.setImageResource(0);
             }
             else {
-                AIPhase6.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(5)));
+                AIPhase6.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(5)));
             }
-            if(gs.getPlayer1PhaseContent().size()<7){
+            if(state.getPlayer1PhaseContent().size()<7){
                 AIPhase7.setImageResource(0);
             }
             else {
-                AIPhase7.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(6)));
+                AIPhase7.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(6)));
             }
-            if(gs.getPlayer1PhaseContent().size()<8){
+            if(state.getPlayer1PhaseContent().size()<8){
                 AIPhase8.setImageResource(0);
             }
             else {
-                AIPhase8.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(7)));
+                AIPhase8.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(7)));
             }
-            if(gs.getPlayer1PhaseContent().size()<9){
+            if(state.getPlayer1PhaseContent().size()<9){
                 AIPhase9.setImageResource(0);
             }
             else {
-                AIPhase9.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(8)));
+                AIPhase9.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(8)));
             }
-            if(gs.getPlayer1PhaseContent().size()<10){
+            if(state.getPlayer1PhaseContent().size()<10){
                 AIPhase10.setImageResource(0);
             }
             else {
-                AIPhase10.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(9)));
+                AIPhase10.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(9)));
             }
-            if(gs.getPlayer1PhaseContent().size()<11){
+            if(state.getPlayer1PhaseContent().size()<11){
                 AIPhase11.setImageResource(0);
             }
             else {
-                AIPhase11.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(10)));
+                AIPhase11.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(10)));
             }
-            if(gs.getPlayer1PhaseContent().size()<12){
+            if(state.getPlayer1PhaseContent().size()<12){
                 AIPhase12.setImageResource(0);
             }
             else {
-                AIPhase12.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(11)));
+                AIPhase12.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(11)));
             }
-            if(gs.getPlayer1PhaseContent().size()<13){
+            if(state.getPlayer1PhaseContent().size()<13){
                 AIPhase13.setImageResource(0);
             }
             else {
-                AIPhase13.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(12)));
+                AIPhase13.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(12)));
             }
-            if(gs.getPlayer1PhaseContent().size()<14){
+            if(state.getPlayer1PhaseContent().size()<14){
                 AIPhase14.setImageResource(0);
             }
             else {
-                AIPhase14.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(13)));
+                AIPhase14.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(13)));
             }
         }
         else{
-            if(gs.getPlayer2PhaseContent().size()<1){
+            if(state.getPlayer2PhaseContent().size()<1){
                 AIPhase1.setImageResource(0);
             }
             else {
-                AIPhase1.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(0)));
+                AIPhase1.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(0)));
             }
-            if(gs.getPlayer2PhaseContent().size()<2){
+            if(state.getPlayer2PhaseContent().size()<2){
                 AIPhase2.setImageResource(0);
             }
             else {
-                AIPhase2.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(1)));
+                AIPhase2.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(1)));
             }
-            if(gs.getPlayer2PhaseContent().size()<3){
+            if(state.getPlayer2PhaseContent().size()<3){
                 AIPhase3.setImageResource(0);
             }
             else {
-                AIPhase3.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(2)));
+                AIPhase3.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(2)));
             }
-            if(gs.getPlayer2PhaseContent().size()<4){
+            if(state.getPlayer2PhaseContent().size()<4){
                 AIPhase4.setImageResource(0);
             }
             else {
-                AIPhase4.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(3)));
+                AIPhase4.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(3)));
             }
-            if(gs.getPlayer2PhaseContent().size()<5){
+            if(state.getPlayer2PhaseContent().size()<5){
                 AIPhase5.setImageResource(0);
             }
             else {
-                AIPhase5.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(4)));
+                AIPhase5.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(4)));
             }
-            if(gs.getPlayer2PhaseContent().size()<6){
+            if(state.getPlayer2PhaseContent().size()<6){
                 AIPhase6.setImageResource(0);
             }
             else {
-                AIPhase6.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(5)));
+                AIPhase6.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(5)));
             }
-            if(gs.getPlayer2PhaseContent().size()<7){
+            if(state.getPlayer2PhaseContent().size()<7){
                 AIPhase7.setImageResource(0);
             }
             else {
-                AIPhase7.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(6)));
+                AIPhase7.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(6)));
             }
-            if(gs.getPlayer2PhaseContent().size()<8){
+            if(state.getPlayer2PhaseContent().size()<8){
                 AIPhase8.setImageResource(0);
             }
             else {
-                AIPhase8.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(7)));
+                AIPhase8.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(7)));
             }
-            if(gs.getPlayer2PhaseContent().size()<9){
+            if(state.getPlayer2PhaseContent().size()<9){
                 AIPhase9.setImageResource(0);
             }
             else {
-                AIPhase9.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(8)));
+                AIPhase9.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(8)));
             }
-            if(gs.getPlayer2PhaseContent().size()<10){
+            if(state.getPlayer2PhaseContent().size()<10){
                 AIPhase10.setImageResource(0);
             }
             else {
-                AIPhase10.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(9)));
+                AIPhase10.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(9)));
             }
-            if(gs.getPlayer2PhaseContent().size()<11){
+            if(state.getPlayer2PhaseContent().size()<11){
                 AIPhase11.setImageResource(0);
             }
             else {
-                AIPhase11.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(10)));
+                AIPhase11.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(10)));
             }
-            if(gs.getPlayer2PhaseContent().size()<12){
+            if(state.getPlayer2PhaseContent().size()<12){
                 AIPhase12.setImageResource(0);
             }
             else {
-                AIPhase12.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(11)));
+                AIPhase12.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(11)));
             }
-            if(gs.getPlayer2PhaseContent().size()<13){
+            if(state.getPlayer2PhaseContent().size()<13){
                 AIPhase13.setImageResource(0);
             }
             else {
-                AIPhase13.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(12)));
+                AIPhase13.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(12)));
             }
-            if(gs.getPlayer2PhaseContent().size()<14){
+            if(state.getPlayer2PhaseContent().size()<14){
                 AIPhase14.setImageResource(0);
             }
             else {
-                AIPhase14.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(13)));
+                AIPhase14.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(13)));
             }
         }
     }
 
-    private void createPlayerPhase(Phase10GameState gs){
+    private void createPlayerPhase(){
 
         if(this.playerNum+1==1) {
-            if(gs.getPlayer1PhaseContent().size()<1){
+            if(state.getPlayer1PhaseContent().size()<1){
                 PlayerPhase1.setImageResource(0);
             }
             else {
-                PlayerPhase1.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(0)));
+                PlayerPhase1.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(0)));
             }
-            if(gs.getPlayer1PhaseContent().size()<2){
+            if(state.getPlayer1PhaseContent().size()<2){
                 PlayerPhase2.setImageResource(0);
             }
             else {
-                PlayerPhase2.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(1)));
+                PlayerPhase2.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(1)));
             }
-            if(gs.getPlayer1PhaseContent().size()<3){
+            if(state.getPlayer1PhaseContent().size()<3){
                 PlayerPhase3.setImageResource(0);
             }
             else {
-                PlayerPhase3.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(2)));
+                PlayerPhase3.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(2)));
             }
-            if(gs.getPlayer1PhaseContent().size()<4){
+            if(state.getPlayer1PhaseContent().size()<4){
                 PlayerPhase4.setImageResource(0);
             }
             else {
-                PlayerPhase4.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(3)));
+                PlayerPhase4.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(3)));
             }
-            if(gs.getPlayer1PhaseContent().size()<5){
+            if(state.getPlayer1PhaseContent().size()<5){
                 PlayerPhase5.setImageResource(0);
             }
             else {
-                PlayerPhase5.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(4)));
+                PlayerPhase5.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(4)));
             }
-            if(gs.getPlayer1PhaseContent().size()<6){
+            if(state.getPlayer1PhaseContent().size()<6){
                 PlayerPhase6.setImageResource(0);
             }
             else {
-                PlayerPhase6.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(5)));
+                PlayerPhase6.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(5)));
             }
-            if(gs.getPlayer1PhaseContent().size()<7){
+            if(state.getPlayer1PhaseContent().size()<7){
                 PlayerPhase7.setImageResource(0);
             }
             else {
-                PlayerPhase7.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(6)));
+                PlayerPhase7.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(6)));
             }
-            if(gs.getPlayer1PhaseContent().size()<8){
+            if(state.getPlayer1PhaseContent().size()<8){
                 PlayerPhase8.setImageResource(0);
             }
             else {
-                PlayerPhase8.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(7)));
+                PlayerPhase8.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(7)));
             }
-            if(gs.getPlayer1PhaseContent().size()<9){
+            if(state.getPlayer1PhaseContent().size()<9){
                 PlayerPhase9.setImageResource(0);
             }
             else {
-                PlayerPhase9.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(8)));
+                PlayerPhase9.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(8)));
             }
-            if(gs.getPlayer1PhaseContent().size()<10){
+            if(state.getPlayer1PhaseContent().size()<10){
                 PlayerPhase10.setImageResource(0);
             }
             else {
-                PlayerPhase10.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(9)));
+                PlayerPhase10.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(9)));
             }
-            if(gs.getPlayer1PhaseContent().size()<11){
+            if(state.getPlayer1PhaseContent().size()<11){
                 PlayerPhase11.setImageResource(0);
             }
             else {
-                PlayerPhase11.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(10)));
+                PlayerPhase11.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(10)));
             }
-            if(gs.getPlayer1PhaseContent().size()<12){
+            if(state.getPlayer1PhaseContent().size()<12){
                 PlayerPhase12.setImageResource(0);
             }
             else {
-                PlayerPhase12.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(11)));
+                PlayerPhase12.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(11)));
             }
-            if(gs.getPlayer1PhaseContent().size()<13){
+            if(state.getPlayer1PhaseContent().size()<13){
                 PlayerPhase13.setImageResource(0);
             }
             else {
-                PlayerPhase13.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(12)));
+                PlayerPhase13.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(12)));
             }
-            if(gs.getPlayer1PhaseContent().size()<14){
+            if(state.getPlayer1PhaseContent().size()<14){
                 PlayerPhase14.setImageResource(0);
             }
             else {
-                PlayerPhase14.setImageResource(gs.testSlot(gs.getPlayer1PhaseContent().get(13)));
+                PlayerPhase14.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(13)));
             }
         }
         else{
-            if(gs.getPlayer2PhaseContent().size()<1){
+            if(state.getPlayer2PhaseContent().size()<1){
                 PlayerPhase1.setImageResource(0);
             }
             else {
-                PlayerPhase1.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(0)));
+                PlayerPhase1.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(0)));
             }
-            if(gs.getPlayer2PhaseContent().size()<2){
+            if(state.getPlayer2PhaseContent().size()<2){
                 PlayerPhase2.setImageResource(0);
             }
             else {
-                PlayerPhase2.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(1)));
+                PlayerPhase2.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(1)));
             }
-            if(gs.getPlayer2PhaseContent().size()<3){
+            if(state.getPlayer2PhaseContent().size()<3){
                 PlayerPhase3.setImageResource(0);
             }
             else {
-                PlayerPhase3.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(2)));
+                PlayerPhase3.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(2)));
             }
-            if(gs.getPlayer2PhaseContent().size()<4){
+            if(state.getPlayer2PhaseContent().size()<4){
                 PlayerPhase4.setImageResource(0);
             }
             else {
-                PlayerPhase4.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(3)));
+                PlayerPhase4.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(3)));
             }
-            if(gs.getPlayer2PhaseContent().size()<5){
+            if(state.getPlayer2PhaseContent().size()<5){
                 PlayerPhase5.setImageResource(0);
             }
             else {
-                PlayerPhase5.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(4)));
+                PlayerPhase5.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(4)));
             }
-            if(gs.getPlayer2PhaseContent().size()<6){
+            if(state.getPlayer2PhaseContent().size()<6){
                 PlayerPhase6.setImageResource(0);
             }
             else {
-                PlayerPhase6.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(5)));
+                PlayerPhase6.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(5)));
             }
-            if(gs.getPlayer2PhaseContent().size()<7){
+            if(state.getPlayer2PhaseContent().size()<7){
                 PlayerPhase7.setImageResource(0);
             }
             else {
-                PlayerPhase7.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(6)));
+                PlayerPhase7.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(6)));
             }
-            if(gs.getPlayer2PhaseContent().size()<8){
+            if(state.getPlayer2PhaseContent().size()<8){
                 PlayerPhase8.setImageResource(0);
             }
             else {
-                PlayerPhase8.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(7)));
+                PlayerPhase8.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(7)));
             }
-            if(gs.getPlayer2PhaseContent().size()<9){
+            if(state.getPlayer2PhaseContent().size()<9){
                 PlayerPhase9.setImageResource(0);
             }
             else {
-                PlayerPhase9.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(8)));
+                PlayerPhase9.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(8)));
             }
-            if(gs.getPlayer2PhaseContent().size()<10){
+            if(state.getPlayer2PhaseContent().size()<10){
                 PlayerPhase10.setImageResource(0);
             }
             else {
-                PlayerPhase10.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(9)));
+                PlayerPhase10.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(9)));
             }
-            if(gs.getPlayer2PhaseContent().size()<11){
+            if(state.getPlayer2PhaseContent().size()<11){
                 PlayerPhase11.setImageResource(0);
             }
             else {
-                PlayerPhase11.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(10)));
+                PlayerPhase11.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(10)));
             }
-            if(gs.getPlayer2PhaseContent().size()<12){
+            if(state.getPlayer2PhaseContent().size()<12){
                 PlayerPhase12.setImageResource(0);
             }
             else {
-                PlayerPhase12.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(11)));
+                PlayerPhase12.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(11)));
             }
-            if(gs.getPlayer2PhaseContent().size()<13){
+            if(state.getPlayer2PhaseContent().size()<13){
                 PlayerPhase13.setImageResource(0);
             }
             else {
-                PlayerPhase13.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(12)));
+                PlayerPhase13.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(12)));
             }
-            if(gs.getPlayer2PhaseContent().size()<14){
+            if(state.getPlayer2PhaseContent().size()<14){
                 PlayerPhase14.setImageResource(0);
             }
             else {
-                PlayerPhase14.setImageResource(gs.testSlot(gs.getPlayer2PhaseContent().get(13)));
+                PlayerPhase14.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(13)));
             }
         }
     }
 
 
 //    Face down AI hand
-    private void createAIHand(Phase10GameState gs){
+    private void createAIHand(){
         if(this.playerNum+1==2) {
-            if(gs.getPlayer1Hand().size()<1){
+            if(state.getPlayer1Hand().size()<1){
                 AIDeckCard1.setImageResource(0);
             }
             else {
                 AIDeckCard1.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<2){
+            if(state.getPlayer1Hand().size()<2){
                 AIDeckCard2.setImageResource(0);
             }
             else {
                 AIDeckCard2.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<3){
+            if(state.getPlayer1Hand().size()<3){
                 AIDeckCard3.setImageResource(0);
             }
             else {
                 AIDeckCard3.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<4){
+            if(state.getPlayer1Hand().size()<4){
                 AIDeckCard4.setImageResource(0);
             }
             else {
                 AIDeckCard4.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<5){
+            if(state.getPlayer1Hand().size()<5){
                 AIDeckCard5.setImageResource(0);
             }
             else {
                 AIDeckCard5.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<6){
+            if(state.getPlayer1Hand().size()<6){
                 AIDeckCard6.setImageResource(0);
             }
             else {
                 AIDeckCard6.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<7){
+            if(state.getPlayer1Hand().size()<7){
                 AIDeckCard7.setImageResource(0);
             }
             else {
                 AIDeckCard7.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<8){
+            if(state.getPlayer1Hand().size()<8){
                 AIDeckCard8.setImageResource(0);
             }
             else {
                 AIDeckCard8.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<9){
+            if(state.getPlayer1Hand().size()<9){
                 AIDeckCard9.setImageResource(0);
             }
             else {
                 AIDeckCard9.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<10){
+            if(state.getPlayer1Hand().size()<10){
                 AIDeckCard10.setImageResource(0);
             }
             else {
                 AIDeckCard10.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer1Hand().size()<11){
+            if(state.getPlayer1Hand().size()<11){
                 AIDeckCard11.setImageResource(0);
             }
             else {
@@ -774,67 +774,67 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
         }
         else{
-            if(gs.getPlayer2Hand().size()<1){
+            if(state.getPlayer2Hand().size()<1){
                 AIDeckCard1.setImageResource(0);
             }
             else {
                 AIDeckCard1.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<2){
+            if(state.getPlayer2Hand().size()<2){
                 AIDeckCard2.setImageResource(0);
             }
             else {
                 AIDeckCard2.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<3){
+            if(state.getPlayer2Hand().size()<3){
                 AIDeckCard3.setImageResource(0);
             }
             else {
                 AIDeckCard3.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<4){
+            if(state.getPlayer2Hand().size()<4){
                 AIDeckCard4.setImageResource(0);
             }
             else {
                 AIDeckCard4.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<5){
+            if(state.getPlayer2Hand().size()<5){
                 AIDeckCard5.setImageResource(0);
             }
             else {
                 AIDeckCard5.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<6){
+            if(state.getPlayer2Hand().size()<6){
                 AIDeckCard6.setImageResource(0);
             }
             else {
                 AIDeckCard6.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<7){
+            if(state.getPlayer2Hand().size()<7){
                 AIDeckCard7.setImageResource(0);
             }
             else {
                 AIDeckCard7.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<8){
+            if(state.getPlayer2Hand().size()<8){
                 AIDeckCard8.setImageResource(0);
             }
             else {
                 AIDeckCard8.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<9){
+            if(state.getPlayer2Hand().size()<9){
                 AIDeckCard9.setImageResource(0);
             }
             else {
                 AIDeckCard9.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<10){
+            if(state.getPlayer2Hand().size()<10){
                 AIDeckCard10.setImageResource(0);
             }
             else {
                 AIDeckCard10.setImageResource(R.drawable.cardback);
             }
-            if(gs.getPlayer2Hand().size()<11){
+            if(state.getPlayer2Hand().size()<11){
                 AIDeckCard11.setImageResource(0);
             }
             else {
@@ -844,282 +844,282 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     }
 
 //    Shows face up AI hand
-//    private void createAIHand(Phase10GameState gs){
+//    private void createAIHand(){
 //        if(this.playerNum+1==2) {
-//            if(gs.getPlayer1Hand().size()<1){
+//            if(state.getPlayer1Hand().size()<1){
 //                AIDeckCard1.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
+//                AIDeckCard1.setImageResource(state.testSlot(state.getPlayer1Hand().get(0)));
 //            }
-//            if(gs.getPlayer1Hand().size()<2){
+//            if(state.getPlayer1Hand().size()<2){
 //                AIDeckCard2.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
+//                AIDeckCard2.setImageResource(state.testSlot(state.getPlayer1Hand().get(1)));
 //            }
-//            if(gs.getPlayer1Hand().size()<3){
+//            if(state.getPlayer1Hand().size()<3){
 //                AIDeckCard3.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
+//                AIDeckCard3.setImageResource(state.testSlot(state.getPlayer1Hand().get(2)));
 //            }
-//            if(gs.getPlayer1Hand().size()<4){
+//            if(state.getPlayer1Hand().size()<4){
 //                AIDeckCard4.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
+//                AIDeckCard4.setImageResource(state.testSlot(state.getPlayer1Hand().get(3)));
 //            }
-//            if(gs.getPlayer1Hand().size()<5){
+//            if(state.getPlayer1Hand().size()<5){
 //                AIDeckCard5.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
+//                AIDeckCard5.setImageResource(state.testSlot(state.getPlayer1Hand().get(4)));
 //            }
-//            if(gs.getPlayer1Hand().size()<6){
+//            if(state.getPlayer1Hand().size()<6){
 //                AIDeckCard6.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
+//                AIDeckCard6.setImageResource(state.testSlot(state.getPlayer1Hand().get(5)));
 //            }
-//            if(gs.getPlayer1Hand().size()<7){
+//            if(state.getPlayer1Hand().size()<7){
 //                AIDeckCard7.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
+//                AIDeckCard7.setImageResource(state.testSlot(state.getPlayer1Hand().get(6)));
 //            }
-//            if(gs.getPlayer1Hand().size()<8){
+//            if(state.getPlayer1Hand().size()<8){
 //                AIDeckCard8.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
+//                AIDeckCard8.setImageResource(state.testSlot(state.getPlayer1Hand().get(7)));
 //            }
-//            if(gs.getPlayer1Hand().size()<9){
+//            if(state.getPlayer1Hand().size()<9){
 //                AIDeckCard9.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
+//                AIDeckCard9.setImageResource(state.testSlot(state.getPlayer1Hand().get(8)));
 //            }
-//            if(gs.getPlayer1Hand().size()<10){
+//            if(state.getPlayer1Hand().size()<10){
 //                AIDeckCard10.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+//                AIDeckCard10.setImageResource(state.testSlot(state.getPlayer1Hand().get(9)));
 //            }
-//            if(gs.getPlayer1Hand().size()<11){
+//            if(state.getPlayer1Hand().size()<11){
 //                AIDeckCard11.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard11.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(10)));
+//                AIDeckCard11.setImageResource(state.testSlot(state.getPlayer1Hand().get(10)));
 //            }
 //        }
 //        else{
-//            if(gs.getPlayer2Hand().size()<1){
+//            if(state.getPlayer2Hand().size()<1){
 //                AIDeckCard1.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
+//                AIDeckCard1.setImageResource(state.testSlot(state.getPlayer2Hand().get(0)));
 //            }
-//            if(gs.getPlayer2Hand().size()<2){
+//            if(state.getPlayer2Hand().size()<2){
 //                AIDeckCard2.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
+//                AIDeckCard2.setImageResource(state.testSlot(state.getPlayer2Hand().get(1)));
 //            }
-//            if(gs.getPlayer2Hand().size()<3){
+//            if(state.getPlayer2Hand().size()<3){
 //                AIDeckCard3.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
+//                AIDeckCard3.setImageResource(state.testSlot(state.getPlayer2Hand().get(2)));
 //            }
-//            if(gs.getPlayer2Hand().size()<4){
+//            if(state.getPlayer2Hand().size()<4){
 //                AIDeckCard4.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
+//                AIDeckCard4.setImageResource(state.testSlot(state.getPlayer2Hand().get(3)));
 //            }
-//            if(gs.getPlayer2Hand().size()<5){
+//            if(state.getPlayer2Hand().size()<5){
 //                AIDeckCard5.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
+//                AIDeckCard5.setImageResource(state.testSlot(state.getPlayer2Hand().get(4)));
 //            }
-//            if(gs.getPlayer2Hand().size()<6){
+//            if(state.getPlayer2Hand().size()<6){
 //                AIDeckCard6.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
+//                AIDeckCard6.setImageResource(state.testSlot(state.getPlayer2Hand().get(5)));
 //            }
-//            if(gs.getPlayer2Hand().size()<7){
+//            if(state.getPlayer2Hand().size()<7){
 //                AIDeckCard7.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
+//                AIDeckCard7.setImageResource(state.testSlot(state.getPlayer2Hand().get(6)));
 //            }
-//            if(gs.getPlayer2Hand().size()<8){
+//            if(state.getPlayer2Hand().size()<8){
 //                AIDeckCard8.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
+//                AIDeckCard8.setImageResource(state.testSlot(state.getPlayer2Hand().get(7)));
 //            }
-//            if(gs.getPlayer2Hand().size()<9){
+//            if(state.getPlayer2Hand().size()<9){
 //                AIDeckCard9.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
+//                AIDeckCard9.setImageResource(state.testSlot(state.getPlayer2Hand().get(8)));
 //            }
-//            if(gs.getPlayer2Hand().size()<10){
+//            if(state.getPlayer2Hand().size()<10){
 //                AIDeckCard10.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+//                AIDeckCard10.setImageResource(state.testSlot(state.getPlayer2Hand().get(9)));
 //            }
-//            if(gs.getPlayer2Hand().size()<11){
+//            if(state.getPlayer2Hand().size()<11){
 //                AIDeckCard11.setImageResource(0);
 //            }
 //            else {
-//                AIDeckCard11.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(10)));
+//                AIDeckCard11.setImageResource(state.testSlot(state.getPlayer2Hand().get(10)));
 //            }
 //        }
 //    }
 
 
-    private void createHand(Phase10GameState gs){
+    private void createHand(){
 
         if(this.playerNum+1==1) {
-            if(gs.getPlayer1Hand().size()<1){
+            if(state.getPlayer1Hand().size()<1){
                 Hand1.setImageResource(0);
             }
             else {
-                Hand1.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(0)));
+                Hand1.setImageResource(state.testSlot(state.getPlayer1Hand().get(0)));
             }
-            if(gs.getPlayer1Hand().size()<2){
+            if(state.getPlayer1Hand().size()<2){
                 Hand2.setImageResource(0);
             }
             else {
-                Hand2.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(1)));
+                Hand2.setImageResource(state.testSlot(state.getPlayer1Hand().get(1)));
             }
-            if(gs.getPlayer1Hand().size()<3){
+            if(state.getPlayer1Hand().size()<3){
                 Hand3.setImageResource(0);
             }
             else {
-                Hand3.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(2)));
+                Hand3.setImageResource(state.testSlot(state.getPlayer1Hand().get(2)));
             }
-            if(gs.getPlayer1Hand().size()<4){
+            if(state.getPlayer1Hand().size()<4){
                 Hand4.setImageResource(0);
             }
             else {
-                Hand4.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(3)));
+                Hand4.setImageResource(state.testSlot(state.getPlayer1Hand().get(3)));
             }
-            if(gs.getPlayer1Hand().size()<5){
+            if(state.getPlayer1Hand().size()<5){
                 Hand5.setImageResource(0);
             }
             else {
-                Hand5.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(4)));
+                Hand5.setImageResource(state.testSlot(state.getPlayer1Hand().get(4)));
             }
-            if(gs.getPlayer1Hand().size()<6){
+            if(state.getPlayer1Hand().size()<6){
                 Hand6.setImageResource(0);
             }
             else {
-                Hand6.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(5)));
+                Hand6.setImageResource(state.testSlot(state.getPlayer1Hand().get(5)));
             }
-            if(gs.getPlayer1Hand().size()<7){
+            if(state.getPlayer1Hand().size()<7){
                 Hand7.setImageResource(0);
             }
             else {
-                Hand7.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(6)));
+                Hand7.setImageResource(state.testSlot(state.getPlayer1Hand().get(6)));
             }
-            if(gs.getPlayer1Hand().size()<8){
+            if(state.getPlayer1Hand().size()<8){
                 Hand8.setImageResource(0);
             }
             else {
-                Hand8.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(7)));
+                Hand8.setImageResource(state.testSlot(state.getPlayer1Hand().get(7)));
             }
-            if(gs.getPlayer1Hand().size()<9){
+            if(state.getPlayer1Hand().size()<9){
                 Hand9.setImageResource(0);
             }
             else {
-                Hand9.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(8)));
+                Hand9.setImageResource(state.testSlot(state.getPlayer1Hand().get(8)));
             }
-            if(gs.getPlayer1Hand().size()<10){
+            if(state.getPlayer1Hand().size()<10){
                 Hand10.setImageResource(0);
             }
             else {
-                Hand10.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(9)));
+                Hand10.setImageResource(state.testSlot(state.getPlayer1Hand().get(9)));
             }
-            if(gs.getPlayer1Hand().size()<11){
+            if(state.getPlayer1Hand().size()<11){
                 Hand11.setImageResource(0);
             }
             else {
-                Hand11.setImageResource(gs.testSlot(gs.getPlayer1Hand().get(10)));
+                Hand11.setImageResource(state.testSlot(state.getPlayer1Hand().get(10)));
             }
         }
         else{
-            if(gs.getPlayer2Hand().size()<1){
+            if(state.getPlayer2Hand().size()<1){
                 Hand1.setImageResource(0);
             }
             else {
-                Hand1.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(0)));
+                Hand1.setImageResource(state.testSlot(state.getPlayer2Hand().get(0)));
             }
-            if(gs.getPlayer2Hand().size()<2){
+            if(state.getPlayer2Hand().size()<2){
                 Hand2.setImageResource(0);
             }
             else {
-                Hand2.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(1)));
+                Hand2.setImageResource(state.testSlot(state.getPlayer2Hand().get(1)));
             }
-            if(gs.getPlayer2Hand().size()<3){
+            if(state.getPlayer2Hand().size()<3){
                 Hand3.setImageResource(0);
             }
             else {
-                Hand3.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(2)));
+                Hand3.setImageResource(state.testSlot(state.getPlayer2Hand().get(2)));
             }
-            if(gs.getPlayer2Hand().size()<4){
+            if(state.getPlayer2Hand().size()<4){
                 Hand4.setImageResource(0);
             }
             else {
-                Hand4.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(3)));
+                Hand4.setImageResource(state.testSlot(state.getPlayer2Hand().get(3)));
             }
-            if(gs.getPlayer2Hand().size()<5){
+            if(state.getPlayer2Hand().size()<5){
                 Hand5.setImageResource(0);
             }
             else {
-                Hand5.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(4)));
+                Hand5.setImageResource(state.testSlot(state.getPlayer2Hand().get(4)));
             }
-            if(gs.getPlayer2Hand().size()<6){
+            if(state.getPlayer2Hand().size()<6){
                 Hand6.setImageResource(0);
             }
             else {
-                Hand6.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(5)));
+                Hand6.setImageResource(state.testSlot(state.getPlayer2Hand().get(5)));
             }
-            if(gs.getPlayer2Hand().size()<7){
+            if(state.getPlayer2Hand().size()<7){
                 Hand7.setImageResource(0);
             }
             else {
-                Hand7.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(6)));
+                Hand7.setImageResource(state.testSlot(state.getPlayer2Hand().get(6)));
             }
-            if(gs.getPlayer2Hand().size()<8){
+            if(state.getPlayer2Hand().size()<8){
                 Hand8.setImageResource(0);
             }
             else {
-                Hand8.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(7)));
+                Hand8.setImageResource(state.testSlot(state.getPlayer2Hand().get(7)));
             }
-            if(gs.getPlayer2Hand().size()<9){
+            if(state.getPlayer2Hand().size()<9){
                 Hand9.setImageResource(0);
             }
             else {
-                Hand9.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(8)));
+                Hand9.setImageResource(state.testSlot(state.getPlayer2Hand().get(8)));
             }
-            if(gs.getPlayer2Hand().size()<10){
+            if(state.getPlayer2Hand().size()<10){
                 Hand10.setImageResource(0);
             }
             else {
-                Hand10.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(9)));
+                Hand10.setImageResource(state.testSlot(state.getPlayer2Hand().get(9)));
             }
-            if(gs.getPlayer2Hand().size()<11){
+            if(state.getPlayer2Hand().size()<11){
                 Hand11.setImageResource(0);
             }
             else {
-                Hand11.setImageResource(gs.testSlot(gs.getPlayer2Hand().get(10)));
+                Hand11.setImageResource(state.testSlot(state.getPlayer2Hand().get(10)));
             }
         }
 

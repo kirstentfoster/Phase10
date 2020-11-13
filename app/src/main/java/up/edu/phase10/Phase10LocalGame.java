@@ -23,7 +23,7 @@ public class Phase10LocalGame extends LocalGame {
 
     /* @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
      */
-    private Phase10GameState pgs;
+    Phase10GameState pgs;
 
     /**
      * This ctor creates a new game state
