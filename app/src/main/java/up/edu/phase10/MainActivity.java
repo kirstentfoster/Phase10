@@ -1,3 +1,8 @@
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ *
+ */
+
 package up.edu.phase10;
 
 import java.util.ArrayList;
@@ -8,12 +13,6 @@ import up.edu.phase10.Framework.LocalGame;
 import up.edu.phase10.Framework.GameConfig;
 import up.edu.phase10.Framework.GamePlayerType;
 
-/**
- * this is the primary activity for Pig
- *
- * @author Andrew M. Nuxoll, modified by Steven R. Vegdahl
- * @version February 2016
- */
 public class MainActivity extends GameMainActivity {
 
     // the port number that this game will use when playing over the network

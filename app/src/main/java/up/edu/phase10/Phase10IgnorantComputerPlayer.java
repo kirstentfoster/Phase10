@@ -1,3 +1,9 @@
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Where the AI methods are
+ * Creates an ignorant AI for the use to play against
+ * Should be able to do all actions necessary to complete games
+ */
 package up.edu.phase10;
 
 import java.lang.reflect.Array;

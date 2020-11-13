@@ -18,6 +18,7 @@ public class DiscardAction extends GameAction {
      * constructor for GameAction
      *
      * @param player the player who created the action
+     * @param card the card being discarded
      */
     public DiscardAction(GamePlayer player, Card card) {
         super(player);

@@ -384,6 +384,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @param size the size of the set being searched for
      * @param playerNum the number of the player that is phasing
      * @param setNum 1 or 2 based on if this is the first or second set
+     * @param test if true it is used by computer player and instane variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum, boolean test){
@@ -488,6 +489,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @param checkForRun the cards being checked for run match
      * @param size the size of the color set being searched for
      * @param playerNum the number of the player that is phasing
+     * @param test if true it is used by computer player and instance variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
@@ -570,6 +572,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @param checkForColor the cards being checked for color match
      * @param size the size of the color set being searched for
      * @param playerNum the number of the player that is phasing
+     * @param test if true it is used by computer player and instance variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
@@ -706,6 +709,7 @@ public class Phase { //Wild card handling will be added in beta release
      *
      * @param selectedCard the card that is being hit
      * @param playerNum the player that is being hit on
+     * @param test if true it is used by computer player and instane variables will not be set
      * @return true if hit is successful
      */
     public boolean checkHitValid(Card selectedCard, int playerNum, boolean test) {

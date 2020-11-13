@@ -22,6 +22,8 @@ public class HitAction extends GameAction {
      * constructor for GameAction
      *
      * @param player the player who created the action
+     * @param card the card being hit
+     * @param hitPlayer the player being hit on
      */
     public HitAction(GamePlayer player, Card card, int hitPlayer) {
         super(player);
