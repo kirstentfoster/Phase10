@@ -1,8 +1,9 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
+ * this class handles the local game that is being played, makes sure the
+ * current player can move, that the move it make is executed, checks if the
+ * gamme is over and that the updated state is sent to the game
+ *
  */
 
 package up.edu.phase10;
