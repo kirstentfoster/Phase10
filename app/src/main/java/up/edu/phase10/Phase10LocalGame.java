@@ -23,7 +23,7 @@ public class Phase10LocalGame extends LocalGame {
     private Phase10GameState pgs;
 
     /**
-     * This ctor creates a new game state
+     * This constructor creates a new game state
      */
     public Phase10LocalGame() {
         this.pgs = new Phase10GameState();

@@ -176,9 +176,9 @@ public class Phase10GameState extends GameState {
      * also initializes deck/hands with shuffled cards
      */
     public Phase10GameState() {
-        turnId = 0;
+        turnId = (int) Math.random();
         hasGoneOut = -1;
-        goesFirst = 0;
+        goesFirst = turnId;
         playerHasDrawn = false;
         player1HasPhased = false;
         player2HasPhased = false;
@@ -186,6 +186,7 @@ public class Phase10GameState extends GameState {
         player2Score = 0;
         player1Phase = 1;
         player2Phase = 1;
+        phase = new Phase();
         for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
             for (int j = 1; j <= 4; j++) {
                 drawPile.add(new Card(i, j));
@@ -212,6 +213,7 @@ public class Phase10GameState extends GameState {
          test%20the%20program.%20Remember%20on%20each...%20More%20
          Solution: I used the suggested method
          */
+
         Collections.shuffle(drawPile);//shuffle draw pile
 
         //deal cards to players and discard pile from draw pile
@@ -225,6 +227,32 @@ public class Phase10GameState extends GameState {
             drawPile.remove(0);
         }
         //FOR TESTING
+
+
+//        this.player1Phase = 2;
+//        this.player2Phase = 2;
+//        player1Hand.add(new Card(7,1));
+//        player1Hand.add(new Card(8,1));
+//        player1Hand.add(new Card(9,1));
+//        player1Hand.add(new Card(10,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//        player1Hand.add(new Card(1,1));
+//
+//        player2Hand.add(new Card(2,1));
+//        player2Hand.add(new Card(3,1));
+//        player2Hand.add(new Card(4,1));
+//        player2Hand.add(new Card(5,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+//        player2Hand.add(new Card(1,1));
+
         //        player1Hand.add(new Card(10,1));
 //        player1Hand.add(new Card(10,1));
 //        player1Hand.add(new Card(10,1));
@@ -301,6 +329,8 @@ public class Phase10GameState extends GameState {
             temp6.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer2PhaseContent(temp6);
+
+        this.phase = new Phase(PhaseGS.phase);
     }
 
     /**

@@ -86,22 +86,27 @@ public class Card implements Comparable{
         }
         else{
             if(this.getColor()==1){
-                color = "yellow";
+                color = "red";
             }
             else if(this.getColor()==2){
-                color = "green";
-            }
-            else if(this.getColor()==3){
                 color = "blue";
             }
+            else if(this.getColor()==3){
+                color = "green";
+            }
             else if(this.getColor()==4){
-                color = "red";
+                color = "yellow";
             }
             return color + " " + this.getNumber();
         }
 
     }
 
+    /**
+     * the purpose of this method is to compare the card numbers for colors and order them
+     * @param o - this object is meant to create an instance of whatever card is looking at
+     * @return to return the number of the object so that it can be ordered
+     */
     @Override
     public int compareTo(Object o) {
         int compareNum = (((Card) o).getNumber());
