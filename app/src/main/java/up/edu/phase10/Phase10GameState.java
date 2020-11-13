@@ -1,6 +1,9 @@
 /**
- * Game state holding information about each player and getters and setters for each
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Game state holding information about each player and getters and setters for each variable
+ * Draws the drawables in the correct position and assigns them values
+ * Has the phasing, hitting, drawing and discrding methods for the actions
+ *
  */
 package up.edu.phase10;
 
@@ -275,7 +278,8 @@ public class Phase10GameState extends GameState {
     }
 
     /**
-     * Copy constructor - initializes with given values
+     * Deep copy
+     * @param PhaseGS used to send info to the phase game state class
      */
     public Phase10GameState(Phase10GameState PhaseGS) {
         this.setTurnId(PhaseGS.getTurnId());
@@ -595,12 +599,21 @@ public class Phase10GameState extends GameState {
         return false;
     }
 
+    /**
+     *sends the id of the card to make it drawn on the top of the discard pile
+     * @param MA instance of GameFrameworkMainActivity to find discardPile used in the game and peek into it
+     */
     public void drawDiscard(MainActivity MA){
         discardDraw = MA.findViewById(R.id.DiscardPile);
         int id = testSlot(this.discardPile.peek());
         discardDraw.setImageResource(id);
     }
 
+    /**
+     * takes card drawn and tests to see what the new top of the discard pile should be set to
+     * @param card the card that is dealt
+     * @return
+     */
     public int testSlot(Card card){
         int i = 0;
         if(card.isSkip()){
