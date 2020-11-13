@@ -1,8 +1,9 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
+ *  this class extens the GameHumanPlayer and implements onClickListener so
+ *  that the hands, images relative to the cards that will be played, the buttons
+ *  the human player will implement and information of the human player is
+ *  recieved and sent to the game
  */
 
 package up.edu.phase10;
