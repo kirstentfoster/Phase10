@@ -1,6 +1,6 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- *
+ * this is the primary activity for Phase10
  */
 
 package up.edu.phase10;
