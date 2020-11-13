@@ -864,6 +864,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 //        }
 //    }
 
+    /**
+     * Draws the AI's hand face up for testing purposes.
+     */
 //    Shows face up AI hand
     private void createAIHand(){
         if(this.playerNum+1==2) {

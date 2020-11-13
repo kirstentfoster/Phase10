@@ -30,7 +30,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
     private ArrayList<Card> nonGroupCards = null;
 
-    private Phase10GameState copy = null;
     private ArrayList<Card> phaseContent = null;
 
     int count = 0;
@@ -54,15 +53,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param info the received info (gameState)
      */
     protected void receiveInfo(GameInfo info) {
-
-        if(count > 0){
-            count = 0;
-            return;
-        }
+//
+//        if(count > 0){
+//            count = 0;
+//            return;
+//        }
 
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
 
-        this.copy = (Phase10GameState) info; //Shallow copy
+        Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
         // gameFramework uses 0/1 player ID
@@ -144,7 +143,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 Card c = it.next();
                 hand.add(new Card(c.getNumber(), c.getColor()));
             }
-//            fullHand = copy.getPlayer2Hand();//update Shallow Copy Not working!
+//            fullHand = copy.getPlayer2Hand();//update Shallow copy Not working!
         }
 
         //Do resort
@@ -209,8 +208,17 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 complete1 = testCompleteSet(hand, 3, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 //If not complete, it will make weak/viable groups
-                if (!complete1) makeSetGroups(hand, 3, 1);
-                if (!complete2) makeSetGroups(hand, 3, 2);
+                if (!complete1) {
+                    makeSetGroups(hand, 3, 1);
+                }
+                if (!complete2) {
+                    makeSetGroups(hand, 3, 2);
+                }
+                if(complete1 && complete2){
+                    for(Card c : completeGroup1){
+                        hand.add(c);
+                    }
+                }
                 //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, true);
@@ -315,6 +323,16 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 break;
             default:
                 break;
+        }
+
+        nonGroupCards = hand;
+        Iterator<Card> it = fullHand.iterator();
+        hand = new ArrayList<Card>();
+        while (it.hasNext()) {
+
+            Card b = it.next();
+            Card c = new Card(b.getNumber(), b.getColor());
+            hand.add(new Card(c.getNumber(), c.getColor()));
         }
 
         //If somebody has phased, non-group cards will be organized into hits
@@ -765,7 +783,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 ArrayList<Card> tempHold = viableGroups1.get(0);
                 viableGroups1.set(0, viableGroups1.get(loc));
                 viableGroups1.set(loc, tempHold);
-                if(same && viableGroups2!=null){
+                if(same && viableGroups2!=null && viableGroups2.size() > loc){
                     viableGroups2.remove(loc);
                 }
 
@@ -1249,7 +1267,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
-                            return false;
+                            break;
                         }
                     }
                 }
@@ -1266,10 +1284,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 //                    this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
-                    Iterator<Card> temp2 = hand.iterator();
-                    while(temp2.hasNext()){
-                        Card b = temp2.next();
-                        int j = 0;
+//                    Iterator<Card> temp2 = hand.iterator();
+//                    while(temp2.hasNext()){
+                        int j = -1;
                         for(Card c : completeGroup1){
                             for(int x = 0; x<hand.size(); x++){
                                 if(hand.get(x).getColor() == c.getColor() && hand.get(x).getNumber() == c.getNumber()){
@@ -1277,12 +1294,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                                     break;
                                 }
                             }
-                            hand.remove(j);
-                            break;
+                            if(hand.size() > j && j >= 0) {
+                                hand.remove(j);
+                            }
                         }
-                    }
 
 
+                    return true;
                 } else if (groupNum == 2) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
@@ -2096,6 +2114,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true once executed
      */
     public boolean doHits(int phase, ArrayList<Card> fullHand){
+        if(hitList == null || whereToHitList == null){
+            return false;
+        }
+        if(hitList.size() != whereToHitList.size()){
+            return false;
+        }
         for(int i = 0; i < this.hitList.size(); i++){
             HitAction act = new HitAction(this, this.hitList.get(i), whereToHitList.get(i));
             game.sendAction(act); //Send hit!!
