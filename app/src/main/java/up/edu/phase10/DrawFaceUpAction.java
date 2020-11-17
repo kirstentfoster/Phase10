@@ -1,8 +1,7 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
+ * this action class extends Game action and draws the card
+ * face up dependent on the player attempting to do so
  */
 
 package up.edu.phase10;

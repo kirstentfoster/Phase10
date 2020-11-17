@@ -1,8 +1,9 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
+ * this class handles the local game that is being played, makes sure the
+ * current player can move, that the move it make is executed, checks if the
+ * gamme is over and that the updated state is sent to the game
+ *
  */
 
 package up.edu.phase10;
@@ -21,12 +22,11 @@ import up.edu.phase10.Framework.GameState;
 
 public class Phase10LocalGame extends LocalGame {
 
-    /* @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
-     */
+
     private Phase10GameState pgs;
 
     /**
-     * This ctor creates a new game state
+     * This constructor creates a new game state
      */
     public Phase10LocalGame() {
         this.pgs = new Phase10GameState();
@@ -34,6 +34,9 @@ public class Phase10LocalGame extends LocalGame {
 
     /**
      * can the player with the given id take an action right now?
+     * @param playerIdx
+     * 		the player's player-number (ID)
+     * @return true if the can move  or false if the can not move.
      */
     @Override
     protected boolean canMove(int playerIdx) {
@@ -48,6 +51,8 @@ public class Phase10LocalGame extends LocalGame {
     /**
      * This method is called when a new action arrives from a player
      *
+     * @param action
+     * 			The move that the player has sent to the game
      * @return true if the action was taken or false if the action was invalid/illegal.
      */
     @Override
@@ -71,8 +76,10 @@ public class Phase10LocalGame extends LocalGame {
         }
         return false;
     }//makeMove
+
     /**
      * send the updated state to a given player
+     * @param p updated info
      */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {

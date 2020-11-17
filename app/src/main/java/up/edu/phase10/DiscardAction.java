@@ -1,8 +1,7 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
+ *  this action class extends Game action and passes through the card
+ *  the player is trying to discard
  */
 
 package up.edu.phase10;
@@ -18,6 +17,7 @@ public class DiscardAction extends GameAction {
      * constructor for GameAction
      *
      * @param player the player who created the action
+     * @param card the card being discarded
      */
     public DiscardAction(GamePlayer player, Card card) {
         super(player);
