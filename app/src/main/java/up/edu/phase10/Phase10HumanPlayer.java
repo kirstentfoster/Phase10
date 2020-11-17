@@ -36,6 +36,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     // the android activity that we are running
     private GameMainActivity myActivity;
 
+    final static boolean faceUp = true; //use to show AI cards
+
     /* instance variables */
 
     // These variables will reference widgets that will be modified during play
@@ -147,7 +149,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         createHand();
         createAIPhase();
         createPlayerPhase();
-        createAIHand();
+        if(faceUp == true) {
+            createAIHandUp();
+        }
+        else{
+            createAIHandDown();
+        }
         state.drawDiscard((MainActivity) myActivity);
         //TO DO should phase counters be here??
     }//receiveInfo
@@ -725,150 +732,150 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *  that the game is more realistic
      */
 //    Face down AI hand
-//    private void createAIHand(){
-//        if(this.playerNum+1==2) {
-//            if(state.getPlayer1Hand().size()<1){
-//                AIDeckCard1.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard1.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<2){
-//                AIDeckCard2.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard2.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<3){
-//                AIDeckCard3.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard3.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<4){
-//                AIDeckCard4.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard4.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<5){
-//                AIDeckCard5.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard5.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<6){
-//                AIDeckCard6.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard6.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<7){
-//                AIDeckCard7.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard7.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<8){
-//                AIDeckCard8.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard8.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<9){
-//                AIDeckCard9.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard9.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<10){
-//                AIDeckCard10.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard10.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer1Hand().size()<11){
-//                AIDeckCard11.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard11.setImageResource(R.drawable.cardback);
-//            }
-//        }
-//        else{
-//            if(state.getPlayer2Hand().size()<1){
-//                AIDeckCard1.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard1.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<2){
-//                AIDeckCard2.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard2.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<3){
-//                AIDeckCard3.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard3.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<4){
-//                AIDeckCard4.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard4.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<5){
-//                AIDeckCard5.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard5.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<6){
-//                AIDeckCard6.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard6.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<7){
-//                AIDeckCard7.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard7.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<8){
-//                AIDeckCard8.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard8.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<9){
-//                AIDeckCard9.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard9.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<10){
-//                AIDeckCard10.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard10.setImageResource(R.drawable.cardback);
-//            }
-//            if(state.getPlayer2Hand().size()<11){
-//                AIDeckCard11.setImageResource(0);
-//            }
-//            else {
-//                AIDeckCard11.setImageResource(R.drawable.cardback);
-//            }
-//        }
-//    }
+    private void createAIHandDown(){
+        if(this.playerNum+1==2) {
+            if(state.getPlayer1Hand().size()<1){
+                AIDeckCard1.setImageResource(0);
+            }
+            else {
+                AIDeckCard1.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<2){
+                AIDeckCard2.setImageResource(0);
+            }
+            else {
+                AIDeckCard2.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<3){
+                AIDeckCard3.setImageResource(0);
+            }
+            else {
+                AIDeckCard3.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<4){
+                AIDeckCard4.setImageResource(0);
+            }
+            else {
+                AIDeckCard4.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<5){
+                AIDeckCard5.setImageResource(0);
+            }
+            else {
+                AIDeckCard5.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<6){
+                AIDeckCard6.setImageResource(0);
+            }
+            else {
+                AIDeckCard6.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<7){
+                AIDeckCard7.setImageResource(0);
+            }
+            else {
+                AIDeckCard7.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<8){
+                AIDeckCard8.setImageResource(0);
+            }
+            else {
+                AIDeckCard8.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<9){
+                AIDeckCard9.setImageResource(0);
+            }
+            else {
+                AIDeckCard9.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<10){
+                AIDeckCard10.setImageResource(0);
+            }
+            else {
+                AIDeckCard10.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer1Hand().size()<11){
+                AIDeckCard11.setImageResource(0);
+            }
+            else {
+                AIDeckCard11.setImageResource(R.drawable.cardback);
+            }
+        }
+        else{
+            if(state.getPlayer2Hand().size()<1){
+                AIDeckCard1.setImageResource(0);
+            }
+            else {
+                AIDeckCard1.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<2){
+                AIDeckCard2.setImageResource(0);
+            }
+            else {
+                AIDeckCard2.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<3){
+                AIDeckCard3.setImageResource(0);
+            }
+            else {
+                AIDeckCard3.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<4){
+                AIDeckCard4.setImageResource(0);
+            }
+            else {
+                AIDeckCard4.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<5){
+                AIDeckCard5.setImageResource(0);
+            }
+            else {
+                AIDeckCard5.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<6){
+                AIDeckCard6.setImageResource(0);
+            }
+            else {
+                AIDeckCard6.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<7){
+                AIDeckCard7.setImageResource(0);
+            }
+            else {
+                AIDeckCard7.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<8){
+                AIDeckCard8.setImageResource(0);
+            }
+            else {
+                AIDeckCard8.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<9){
+                AIDeckCard9.setImageResource(0);
+            }
+            else {
+                AIDeckCard9.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<10){
+                AIDeckCard10.setImageResource(0);
+            }
+            else {
+                AIDeckCard10.setImageResource(R.drawable.cardback);
+            }
+            if(state.getPlayer2Hand().size()<11){
+                AIDeckCard11.setImageResource(0);
+            }
+            else {
+                AIDeckCard11.setImageResource(R.drawable.cardback);
+            }
+        }
+    }
 
     /**
      * Draws the AI's hand face up for testing purposes.
      */
 //    Shows face up AI hand
-    private void createAIHand(){
+    private void createAIHandUp(){
         if(this.playerNum+1==2) {
             if(state.getPlayer1Hand().size()<1){
                 AIDeckCard1.setImageResource(0);
