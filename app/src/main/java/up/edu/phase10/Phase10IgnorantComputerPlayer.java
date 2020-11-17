@@ -119,8 +119,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
 
         /* DRAW */
-        doDraw(copy, hasPhased, phase, fullHand);
-
+        if(copy.getTurnStage() == 1) {
+            doDraw(copy, hasPhased, phase, fullHand);
+        }
         /* Resort groups */
 
         //Get new variables
@@ -153,34 +154,41 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
 
         /* PHASE */
-        if (!hasPhased) {
-            if (checkPhaseReady(phase)){
-                doPhase(phase); //Phase action in here
-                hasPhased = true;
-                sortGroups(hand, phase, fullHand, copy);
+        if(copy.getTurnStage() == 2) {
+            if (!hasPhased) {
+                if (checkPhaseReady(phase)) {
+                    doPhase(phase); //Phase action in here
+                    hasPhased = true;
+                    sortGroups(hand, phase, fullHand, copy);
+                }
+                else copy.setTurnStage(3);
             }
         }
 
 
         /* HIT */
-        if (hasPhased && checkHitsExist()) {
-            doHits(phase, fullHand); //Hit action in here
+        if(copy.getTurnStage() == 3) {
+            if (hasPhased && checkHitsExist()) {
+                doHits(phase, fullHand); //Hit action in here
+            }
+            else copy.setTurnStage(4);
         }
 
-
         /* DISCARD */
-        doDiscard(copy, hasPhased);
-        if(hand != null){
-            Iterator<Card> it = hand.iterator();
-            while(it.hasNext()){
-                Card c = it.next();
-                if(c.equals(copy.getDiscardPile().peek())){
-                    hand.remove(c);
-                    break;
+        if(copy.getTurnStage() == 4) {
+            doDiscard(copy, hasPhased);
+            if (hand != null) {
+                Iterator<Card> it = hand.iterator();
+                while (it.hasNext()) {
+                    Card c = it.next();
+                    if (c.equals(copy.getDiscardPile().peek())) {
+                        hand.remove(c);
+                        break;
+                    }
                 }
             }
         }
-        count++;
+        // count++;
         return;
     }
 

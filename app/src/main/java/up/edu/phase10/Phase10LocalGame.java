@@ -174,6 +174,7 @@ public class Phase10LocalGame extends LocalGame {
             pgs.setPlayerHasDrawn(false);
             pgs.setPlayer1HasPhased(false);
             pgs.setPlayer2HasPhased(false);
+            pgs.setTurnStage(1);
             //Re-deal Cards
             ArrayList<Card> tempDeck = new ArrayList<Card>();
             for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
