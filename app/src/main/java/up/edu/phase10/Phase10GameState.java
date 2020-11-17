@@ -32,6 +32,7 @@ public class Phase10GameState extends GameState {
     private int player1Phase; //Standard is 10 phases, optional: set different phases for game
     private int player2Phase;
     private int hasGoneOut; //set to zero until a player goes out, then set to player Id
+    private int turnStage; //1-4 corresponding to draw, phase, hit, and discard actions
     public Phase phase = new Phase();
 
     public ImageButton discardDraw = null;
@@ -101,6 +102,7 @@ public class Phase10GameState extends GameState {
         this.player2Hand = player2Hand;
     }
 
+    public void setTurnStage(int turnStage){this.turnStage = turnStage;}
     //Getters
     public boolean getPlayerHasDrawn() {
         return this.playerHasDrawn;
@@ -168,6 +170,8 @@ public class Phase10GameState extends GameState {
 
     public Phase getPhase(){ return this.phase; }
 
+    public int getTurnStage(){return this.turnStage;}
+
     /**
      * Constructor - Initializes variables with 0/null values
      * also initializes deck/hands with shuffled cards
@@ -183,6 +187,7 @@ public class Phase10GameState extends GameState {
         player2Score = 0;
         player1Phase = 1;
         player2Phase = 1;
+        turnStage = 1;
         for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
             for (int j = 1; j <= 4; j++) {
                 drawPile.add(new Card(i, j));
@@ -287,6 +292,7 @@ public class Phase10GameState extends GameState {
         this.setPlayer2Score(PhaseGS.getPlayer2Score());
         this.setPlayer1Phase(PhaseGS.getPlayer1Phase());
         this.setPlayer2Phase(PhaseGS.getPlayer2Phase());
+        this.setTurnStage(PhaseGS.getTurnStage());
 
         //set all array lists and stacks using for each loops
         Stack<Card> temp = new Stack<Card>();
@@ -345,11 +351,16 @@ public class Phase10GameState extends GameState {
         //determine which player hand it goes to
         if (playerId == 0) {
             this.player1Hand.add(drawn); //add to hand
+            turnStage++;
             return true;
         } else if (playerId == 1) {
             this.player2Hand.add(drawn); //add to hand
+            turnStage++;
             return true;
-        } else return false;
+        } else{
+            turnStage++;
+            return false;
+        }
     }
 
     /**
@@ -371,11 +382,16 @@ public class Phase10GameState extends GameState {
         //determine which player hand it goes to
         if (playerId == 0) {
             this.player1Hand.add(drawn); //add to hand
+            turnStage++;
             return true;
         } else if (playerId == 1) {
             this.player2Hand.add(drawn); //add to hand
+            turnStage++;
             return true;
-        } else return false;
+        } else{
+            turnStage++;
+            return false;
+        }
     }
 
     /**
@@ -405,7 +421,10 @@ public class Phase10GameState extends GameState {
                         notFound = false;
                     }
                 }
-            } else return false;
+            } else{
+                this.turnStage = 1;
+                return false;
+            }
         }
         //determine which player is discarding
         if (playerId == 0) {
@@ -417,7 +436,7 @@ public class Phase10GameState extends GameState {
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
             if (!discardPile.peek().isSkip())
                 this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
-
+            turnStage = 1;
             this.playerHasDrawn = false;
             return true;
         } else if (playerId == 1) {
@@ -428,9 +447,14 @@ public class Phase10GameState extends GameState {
             if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
             if (!discardPile.peek().isSkip()) this.turnId = 0;
 
+            turnStage = 1;
             this.playerHasDrawn = false;
             return true;
-        } else return false;
+        } else {
+            this.turnStage = 1;
+            return false;
+        }
+
     }
 
     /**
@@ -471,6 +495,7 @@ public class Phase10GameState extends GameState {
                     player1Hand.remove(j);
                     player1PhaseContent.add(c);
                 }
+                turnStage++;
                 player1HasPhased = true;
                 return true;
             }
@@ -487,11 +512,14 @@ public class Phase10GameState extends GameState {
                     player2Hand.remove(j);
                     player2PhaseContent.add(c);
                 }
+                turnStage++;
                 player2HasPhased = true;
                 return true;
             }
+            turnStage++;
             return true;
         }
+        turnStage++;
         return false;
     }
 
@@ -525,9 +553,13 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
+                            turnStage++;
                             player1Hand.remove(j);
                             return true;
-                        } else return false;
+                        } else{
+                            turnStage++;
+                            return false;
+                        }
                     }
                 } else if (playerNum == 1 && player2HasPhased) {
                     if (player1HasPhased) {
@@ -541,9 +573,13 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
+                            turnStage++;
                             player2Hand.remove(j);
                             return true;
-                        } else return false;
+                        } else{
+                            turnStage++;
+                            return false;
+                        }
                     }
                 }
             }else if (hitOnPlayer == playerNum) { // if hitOnPlayer is the same as playerNum then the player hits on their own phaseContext
@@ -559,9 +595,13 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
+                            turnStage++;
                             player1Hand.remove(j);
                             return true;
-                        } else return false;
+                        } else{
+                            turnStage++;
+                            return false;
+                        }
                     }
                 }
                 if (playerNum == 1) {
@@ -576,9 +616,13 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
+                            turnStage++;
                             player2Hand.remove(j);
                             return true;
-                        } else return false;
+                        } else{
+                            turnStage++;
+                            return false;
+                        }
                     }
                 }
             }
@@ -589,6 +633,7 @@ public class Phase10GameState extends GameState {
 
 
         }
+        turnStage++;
         return false;
     }
 
