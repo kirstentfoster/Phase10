@@ -560,11 +560,9 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
-                            turnStage++;
                             player1Hand.remove(j);
                             return true;
                         } else{
-                            turnStage++;
                             return false;
                         }
                     }
@@ -580,11 +578,9 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
-                            turnStage++;
                             player2Hand.remove(j);
                             return true;
                         } else{
-                            turnStage++;
                             return false;
                         }
                     }
@@ -602,11 +598,9 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
-                            turnStage++;
                             player1Hand.remove(j);
                             return true;
                         } else{
-                            turnStage++;
                             return false;
                         }
                     }
@@ -623,11 +617,9 @@ public class Phase10GameState extends GameState {
                                     break;
                                 }
                             }
-                            turnStage++;
                             player2Hand.remove(j);
                             return true;
                         } else{
-                            turnStage++;
                             return false;
                         }
                     }
@@ -640,7 +632,6 @@ public class Phase10GameState extends GameState {
 
 
         }
-        turnStage++;
         return false;
     }
 

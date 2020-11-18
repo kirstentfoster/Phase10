@@ -204,6 +204,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
 
+        this.completeGroup1 = null;
+        this.completeGroup2 = null;
+        this.weakGroups1 = null;
+        this.weakGroups2 = null;
+        this.viableGroups2 = null;
+        this.viableGroups1 = null;
         boolean complete1 = false;
         boolean complete2 = false;
         boolean sorted = false;
