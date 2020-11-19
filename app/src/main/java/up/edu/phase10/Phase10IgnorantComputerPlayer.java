@@ -1,7 +1,7 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * Where the AI methods are
- * Creates an ignorant AI for the use to play against
+ * Creates an smart AI for the use to play against
  * Should be able to do all actions necessary to complete games
  */
 package up.edu.phase10;
@@ -30,9 +30,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
     private ArrayList<Card> nonGroupCards = null;
 
-    private ArrayList<Card> phaseContent = null;
-
-    int count = 0;
 
     public Phase10IgnorantComputerPlayer(String name) {
         super(name);
@@ -53,14 +50,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param info the received info (gameState)
      */
     protected void receiveInfo(GameInfo info) {
-//
-//        if(count > 0){
-//            count = 0;
-//            return;
-//        }
 
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
-
+        clearVars();
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
@@ -70,11 +62,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         boolean hasPhased = false;
         int phase = 0;
         ArrayList<Card> fullHand = null;
+        ArrayList<Card> hand = null;
 
         if (this.playerNum == 0) {
 
             //Deep copy into a usable temporary hand
-            ArrayList<Card> hand = new ArrayList<Card>();
+            hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer1Hand().iterator();
             while (it.hasNext()) {
 
@@ -89,14 +82,19 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             fullHand = copy.getPlayer1Hand();
 
             //Sort groups
-            Collections.sort(hand);
-            if(phase == 8) hand = sortColor(hand);
-            sortGroups(hand, copy.getPlayer1Phase(), fullHand, copy);
-
+            if(!hasPhased) {
+                Collections.sort(hand);
+                if (phase == 8) hand = sortColor(hand);
+                sortGroups(hand, copy.getPlayer1Phase(), fullHand, copy);
+            }
+            else{
+                this.nonGroupCards = hand;
+                makeHits(copy, copy.getPlayer1HasPhased(), copy.getPlayer2HasPhased());
+            }
         } else if (this.playerNum == 1) {
 
             //Deep copy into a usable temporary hand
-            ArrayList<Card> hand = new ArrayList<Card>();
+            hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer2Hand().iterator();
             while (it.hasNext()) {
 
@@ -111,47 +109,24 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             fullHand = copy.getPlayer2Hand();
 
             //Sort groups
-            Collections.sort(hand);
-            if(phase == 8) hand = sortColor(hand);
-            sortGroups(hand, copy.getPlayer2Phase(), fullHand, copy);
-
+            if(!hasPhased) {
+                Collections.sort(hand);
+                if (phase == 8) hand = sortColor(hand);
+                sortGroups(hand, copy.getPlayer2Phase(), fullHand, copy);
+            }
+            else{
+                this.nonGroupCards = hand;
+                makeHits(copy, copy.getPlayer1HasPhased(), copy.getPlayer2HasPhased());
+            }
 
         }
 
         /* DRAW */
         if(copy.getTurnStage() == 1) {
             doDraw(copy, hasPhased, phase, fullHand);
+            copy.setTurnStage(2);
+            return;
         }
-        /* Resort groups */
-
-        //Get new variables
-        ArrayList<Card> hand = null;
-        if(this.playerNum + 1 == 1){
-            //Deep copy again with new card
-            hand = new ArrayList<Card>();
-            Iterator<Card> it = fullHand.iterator(); //copy.getPlayer1Hand().iterator();
-            while (it.hasNext()) {
-                Card c = it.next();
-                hand.add(new Card(c.getNumber(), c.getColor()));
-            }
-//            fullHand = copy.getPlayer1Hand();//update Shallow copy not working?
-        }
-        else if(this.playerNum + 1 == 2){
-            //Deep copy again with new card
-            hand = new ArrayList<Card>();
-            Iterator<Card> it = fullHand.iterator();
-            while (it.hasNext()) {
-                Card c = it.next();
-                hand.add(new Card(c.getNumber(), c.getColor()));
-            }
-//            fullHand = copy.getPlayer2Hand();//update Shallow copy Not working!
-        }
-
-        //Do resort
-        Collections.sort(hand);
-        if(phase == 8) hand = sortColor(hand);
-        sortGroups(hand, phase, fullHand, copy);
-
 
         /* PHASE */
         if(copy.getTurnStage() == 2) {
@@ -159,10 +134,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (checkPhaseReady(phase)) {
                     doPhase(phase); //Phase action in here
                     hasPhased = true;
-                    sortGroups(hand, phase, fullHand, copy);
+                    copy.setTurnStage(3);
+                    return;
                 }
-                else copy.setTurnStage(3);
             }
+            copy.setTurnStage(3);
+
         }
 
 
@@ -170,8 +147,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(copy.getTurnStage() == 3) {
             if (hasPhased && checkHitsExist()) {
                 doHits(phase, fullHand); //Hit action in here
+                return;
             }
             else copy.setTurnStage(4);
+
         }
 
         /* DISCARD */
@@ -190,6 +169,21 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
         // count++;
         return;
+    }
+
+    /**
+     * clears the variables of this class
+     */
+    public void clearVars(){
+        this.hitList = null;
+        this.whereToHitList = null;
+        this.weakGroups1 = null;
+        this.viableGroups1 = null;
+        this.completeGroup1 = null;
+        this.weakGroups2 = null;
+        this.viableGroups2 = null;
+        this.completeGroup2 = null;
+        this.nonGroupCards = null;
     }
 
     /**
@@ -216,6 +210,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
         //Runs are always checked first (runs are hard to make)
         //Bigger sets are checked before smaller sets
+
         switch (phase) {
             case 1:
                 //test if the groups are complete first
@@ -2103,7 +2098,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 return false;
         }
 
-        phaseContent = temp;
         PhaseAction act = new PhaseAction(this, temp);
         game.sendAction(act); //Send Phase!!
         return true;
