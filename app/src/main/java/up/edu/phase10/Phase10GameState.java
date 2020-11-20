@@ -224,7 +224,6 @@ public class Phase10GameState extends GameState {
 
         //deal cards to players and discard pile from draw pile
         discardPile.add(drawPile.get(0));
-        discardPile.add(drawPile.get(0)); //TODO: FIX - FOR ALPHA ONLY
         discardPile.remove(0);
         for (int i = 0; i < 10; i++) {
             player1Hand.add(drawPile.get(0));
