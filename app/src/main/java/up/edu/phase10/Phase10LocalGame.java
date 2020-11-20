@@ -165,7 +165,7 @@ public class Phase10LocalGame extends LocalGame {
             if(pgs.getPlayer2PhaseContent().size() != 0) pgs.setPlayer2PhaseContent(new ArrayList<Card>());
             //Reset variables
             //TODO allow AI to go first
-            if(pgs.getGoesFirst() == 0) pgs.setTurnId(0);
+            if(pgs.getGoesFirst() == 0) pgs.setTurnId(1);
             else if(pgs.getGoesFirst() == 1) pgs.setTurnId(0);
             pgs.setHasGoneOut(-1);
             pgs.setPlayerHasDrawn(false);

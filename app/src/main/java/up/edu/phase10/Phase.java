@@ -828,10 +828,15 @@ public class Phase { //Wild card handling will be added in beta release
             //Runs
             if(this.play1Run != null) {
                 Card[] tempPlay1Run = new Card[play1Run.length + 1];
+                int x;
+                if(selectedCard.getNumber() < tempPlay1Run[0].getNumber()) x = 1;
+                else x = 0;
                 for (int i = 0; i < play1Run.length; i++) {
-                    tempPlay1Run[i] = play1Run[i];
+                    tempPlay1Run[i+x] = play1Run[i];
                 }
-                tempPlay1Run[play1Run.length] = selectedCard;
+                if(x == 0) tempPlay1Run[play1Run.length] = selectedCard;
+                else if(x == 1) tempPlay1Run[0] = selectedCard;
+
                 if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test) == null)) return true;
             }
             //Sets

@@ -34,7 +34,7 @@ public class Phase10GameState extends GameState {
     private int player2Score;
     private int player1Phase; //Standard is 10 phases, optional: set different phases for game
     private int player2Phase;
-    private int hasGoneOut; //set to zero until a player goes out, then set to player Id
+    private int hasGoneOut; //set to -1 until a player goes out, then set to player Id
     private int turnStage; //1-4 corresponding to draw, phase, hit, and discard actions
     public Phase phase = new Phase();
 

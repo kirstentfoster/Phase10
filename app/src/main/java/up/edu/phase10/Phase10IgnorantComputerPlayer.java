@@ -375,7 +375,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
             for (int j = i + 1; j < hand.size(); j++) {//Compare card is within run Size of initial card
 
-                if (hand.get(j).getNumber() <= temp.get(0).getNumber() + size && hand.get(j).getNumber() != temp.get(tempLoc).getNumber()) {
+                if (hand.get(j).getNumber() <= (temp.get(0).getNumber() + size) && hand.get(j).getNumber() > temp.get(0).getNumber() && hand.get(j).getNumber() != temp.get(tempLoc).getNumber()) {
                     temp.add(hand.get(j));
                     tempLoc++;
                 }
@@ -389,10 +389,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
         ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
 
-        for (ArrayList<Card> group : allLowGroups) {
+        Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
+        while (it1.hasNext()) {
+            ArrayList<Card> group = it1.next();
             if(group.size() < 2) allLowGroups.remove(group); //Too small
             if (size == 4 && group.size() == 2) weaks.add(group);
-            if (size > 4 && group.size() <= 3) weaks.add(group);
+            else if (size > 4 && group.size() <= 3) weaks.add(group);
             else viables.add(group);
         }
 
@@ -465,7 +467,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
         //Put in wilds
         boolean used = false;
-        for(Card c : this.nonGroupCards){
+        if(this.nonGroupCards == null || this.nonGroupCards.size() == 0) return true;
+        Iterator<Card> it3 = this.nonGroupCards.iterator();
+        while (it3.hasNext()) {
+            Card c = it3.next();
             if(c.isWild()) {
                 if (this.weakGroups1 != null) {
                     for (ArrayList<Card> group : weakGroups1) group.add(c);
@@ -525,7 +530,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         //separate into weak and viable
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
         ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
-        for (ArrayList<Card> group : allLowGroups) {
+        Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
+        while (it1.hasNext()) {
+            ArrayList<Card> group = it1.next();
             if(group.size() < 2) {
                 allLowGroups.remove(group);
             }
@@ -664,7 +671,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         //separate into weak and viable
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
         ArrayList<ArrayList<Card>> weaks = new ArrayList<ArrayList<Card>>();
-        for (ArrayList<Card> group : allLowGroups) {
+        Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
+        while (it1.hasNext()) {
+            ArrayList<Card> group = it1.next();
             if(group.size() < 2) allLowGroups.remove(group);
             if (size == 4 && group.size() == 2) weaks.add(group);
             if (size > 4 && group.size() <= 3) weaks.add(group);
@@ -739,8 +748,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
         //Put in wilds
         boolean used = false;
-        for(Card c : this.nonGroupCards){
-            if(c.isWild()) {
+        if(this.nonGroupCards == null || this.nonGroupCards.size() == 0) return true;
+        Iterator<Card> it3 = this.nonGroupCards.iterator();
+        while (it3.hasNext()) {
+            Card c = it3.next();
+            if(c.isWild()){
                 if (this.weakGroups1 != null) {
                     for (ArrayList<Card> group : weakGroups1) group.add(c);
                     used = true;
@@ -2168,8 +2180,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 this.hitList = new ArrayList<Card>();
                 Iterator<Card> it = this.nonGroupCards.iterator();
                 while (it.hasNext()) {
-
                     Card b = it.next();
+                    if(b == null) break;
                     Card c = new Card(b.getNumber(), b.getColor());
                     if (gs.phase.checkHitValid(c, 0, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
@@ -2186,8 +2198,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if(this.nonGroupCards != null) {
                 Iterator<Card> it = this.nonGroupCards.iterator();
                 while (it.hasNext()) {
-
                     Card b = it.next();
+                    if(b == null) break;
                     Card c = new Card(b.getNumber(), b.getColor());
                     if (gs.phase.checkHitValid(c, 1, true)) {
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
