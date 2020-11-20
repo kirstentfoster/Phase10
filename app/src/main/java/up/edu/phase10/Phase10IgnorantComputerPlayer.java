@@ -155,7 +155,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         /* DISCARD */
         if(copy.getTurnStage() == 4) {
             doDiscard(copy, hasPhased);
-            if (hand != null) {
+            if (hand != null || hand.size() != 0) {
                 Iterator<Card> it = hand.iterator();
                 while (it.hasNext()) {
                     Card c = it.next();
@@ -488,9 +488,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     used = true;
                 }
             }
-            if(used = true) nonGroupCards.remove(c);
+            if(used == true) nonGroupCards.remove(c);
         }
-
+        if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
+        if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         return true;
     }
 
@@ -1523,7 +1524,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     public boolean checkGrowsRun(Card card, int groupNum, int size){ //I dont think this handles the card being a smaller number than the run
         //check groups1 aren't null
         if(groupNum == 1) {
-            if (this.completeGroup1 != null) {
+            if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
                     this.completeGroup1.add(0, card);
@@ -1538,6 +1539,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for(ArrayList<Card> group : viableGroups1) {
                     int base = group.get(0).getNumber();
                     for (int j = 1; j < size; j++) { //Compare card is within run Size of initial card
+                        if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
                             return true;
@@ -1549,6 +1551,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for(ArrayList<Card> group : weakGroups1) {
                     int base = group.get(0).getNumber();
                     for (int j = 1; j < size; j++) { //Compare card is within run Size of initial card
+                        if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
                             return true;
@@ -1559,7 +1562,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
         //check groups2 arent null
         else if(groupNum == 2) {
-            if (this.completeGroup2 != null) { //Will only reach here to test hit
+            if (this.completeGroup2 != null && this.completeGroup2.size() != 0) { //Will only reach here to test hit
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
                     this.completeGroup2.add(0, card);
@@ -1574,6 +1577,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for(ArrayList<Card> group : viableGroups2) {
                     int base = group.get(0).getNumber();
                     for (int j = 1; j < size; j++) { //Compare card is within run Size of initial card
+                        if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
                             return true;
@@ -1585,6 +1589,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for(ArrayList<Card> group : weakGroups2) {
                     int base = group.get(0).getNumber();
                     for (int j = 1; j < size; j++) { //Compare card is within run Size of initial card
+                        if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
                             return true;
@@ -1800,19 +1805,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if (this.nonGroupCards != null && this.nonGroupCards.size() > 0) {
             int highestScore = this.nonGroupCards.get(0).getScore();
             int highScoreLoc = 0;
-//            while (this.nonGroupCards.size() > j) {
-//                if (!this.nonGroupCards.get(j).isWild()) {
-//                    highestScore = this.nonGroupCards.get(j).getScore();
-//                    highScoreLoc = j;
-//                }
-//                j++;
-//            }
-//            if (!(j >= this.nonGroupCards.size())) { //Else nonGroupCards are all wilds, which is unlikely but possible
             if (this.nonGroupCards != null && this.nonGroupCards.size() > 0) {
                 for (int i = 1; i < this.nonGroupCards.size(); i++) {
                     if (this.nonGroupCards.get(i).isSkip()) { //Skips are highest discard priority
                         highScoreLoc = i;
-                        i = this.nonGroupCards.size();
+                        highestScore = this.nonGroupCards.get(i).getScore();
+                        break;
                     } else if (!this.nonGroupCards.get(i).isWild()) { //Next priority is the highest score non-wild nongroup card
                         if (this.nonGroupCards.get(i).getScore() > highestScore) {
                             highScoreLoc = i;
@@ -1822,9 +1820,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
                 game.sendAction(act); //Send Discard!!
-//                Stack<Card> temp = gameState.getDiscardPile();
-//                temp.add(this.nonGroupCards.get(highScoreLoc));
-//                gameState.setDiscardPile(temp);
                 return true;
             }
         }
@@ -1917,7 +1912,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             DiscardAction act = new DiscardAction(this, this.hitList.get(highestScoreLoc));
             game.sendAction(act); //Send Discard!!
-            //this.hitList.remove(highestScoreLoc);
             return true;
         }
         if (playerNum == 0) {
@@ -1939,10 +1933,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean checkPhaseReady(int phase) {
         if(phase == 1 || phase == 2 || phase == 3 ||  phase == 7 ||  phase == 9 ||  phase == 10) {
-            if (completeGroup1 != null && completeGroup2 != null) return true; //Return 2 groups
+            if (completeGroup1 != null && completeGroup2 != null && completeGroup1.size() != 0 && completeGroup2.size() != 0) return true; //Return 2 groups
         }
         else if(phase == 4 || phase == 5 || phase == 6 || phase == 8) {
-            if (completeGroup1 != null) return true; //Return 1 group
+            if (completeGroup1 != null && completeGroup1.size() != 0 ) return true; //Return 1 group
         }
         return false; //Not ready to phase
     }

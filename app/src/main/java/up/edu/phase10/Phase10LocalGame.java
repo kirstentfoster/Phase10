@@ -186,9 +186,9 @@ public class Phase10LocalGame extends LocalGame {
 //            for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            tempDeck.add(new Card(0, 0));
 //        }
-//            for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-//                tempDeck.add(new Card(-1, -1));
-//            }
+            for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+                tempDeck.add(new Card(-1, -1));
+            }
             Collections.shuffle(tempDeck);
             Stack<Card> tempDiscard = new Stack<Card>();
             tempDiscard.push(tempDeck.get(0));

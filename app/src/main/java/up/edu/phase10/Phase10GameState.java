@@ -204,9 +204,9 @@ public class Phase10GameState extends GameState {
 //        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            drawPile.add(new Card(0, 0));
 //        }
-//        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-//            drawPile.add(new Card(-1, -1));
-//        }
+        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+            drawPile.add(new Card(-1, -1));
+        }
 
 
         /**
@@ -411,8 +411,7 @@ public class Phase10GameState extends GameState {
 
             if (this.player1Hand.size() == 0)
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
-            if (!discardPile.peek().isSkip())
-                this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
+            if (!discardPile.peek().isSkip()) this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
             turnStage = 1;
             this.playerHasDrawn = false;
             return true;
@@ -428,7 +427,6 @@ public class Phase10GameState extends GameState {
             this.playerHasDrawn = false;
             return true;
         } else {
-            this.turnStage = 1;
             return false;
         }
 
@@ -531,6 +529,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player1Hand.remove(j);
+                            if(player1Hand.size() == 0) this.turnId = 1;
                             return true;
                         } else{
                             return false;
@@ -549,6 +548,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player2Hand.remove(j);
+                            if(player2Hand.size() == 0) this.turnId = 0;
                             return true;
                         } else{
                             return false;
@@ -569,6 +569,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player1Hand.remove(j);
+                            if(player1Hand.size() == 0) this.turnId = 1;
                             return true;
                         } else{
                             return false;
@@ -588,6 +589,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player2Hand.remove(j);
+                            if(player2Hand.size() == 0) this.turnId = 0;
                             return true;
                         } else{
                             return false;
