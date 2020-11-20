@@ -6,6 +6,8 @@
  */
 package up.edu.phase10;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -50,7 +52,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param info the received info (gameState)
      */
     protected void receiveInfo(GameInfo info) {
-
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
         clearVars();
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
@@ -59,6 +60,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         // gameFramework uses 0/1 player ID
         // Phase 10 code handles based on 1/2 player ID
 
+        Log.d("Smart AI", "Enter receiveInfo()");
         boolean hasPhased = false;
         int phase = 0;
         ArrayList<Card> fullHand = null;
@@ -124,6 +126,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(copy.getTurnStage() == 1) {
             doDraw(copy, hasPhased, phase, fullHand);
             copy.setTurnStage(2);
+            Log.d("Smart AI", "Exit receiveInfo()");
             return;
         }
 
@@ -131,9 +134,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(copy.getTurnStage() == 2) {
             if (!hasPhased) {
                 if (checkPhaseReady(phase)) {
-                    doPhase(phase); //Phase action in here
-                    hasPhased = true;
-                    copy.setTurnStage(3);
+                    boolean phased = doPhase(phase); //Phase action in here
+                    hasPhased = phased;
+                    if(phased) copy.setTurnStage(3);
+                    else copy.setTurnStage(4);
+                    Log.d("Smart AI", "Exit receiveInfo()");
                     return;
                 }
             }
@@ -146,6 +151,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(copy.getTurnStage() == 3) {
             if (hasPhased && checkHitsExist()) {
                 doHits(phase, fullHand); //Hit action in here
+                Log.d("Smart AI", "Exit receiveInfo()");
+                if(!checkHitsExist())copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);
@@ -166,6 +173,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
+        Log.d("Smart AI", "Exit receiveInfo()");
         // count++;
         return;
     }
@@ -174,6 +182,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * clears the variables of this class
      */
     public void clearVars(){
+        Log.d("Smart AI", "Enter clearVars()");
         this.hitList = null;
         this.whereToHitList = null;
         this.weakGroups1 = null;
@@ -183,20 +192,21 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         this.viableGroups2 = null;
         this.completeGroup2 = null;
         this.nonGroupCards = null;
+        Log.d("Smart AI", "Exit clearVars()");
     }
 
     /**
      * SortGroups organizes the cards in the AI's hand into priority groups based on how close they are to being a
      * complete phase requirement
      *
-     * @param hand the AI's hand that provides sortable cards
+     * @param hand the AI's hand that provides sortable cards (deep)
      * @param phase the phase the AI is currently on
-     * @param fullHand shallow copy AI hand
+     * @param fullHand (shallow) copy AI hand
      * @param gameState the gameState (shallow)
      * @return true if sort successful
      */
     public boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
-
+        Log.d("Smart AI", "Enter sortGroups()");
         this.completeGroup1 = null;
         this.completeGroup2 = null;
         this.weakGroups1 = null;
@@ -206,6 +216,14 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         boolean complete1 = false;
         boolean complete2 = false;
         boolean sorted = false;
+
+        ArrayList<Card> skips = new ArrayList<Card>();
+        for(int i = 0; i < hand.size(); i++){
+            if(hand.get(i).isSkip()){
+                skips.add(hand.get(i));
+                hand.remove(i);
+            }
+        }
 
         //Runs are always checked first (runs are hard to make)
         //Bigger sets are checked before smaller sets
@@ -235,7 +253,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true; //Sort successful
                 break;
             case 2:
-                complete1 = testCompleteRun(hand, 4, 1);
+                complete1 = testCompleteRun(gameState, hand, 4, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
@@ -246,7 +264,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 3:
-                complete1 = testCompleteRun(hand, 4, 1);
+                complete1 = testCompleteRun(gameState,hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
@@ -257,7 +275,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 4:
-                complete1 = testCompleteRun(hand, 7, 1);
+                complete1 = testCompleteRun(gameState, hand, 7, 1);
                 if (!complete1) makeRunGroups(hand, 7, 1);
                 //no second group
                 if(!complete1) {
@@ -267,7 +285,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 5:
-                complete1 = testCompleteRun(hand, 8, 1);
+                complete1 = testCompleteRun(gameState, hand, 8, 1);
                 if (!complete1) makeRunGroups(hand, 8, 1);
                 //no second group
                 if(!complete1 ){
@@ -277,7 +295,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 sorted = true;
                 break;
             case 6:
-                complete1 = testCompleteRun(hand, 9, 1);
+                complete1 = testCompleteRun(gameState,hand, 9, 1);
                 if (!complete1) makeRunGroups(hand, 9, 1);
                 //no second group
                 if(!complete1) {
@@ -333,22 +351,31 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 break;
         }
 
-        nonGroupCards = hand;
-        Iterator<Card> it = fullHand.iterator();
-        hand = new ArrayList<Card>();
-        while (it.hasNext()) {
+        if(skips.size() > 0){
+            Iterator<Card> it3 = skips.iterator();
+            while(it3.hasNext()){
+                Card c = it3.next();
+                    hand.add(c);
+                    skips.remove(c);
+            }
+        }
 
-            Card b = it.next();
+        nonGroupCards = hand;
+        Iterator<Card> it2 = fullHand.iterator();
+        hand = new ArrayList<Card>();
+        while (it2.hasNext()) {
+            Card b = it2.next();
             Card c = new Card(b.getNumber(), b.getColor());
             hand.add(new Card(c.getNumber(), c.getColor()));
         }
+
 
         //If somebody has phased, non-group cards will be organized into hits
         if(this.nonGroupCards !=null && this.nonGroupCards.size() != 0 && (gameState.getPlayer1HasPhased() || gameState.getPlayer2HasPhased()) ) {
             makeHits(gameState, gameState.getPlayer1HasPhased(), gameState.getPlayer2HasPhased());
             sorted = true;
         }
-
+        Log.d("Smart AI", "Exit sortGroups()");
         return sorted;
     }
 
@@ -361,7 +388,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if groups get made
      */
     public boolean makeRunGroups(ArrayList<Card> hand, int size, int groupNum) {
-
+        Log.d("Smart AI", "Enter makeRunGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
         int tempLoc;
@@ -492,6 +519,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
         if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
         if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
+        Log.d("Smart AI", "Exit makeRunGroups()");
         return true;
     }
 
@@ -505,7 +533,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
 
     public boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
-
+        Log.d("Smart AI", "Enter makeSetGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
         int tempLoc;
@@ -637,6 +665,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 //            }
 //            if(used = true) nonGroupCards.remove(c);
 //        }
+        if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
+        if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
+        Log.d("Smart AI", "Exit makeSetGroups()");
         return true;
     }
 
@@ -649,6 +680,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if groups get made
      */
     public boolean makeColorGroups(ArrayList<Card> hand, int size, int groupNum){ //same as makeSetGroups but compares color
+        Log.d("Smart AI", "Enter makeColorGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
         int tempLoc;
@@ -772,6 +804,9 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             if(used = true) nonGroupCards.remove(c);
         }
+        if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
+        if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
+        Log.d("Smart AI", "Exit makeColorGroups()");
         return true;
     }
 
@@ -785,6 +820,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param same true if Phase requirements are the same
      */
     public void findLargestViable(int groupNum, ArrayList<Card> fullHand, boolean same){
+        Log.d("Smart AI", "Enter findLargestViable()");
         int biggest = 0;
         int loc = 0;
         if(viableGroups1!=null) {
@@ -868,6 +904,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         }
         if(groupNum == 2){
             if(viableGroups2==null){
+                Log.d("Smart AI", "Exit findLargestViable()");
                 return;
             }
             //Find best viable
@@ -946,6 +983,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
+        Log.d("Smart AI", "Exit findLargestViable()");
     }
 
     /**
@@ -954,6 +992,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param size2 group2 size from phase reqs
      */
     public void checkGroupOrg(int size1, int size2) {
+        Log.d("Smart AI", "Enter checkGroupOrg()");
         if(weakGroups1 != null) {//remove/move groups that no longer fit qualifications
                 Iterator<ArrayList<Card>> it = this.weakGroups1.iterator();
                 while (it.hasNext()) {//remove from weak groups
@@ -1191,17 +1230,20 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if (this.nonGroupCards.size() == 0){
             this.nonGroupCards = null;
         }
+        Log.d("Smart AI", "Exit checkGroupOrg()");
     }
 
     /**
      * tests if a complete run exists
      *
+     * @param gs the gameState (shallow)
      * @param hand (deep) AI's hand
      * @param size size based on phase reqs
      * @param groupNum which group (1 or 2)
      * @return true if a complete run exists
      */
-    public boolean testCompleteRun(ArrayList<Card> hand, int size, int groupNum) {
+    public boolean testCompleteRun(Phase10GameState gs, ArrayList<Card> hand, int size, int groupNum) {
+        Log.d("Smart AI", "Enter testCompleteRun()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
@@ -1228,6 +1270,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             notInGroup.add(hand.get(j));
                             notInGroupLoc++;
                         } else {
+                            Log.d("Smart AI", "Exit testCompleteRun()");
                             return false; //Not in group cards exceed possible per phase reqs
                         }
                     }
@@ -1235,6 +1278,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
+                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true) == null){
+                    Log.d("Smart AI", "Exit testCompleteRun()");
+                    return false;
+                }
                 if (groupNum == 1) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup1 = temp;
@@ -1248,9 +1295,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
+                Log.d("Smart AI", "Exit testCompleteRun()");
                 return true; //Complete group does exist
             }
         }
+        Log.d("Smart AI", "Exit testCompleteRun()");
         return false; //Complete group doesn't exist
     }
 
@@ -1264,6 +1313,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * Known issues: Needs to handle wild cards
      */
     public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
+        Log.d("Smart AI", "Enter testCompleteSet()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
@@ -1320,7 +1370,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             }
                         }
 
-
+                    Log.d("Smart AI", "Exit testCompleteSet()");
                     return true;
                 } else if (groupNum == 2) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
@@ -1330,9 +1380,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
+                Log.d("Smart AI", "Exit testCompleteSet()");
                 return true; //Complete group does exist
             }
         }
+        Log.d("Smart AI", "Exit testCompleteSet()");
         return false; //Complete group doesn't exist
     }
 
@@ -1345,6 +1397,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if a complete color group exists
      */
     public boolean testCompleteColor(ArrayList<Card> hand, int size, int groupNum) { //same as color but compares same color
+        Log.d("Smart AI", "Enter testCompleteColor()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
         int notInGroupLoc;
@@ -1370,6 +1423,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                             notInGroupLoc++;
                         }
                         else{
+                            Log.d("Smart AI", "Exit testCompleteColor()");
                             return false;
                         }
                     }
@@ -1390,9 +1444,11 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
+                Log.d("Smart AI", "Exit testCompleteColor()");
                 return true; //Complete group does exist
             }
         }
+        Log.d("Smart AI", "Exit testCompleteColor()");
         return false; //Complete group doesn't exist
 
     }
@@ -1406,6 +1462,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if cards successfully grows the group
      */
     public boolean checkGrowsGroup(Card card, int phase, ArrayList<Card> fullHand){
+        Log.d("Smart AI", "Enter checkGrowsGroup()");
         boolean growsSomething = false;
         switch(phase){
             case 1:
@@ -1509,6 +1566,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             default:
                 break;
         }
+        Log.d("Smart AI", "Exit checkGrowsGroup()");
         return growsSomething;
     }
 
@@ -1522,16 +1580,19 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if it successfully grows the group
      */
     public boolean checkGrowsRun(Card card, int groupNum, int size){ //I dont think this handles the card being a smaller number than the run
+        Log.d("Smart AI", "Enter checkGrowsRun()");
         //check groups1 aren't null
         if(groupNum == 1) {
             if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
                     this.completeGroup1.add(0, card);
+                    Log.d("Smart AI", "Exit checkGrowsRun()");
                     return true;
                 }
                 if(card.getNumber() == this.completeGroup1.get(0).getNumber() + 1){
                     this.completeGroup1.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsRun()");
                     return true;
                 }
             }
@@ -1542,6 +1603,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
+                            Log.d("Smart AI", "Exit checkGrowsRun()");
                             return true;
                         }
                     }
@@ -1554,6 +1616,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
+                            Log.d("Smart AI", "Exit checkGrowsRun()");
                             return true;
                         }
                     }
@@ -1566,10 +1629,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
                     this.completeGroup2.add(0, card);
+                    Log.d("Smart AI", "Exit checkGrowsRun()");
                     return true;
                 }
                 if(card.getNumber() == this.completeGroup2.get(0).getNumber() + 1){
                     this.completeGroup2.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsRun()");
                     return true;
                 }
             }
@@ -1580,6 +1645,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
+                            Log.d("Smart AI", "Exit checkGrowsRun()");
                             return true;
                         }
                     }
@@ -1592,12 +1658,14 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(size >= group.size())break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
+                            Log.d("Smart AI", "Exit checkGrowsRun()");
                             return true;
                         }
                     }
                 }
             }
         }
+        Log.d("Smart AI", "Exit checkGrowsRun()");
         return false;
     }
 
@@ -1610,11 +1678,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if it successfully grows the group
      */
     public boolean checkGrowsSet(Card card, int groupNum){
+        Log.d("Smart AI", "Enter checkGrowsSet()");
         //check groups1 arent null
         if(groupNum == 1) {
             if (completeGroup1 != null) { //Will only reach here to test hit
                 if(card.getNumber() == completeGroup1.get(0).getNumber()){
                     completeGroup1.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsSet()");
                     return true;
                 }
             }
@@ -1622,6 +1692,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : viableGroups1) {
                     if(card.getNumber() == group.get(0).getNumber()){
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsSet()");
                         return true;
                     }
                 }
@@ -1630,6 +1701,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : weakGroups1) {
                     if(card.getNumber() == group.get(0).getNumber()){
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsSet()");
                         return true;
                     }
                 }
@@ -1640,6 +1712,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (completeGroup2 != null) { //Will only reach here to test hit
                 if (card.getNumber() == completeGroup2.get(0).getNumber()) {
                     completeGroup2.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsSet()");
                     return true;
                 }
             }
@@ -1647,6 +1720,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : viableGroups2) {
                     if (card.getNumber() == group.get(0).getNumber()) {
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsSet()");
                         return true;
                     }
                 }
@@ -1655,11 +1729,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : weakGroups2) {
                     if (card.getNumber() == group.get(0).getNumber()) {
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsSet()");
                         return true;
                     }
                 }
             }
         }
+        Log.d("Smart AI", "Exit checkGrowsSet()");
         return false;
     }
 
@@ -1673,10 +1749,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean checkGrowsColor(Card card, int groupNum){
         //check groups1 arent null
+        Log.d("Smart AI", "Enter checkGrowsColor()");
         if(groupNum == 1) {
             if (completeGroup1 != null) { //Will only reach here to test hit
                 if(card.getColor() == completeGroup1.get(0).getColor()){
                     completeGroup1.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsColor()");
                     return true;
                 }
             }
@@ -1684,6 +1762,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : viableGroups1) {
                     if(card.getColor() == group.get(0).getColor()){
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
                     }
                 }
@@ -1692,6 +1771,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : weakGroups1) {
                     if(card.getColor() == group.get(0).getColor()){
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
                     }
                 }
@@ -1702,6 +1782,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (completeGroup2 != null) { //Will only reach here to test hit
                 if (card.getColor() == completeGroup2.get(0).getColor()) {
                     completeGroup2.add(card);
+                    Log.d("Smart AI", "Exit checkGrowsColor()");
                     return true;
                 }
             }
@@ -1709,6 +1790,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : viableGroups2) {
                     if (card.getColor() == group.get(0).getColor()) {
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
                     }
                 }
@@ -1717,11 +1799,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 for (ArrayList<Card> group : weakGroups2) {
                     if (card.getColor() == group.get(0).getColor()) {
                         group.add(card);
+                        Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
                     }
                 }
             }
         }
+        Log.d("Smart AI", "Exit checkGrowsColor()");
         return false;
     }
 
@@ -1733,6 +1817,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return the hand, now sorted
      */
     private ArrayList<Card> sortColor(ArrayList<Card> hand){
+        Log.d("Smart AI", "Enter sortColor()");
         ArrayList<Card> arrL= new ArrayList<Card>();
         int x = 0;
         while(x < hand.size()){
@@ -1750,6 +1835,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             arrL.set(index, arrL.get(i));
             arrL.set(i, smallestColorCard);
         }
+        Log.d("Smart AI", "Exit sortColor()");
         return arrL;
     }
 
@@ -1764,28 +1850,39 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if the draw action is successfully executed
      */
     public boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
+        Log.d("Smart AI", "Enter doDraw()");
         boolean drawUp = false; //true means draw from draw pile, false means draw from discard pile
-        Card topCard = gameState.getDiscardPile().peek(); //Top of discard (visible)
-
-        if(topCard.isWild()) drawUp = true; //Always take a wild
-        else if(checkGrowsGroup(topCard, phase, fullHand)){ //Always take the card that grows a group
-            drawUp = true;
+        if(gameState.getDiscardPile() != null || gameState.getDiscardPile().size() > 0 ) {
+            Card topCard = gameState.getDiscardPile().peek(); //Top of discard (visible)
+            if (topCard.isWild()) drawUp = true; //Always take a wild
+            else if (checkGrowsGroup(topCard, phase, fullHand)) { //Always take the card that grows a group
+                drawUp = true;
+            } else if (hasPhased && checkIsHit(gameState, topCard))
+                drawUp = true; //If AI has already phased, always take cards that hit
+            else
+                drawUp = false; //Any other condition, draw from the drawPile (not visible, effectively random)
+            if (drawUp && phase >= 4 && phase <= 6 && !hasPhased) {
+                Iterator<Card> it = fullHand.iterator();
+                while (it.hasNext()) {
+                    Card c = it.next();
+                    if (c.getNumber() == gameState.getDiscardPile().peek().getNumber()) {
+                        drawUp = false;
+                        break;
+                    }
+                }
+            }
         }
-        else if(hasPhased && checkIsHit(gameState, topCard)) drawUp = true; //If AI has already phase, always take cards that hit
-        else drawUp = false; //Any other condition, draw from the drawPile (not visible, effectively random)
-
         if(drawUp){ //Draw from discard
             DrawFaceUpAction act = new DrawFaceUpAction(this);
             game.sendAction(act);  //Send drawUp!!
-//            fullHand.add(new Card(gameState.getDiscardPile().peek().getNumber(),gameState.getDiscardPile().peek().getColor()));
-//            gameState.getDiscardPile().pop();
             return true;
         }
         else { //Draw from drawpile
+
             DrawFaceDownAction act = new DrawFaceDownAction(this);
             game.sendAction(act); //Send drawDown!!
-//            fullHand.add(new Card(gameState.getDrawPile().get(0).getNumber(),gameState.getDrawPile().get(0).getColor()));
-//            gameState.getDiscardPile().pop();
+
+            Log.d("Smart AI", "Exit doDraw()");
             return true;
         }
     }
@@ -1801,6 +1898,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean doDiscard(Phase10GameState gameState, boolean hasPhased) {
 
+        Log.d("Smart AI", "Enter doDiscard()");
         int j = 0;
         if (this.nonGroupCards != null && this.nonGroupCards.size() > 0) {
             int highestScore = this.nonGroupCards.get(0).getScore();
@@ -1820,6 +1918,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
                 DiscardAction act = new DiscardAction(this, this.nonGroupCards.get(highScoreLoc));
                 game.sendAction(act); //Send Discard!!
+                Log.d("Smart AI", "Exit doDiscard()");
                 return true;
             }
         }
@@ -1855,10 +1954,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (wGroup == 1) {
                 DiscardAction act = new DiscardAction(this, this.weakGroups1.get(smallestWeakGroupLoc).get(0));
                 game.sendAction(act); //Send Discard!!
+                Log.d("Smart AI", "Exit doDiscard()");
                 return true;
             } else if (wGroup == 2) {
                 DiscardAction act = new DiscardAction(this, this.weakGroups2.get(smallestWeakGroupLoc).get(0));
                 game.sendAction(act); //Send Discard!!
+                Log.d("Smart AI", "Exit doDiscard()");
                 return true;
             }
         }
@@ -1894,10 +1995,12 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             if (vGroup == 1) {
                 DiscardAction act = new DiscardAction(this, this.viableGroups1.get(smallestViabGroupLoc).get(0));
                 game.sendAction(act); //Send Discard!!
+                Log.d("Smart AI", "Exit doDiscard()");
                 return true;
             } else if (vGroup == 2) {
                 DiscardAction act = new DiscardAction(this, this.viableGroups2.get(smallestViabGroupLoc).get(0));
                 game.sendAction(act); //Send Discard!!
+                Log.d("Smart AI", "Exit doDiscard()");
                 return true;
             }
         }
@@ -1912,15 +2015,26 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             }
             DiscardAction act = new DiscardAction(this, this.hitList.get(highestScoreLoc));
             game.sendAction(act); //Send Discard!!
+            Log.d("Smart AI", "Exit doDiscard()");
             return true;
         }
         if (playerNum == 0) {
+            if(gameState.getPlayer1Hand().size() == 0){
+                Log.d("Smart AI", "Exit doDiscard()");
+                return false;
+            }
             DiscardAction act = new DiscardAction(this, gameState.getPlayer1Hand().get(0));
             game.sendAction(act);
+            Log.d("Smart AI", "Exit doDiscard()");
             return true;
         } else {
+            if(gameState.getPlayer2Hand().size() == 0){
+                Log.d("Smart AI", "Exit doDiscard()");
+                return false;
+            }
             DiscardAction act = new DiscardAction(this, gameState.getPlayer2Hand().get(0));
             game.sendAction(act);
+            Log.d("Smart AI", "Exit doDiscard()");
             return true;
         }
     }
@@ -1932,12 +2046,20 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return false if not ready to phase, or true if ready
      */
     public boolean checkPhaseReady(int phase) {
+        Log.d("Smart AI", "Enter checkPhaseReady()");
         if(phase == 1 || phase == 2 || phase == 3 ||  phase == 7 ||  phase == 9 ||  phase == 10) {
-            if (completeGroup1 != null && completeGroup2 != null && completeGroup1.size() != 0 && completeGroup2.size() != 0) return true; //Return 2 groups
+            if (completeGroup1 != null && completeGroup2 != null && completeGroup1.size() != 0 && completeGroup2.size() != 0){
+                Log.d("Smart AI", "Exit checkPhaseReady()");
+                return true; //Return 2 groups
+            }
         }
         else if(phase == 4 || phase == 5 || phase == 6 || phase == 8) {
-            if (completeGroup1 != null && completeGroup1.size() != 0 ) return true; //Return 1 group
+            if (completeGroup1 != null && completeGroup1.size() != 0 ){
+                Log.d("Smart AI", "Exit checkPhaseReady()");
+                return true; //Return 1 group
+            }
         }
+        Log.d("Smart AI", "Exit checkPhaseReady()");
         return false; //Not ready to phase
     }
 
@@ -1948,6 +2070,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if action sent successfully
      */
     public boolean doPhase(int phase) {
+        Log.d("Smart AI", "Enter doPhase()");
         ArrayList<Card> temp = new ArrayList<Card>();
         switch(phase){
             case 1:
@@ -1960,7 +2083,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 if(this.completeGroup2.size() >= 3){
                     for(int i = 0; i < 3; i++){
                         temp.add(this.completeGroup2.get(i));
@@ -1970,7 +2096,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 break;
             case 2:
                 if(this.completeGroup1.size() >= 4){
@@ -1982,7 +2111,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 if(this.completeGroup2.size() >= 3){
                     for(int i = 0; i < 3; i++){
                         temp.add(this.completeGroup2.get(i));
@@ -1992,7 +2124,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 break;
             case 3:
             case 7:
@@ -2005,7 +2140,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 if(this.completeGroup2.size() >= 4){
                     for(int i = 0; i < 4; i++){
                         temp.add(this.completeGroup2.get(i));
@@ -2015,7 +2153,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 break;
             case 4:
             case 8:
@@ -2027,7 +2168,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
-                }else return false;
+                }else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 //No second group
                 break;
             case 5:
@@ -2040,7 +2184,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 //no second group
                 break;
             case 6:
@@ -2052,6 +2199,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         if(this.hitList == null) this.hitList = new ArrayList<Card>();
                         this.hitList.add(this.completeGroup1.get(i));
                     }
+                }
+                else {
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
                 }
                 //no second group
                 break;
@@ -2065,7 +2216,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 if(this.completeGroup2.size() >= 2){
                     for(int i = 0; i < 2; i++){
                         temp.add(this.completeGroup2.get(i));
@@ -2075,7 +2229,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 break;
             case 10:
                 if(this.completeGroup1.size() >= 5){
@@ -2087,7 +2244,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup1.get(i));
                     }
                 }
-                else return false;
+                else{
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 if(this.completeGroup2.size() >= 3){
                     for(int i = 0; i < 3; i++){
                         temp.add(this.completeGroup2.get(i));
@@ -2097,14 +2257,21 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                         this.hitList.add(this.completeGroup2.get(i));
                     }
                 }
-                else return false;
+                else{
+
+                    Log.d("Smart AI", "Exit doPhase()");
+                    return false;
+                }
                 break;
             default:
+                Log.d("Smart AI", "Exit doPhase()");
                 return false;
         }
 
         PhaseAction act = new PhaseAction(this, temp);
         game.sendAction(act); //Send Phase!!
+
+        Log.d("Smart AI", "Exit doPhase()");
         return true;
     }
 
@@ -2114,8 +2281,15 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if hits exist
      */
     public boolean checkHitsExist(){
-        if(this.hitList != null && this.hitList.size() != 0) return true;
-        else return false;
+        Log.d("Smart AI", "Enter checkHitsExist()");
+        if(this.hitList != null && this.hitList.size() != 0){
+            Log.d("Smart AI", "Exit checkHitsExist()");
+            return true;
+        }
+        else{
+            Log.d("Smart AI", "Exit checkHitsExist()");
+            return false;
+        }
     }
 
     /**
@@ -2127,10 +2301,13 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true once executed
      */
     public boolean doHits(int phase, ArrayList<Card> fullHand){
+        Log.d("Smart AI", "Enter doHits()");
         if(hitList == null || whereToHitList == null){
+            Log.d("Smart AI", "Exit doHits()");
             return false;
         }
         if(hitList.size() != whereToHitList.size()){
+            Log.d("Smart AI", "Exit doHits()");
             return false;
         }
         for(int i = 0; i < this.hitList.size(); i++){
@@ -2142,6 +2319,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             this.hitList.remove(i);
             this.whereToHitList.remove(i);
         }
+        Log.d("Smart AI", "Exit doHits()");
         return true;
     }
 
@@ -2153,9 +2331,19 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true if hit is possible
      */
     public boolean checkIsHit(Phase10GameState gs, Card c){
-        if(gs.phase.checkHitValid(c, 0, true)) return true;
-        else if(gs.phase.checkHitValid(c, 1, true)) return true;
-        else return false;
+        Log.d("Smart AI", "Enter checkIsit()");
+        if(gs.phase.checkHitValid(c, 0, true)){
+            Log.d("Smart AI", "Exit checkIsit()");
+            return true;
+        }
+        else if(gs.phase.checkHitValid(c, 1, true)){
+            Log.d("Smart AI", "Exit checkIsit()");
+            return true;
+        }
+        else{
+            Log.d("Smart AI", "Exit checkIsit()");
+            return false;
+        }
     }
 
     /**
@@ -2168,6 +2356,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @return true when finished
      */
     public boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
+        Log.d("Smart AI", "Enter makeHits()");
         if(phased1) {
             if(this.nonGroupCards != null) {
                 this.hitList = new ArrayList<Card>();
@@ -2205,6 +2394,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 }
             }
         }
+        Log.d("Smart AI", "Exit makeHits()");
         return true;
     }
 }

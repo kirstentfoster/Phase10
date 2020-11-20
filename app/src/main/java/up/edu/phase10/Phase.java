@@ -6,6 +6,8 @@
 
 package up.edu.phase10;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -190,62 +192,83 @@ public class Phase { //Wild card handling will be added in beta release
      *
      */
     public boolean checkPhase(int playerPhase, ArrayList<Card> phaseContent, int playerNum) {
+        Log.d("Phase","Enter checkPhase()");
         Card[] sorted = sortCards(phaseContent);
         switch (playerPhase) {
             case 1:
                 if(sorted.length != 6){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseOne(sorted, playerNum);
             case 2:
                 if(sorted.length != 7){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseTwo(sorted, playerNum);
             case 3:
                 if(sorted.length != 8){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseThree(sorted, playerNum);
             case 4:
                 if(sorted.length != 7){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFour(sorted, playerNum);
             case 5:
                 if(sorted.length != 8){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFive(sorted, playerNum);
             case 6:
                 if(sorted.length != 9){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseSix(sorted, playerNum);
             case 7:
                 if(sorted.length != 8){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseSeven(sorted, playerNum);
             case 8: //Special Boy - 7 cards of 1 color
                 sorted = sortCardsByColor(phaseContent);
+                Log.d("Phase","Exit checkPhase()");
                 if(isColorGroup(sorted, 7,playerNum, false) != null) return true;
                 if(sorted.length != 7){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 if(isColorGroup(sorted, 7, playerNum, false) != null) return true;
                 else return false;
             case 9:
                 if(sorted.length != 7){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
+                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseNine(sorted, playerNum);
             case 10:
                 if(sorted.length != 8){
+                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseTen(sorted, playerNum);
             default:
+                Log.d("Phase","Exit checkPhase()");
                 return false;
         }
     }
@@ -633,7 +656,8 @@ public class Phase { //Wild card handling will be added in beta release
      * @param test if true it is used by computer player and instance variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
+    public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
+        Log.d("Phase","Enter isRun()");
         Card[] temp;
         Card[] notInRun;
         int notInRunLoc;
@@ -647,7 +671,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
                 if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
-                    if(tempLoc >= temp.length) break;
+                    if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];
                     tempLoc++;
                 } else {
@@ -668,6 +692,7 @@ public class Phase { //Wild card handling will be added in beta release
                 if(test){
                     Card[] test1 = new Card[11];
                     test1[0] = new Card(40,40);
+                    Log.d("Phase","Exit isRun()");
                     return test1;}
 
                 if(playerNum == 0) {
@@ -680,8 +705,10 @@ public class Phase { //Wild card handling will be added in beta release
                     }
                     this.play1Run = temp;
                     if(notInRunLoc == 0){
+                        Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
+                    Log.d("Phase","Exit isRun()");
                     return notInRun;
                 }
                 else if(playerNum == 1){
@@ -693,14 +720,17 @@ public class Phase { //Wild card handling will be added in beta release
                     }
                     this.play2Run = temp;
                     if(notInRunLoc == 0){
+                        Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
                     if(notInRun.length > 0) {
+                        Log.d("Phase","Exit isRun()");
                         return notInRun;
                     }
                 }
             }
         }
+        Log.d("Phase","Exit isRun()");
         return null;
     }
 
@@ -796,7 +826,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @param attempt the cards attempting to be phased
      * @return the sorted card array
      */
-    private Card[] sortCards(ArrayList<Card> attempt){
+    public Card[] sortCards(ArrayList<Card> attempt){
         Card[] arr = new Card[attempt.size()];
         int x = 0;
         while(x < attempt.size()){
@@ -906,11 +936,15 @@ public class Phase { //Wild card handling will be added in beta release
 
             //Runs
             if(this.play2Run != null) {
+                int x = 0;
+                if(selectedCard != null && selectedCard.getNumber() < play2Run[0].getNumber()) x = 1;
                 Card[] tempPlay2Run = new Card[play2Run.length + 1];
                 for (int i = 0; i < play2Run.length; i++) {
-                    tempPlay2Run[i] = play2Run[i];
+                    tempPlay2Run[i+x] = play2Run[i];
                 }
-                tempPlay2Run[play2Run.length] = selectedCard;
+                if(x == 0) tempPlay2Run[play2Run.length] = selectedCard;
+                else if(x == 1) tempPlay2Run[0] = selectedCard;
+
                 if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum, test) == null)) return true;
             }
 

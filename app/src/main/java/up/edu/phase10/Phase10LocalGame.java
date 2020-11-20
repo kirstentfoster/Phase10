@@ -143,7 +143,8 @@ public class Phase10LocalGame extends LocalGame {
      */
     private boolean roundOver(){
         //Player has gone out
-        if(pgs.getHasGoneOut() < 0 || pgs.getTurnId() != pgs.getHasGoneOut() ){
+        if(pgs.getHasGoneOut() < 0 || pgs.getTurnId() != pgs.getHasGoneOut() && !((pgs.getPlayer1Hand() == null
+                || pgs.getPlayer1Hand().size() ==0) && (pgs.getPlayer2Hand() == null || pgs.getPlayer2Hand().size() ==0))){
             return false;
         }
         //Get the hands and calculate scores
@@ -166,7 +167,6 @@ public class Phase10LocalGame extends LocalGame {
             if(pgs.getPlayer1PhaseContent().size() != 0) pgs.setPlayer1PhaseContent(new ArrayList<Card>());
             if(pgs.getPlayer2PhaseContent().size() != 0) pgs.setPlayer2PhaseContent(new ArrayList<Card>());
             //Reset variables
-            //TODO allow AI to go first
             if(pgs.getGoesFirst() == 0) pgs.setTurnId(1);
             else if(pgs.getGoesFirst() == 1) pgs.setTurnId(0);
             pgs.setHasGoneOut(-1);
