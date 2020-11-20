@@ -13,14 +13,20 @@ import up.edu.phase10.Framework.GameMainActivity;
 import up.edu.phase10.R;
 import up.edu.phase10.Framework.GameInfo;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -43,15 +49,17 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     // These variables will reference widgets that will be modified during play
     private TextView    playerScoreTextView = null;
     private TextView    oppScoreTextView    = null;
-    private TextView    turnTotalTextView   = null;
-    private TextView    messageTextView     = null;
+    private TextView    phaseView     = null;
     private Button      phaseButton         = null; // do we want this to be an image button?
     private Button      hitButton           = null;
     private Button hitSelfButton = null;
     public Button discardButton = null;
     private Button quitButton = null;
+    private Button restartButton = null;
+    private Button helpButton = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
+
     private ImageButton Hand1 = null;
     private ImageButton Hand2 = null;
     private ImageButton Hand3 = null;
@@ -63,6 +71,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageButton Hand9 = null;
     private ImageButton Hand10 = null;
     private ImageButton Hand11 = null;
+    ArrayList<ImageButton> Hand = new ArrayList<ImageButton>();
 
     private ImageView AIPhase1 = null;
     private ImageView AIPhase2 = null;
@@ -79,6 +88,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageView AIPhase13 = null;
     private ImageView AIPhase14 = null;
 
+    private ArrayList<ImageView> AIphase = new ArrayList<ImageView>();
+
     private ImageView PlayerPhase1 = null;
     private ImageView PlayerPhase2 = null;
     private ImageView PlayerPhase3 = null;
@@ -94,6 +105,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageView PlayerPhase13 = null;
     private ImageView PlayerPhase14 = null;
 
+    private ArrayList<ImageView> playerPhase = new ArrayList<ImageView>();
+
     private ImageView AIDeckCard1 = null;
     private ImageView AIDeckCard2 = null;
     private ImageView AIDeckCard3 = null;
@@ -105,6 +118,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageView AIDeckCard9 = null;
     private ImageView AIDeckCard10 = null;
     private ImageView AIDeckCard11 = null;
+    private ArrayList<ImageView> AIDeck = new ArrayList<ImageView>();
 
     private ArrayList<Card> selected = new ArrayList<Card>();
 
@@ -156,7 +170,90 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             createAIHandDown();
         }
         state.drawDiscard((MainActivity) myActivity);
-        //TO DO should phase counters be here??
+
+        //print info about phase
+        if(playerNum == 0) {
+            switch(state.getPlayer1Phase()){
+                case 1:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase1());
+                    break;
+                case 2:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase2());
+                    break;
+                case 3:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase3());
+                    break;
+                case 4:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase4());
+                    break;
+                case 5:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase5());
+                    break;
+                case 6:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase6());
+                    break;
+                case 7:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase7());
+                    break;
+                case 8:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase8());
+                    break;
+                case 9:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase9());
+                    break;
+                case 10:
+                    phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase10());
+                    break;
+            }
+        }
+        else if(playerNum==1){
+            switch(state.getPlayer2Phase()){
+                case 1:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase1());
+                    break;
+                case 2:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase2());
+                    break;
+                case 3:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase3());
+                    break;
+                case 4:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase4());
+                    break;
+                case 5:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase5());
+                    break;
+                case 6:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase6());
+                    break;
+                case 7:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase7());
+                    break;
+                case 8:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase8());
+                    break;
+                case 9:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase9());
+                    break;
+                case 10:
+                    phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase10());
+                    break;
+            }
+        }
+
+        //print scores:
+        if(playerNum==0){
+            playerScoreTextView.setText("Your score is: " + state.getPlayer1Score() +
+                    "\nYou are on phase: " + state.getPlayer1Phase());
+            oppScoreTextView.setText("Your opponent's score is: " + state.getPlayer2Score() +
+                    "\nThey are on phase: " + state.getPlayer2Phase());
+        }
+        else if(playerNum==1){
+            playerScoreTextView.setText("Your score is:\n" + state.getPlayer2Score() +
+                    "\nYou are on phase: " + state.getPlayer2Phase());
+            oppScoreTextView.setText("Your opponent's score is:\n" + state.getPlayer1Score() +
+                    "\nThey are on phase: " + state.getPlayer1Phase());
+        }
     }//receiveInfo
 
 
@@ -177,6 +274,15 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 game.sendAction(p);
             }
             selected.clear();
+            for(ImageButton b : Hand){
+                b.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+        }
+        if(button.equals(quitButton)){//end program
+            System.exit(0);
+        }
+        if(button.equals(restartButton)){ //back to game screen
+            myActivity.recreate();
         }
         if(button.equals(hitButton)) {
             if(this.selected.size()==1) {
@@ -190,6 +296,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 }
             }
             selected.clear();
+            for(ImageButton b : Hand){
+                b.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
         }
         if(button.equals(hitSelfButton)){
             if(this.selected.size()==1){
@@ -197,6 +306,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 game.sendAction(p);
             }
             selected.clear();
+            for(ImageButton b : Hand){
+                b.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
         }
 
         if(button.equals(discardButton)) {
@@ -205,10 +317,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 game.sendAction(p);
             }
             selected.clear();
-        }
-
-        if(button.equals(quitButton)){
-            //?????????????????????????????
+            for(ImageButton b : Hand){
+                b.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
         }
 
 
@@ -221,46 +332,87 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             game.sendAction(p);
         }
 
+        if(button.equals(helpButton)){
+            this.displayHelp(getTopView());
+        }
+
         //select cards
-        if(button.equals(Hand1)){
-            selected.add(state.getPlayer1Hand().get(0));
-        }
-        if(button.equals(Hand2)){
-            selected.add(state.getPlayer1Hand().get(1));
-        }
-        if(button.equals(Hand3)){
-            selected.add(state.getPlayer1Hand().get(2));
-        }
-        if(button.equals(Hand4)){
-            selected.add(state.getPlayer1Hand().get(3));
-        }
-        if(button.equals(Hand5)){
-            selected.add(state.getPlayer1Hand().get(4));
-        }
-        if(button.equals(Hand6)){
-            selected.add(state.getPlayer1Hand().get(5));
-        }
-        if(button.equals(Hand7)){
-            selected.add(state.getPlayer1Hand().get(6));
-        }
-        if(button.equals(Hand8)){
-            selected.add(state.getPlayer1Hand().get(7));
-        }
-        if(button.equals(Hand9)){
-            selected.add(state.getPlayer1Hand().get(8));
-        }
-        if(button.equals(Hand10)){
-            selected.add(state.getPlayer1Hand().get(9));
-        }
-        if(button.equals(Hand11)){
-            selected.add(state.getPlayer1Hand().get(10));
+        int i = 0;
+        for(ImageButton b : Hand){
+            if(button.equals(b)){
+                selectCard(b,i,selected);
+            }
+            i++;
         }
     }// onClick
 
     /**
+     * highlights or unhighlights card and adds to selected
+     * @param cardNum passes which card is being selected
+     * @param selected passes array list of all selected cards
+     */
+    public void selectCard(ImageButton b, int cardNum, ArrayList<Card> selected){
+        if(playerNum==1) {
+            if (!selected.contains(state.getPlayer2Hand().get(cardNum))) {
+                selected.add(state.getPlayer2Hand().get(cardNum));
+                b.setBackgroundColor(Color.parseColor("#00ffff"));
+            } else {
+                selected.remove(state.getPlayer2Hand().get(cardNum));
+                b.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        }
+        else if(playerNum==0){
+            if (!selected.contains(state.getPlayer1Hand().get(cardNum))) {
+                selected.add(state.getPlayer1Hand().get(cardNum));
+                b.setBackgroundColor(Color.parseColor("#00ffff"));
+            } else {
+                selected.remove(state.getPlayer1Hand().get(cardNum));
+                b.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        }
+    }
+
+    /**
+     External Citation
+     Date: 11/19/20
+     Problem: Could not figure out how to create overlay
+
+     Resource: https://howtodoinjava.com/java/collections/arraylist/arraylist-clone-deep-copy/
+     Solution: I used the example from this link and adapted it to my code.
+     */
+
+    /**
+     * displays help text over screen
+     * @param view passes top view to method to allow it to display on screen
+     */
+    public void displayHelp(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.help_window, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+    /**
      * callback method--our game has been chosen/rechosen to be the GUI,
      * called from the GUI thread
-     *
      * @param activity
      * 		the activity under which we are running
      */
@@ -279,6 +431,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.hitSelfButton = (Button) activity.findViewById(R.id.hitOnMe);
         this.phaseButton= (Button)activity.findViewById(R.id.PlayButton);
         this.discardButton = activity.findViewById(R.id.DiscardButton);
+        this.quitButton = activity.findViewById(R.id.QuitButton);
+        this.restartButton = activity.findViewById(R.id.restartButton);
+        this.helpButton = activity.findViewById(R.id.helpButton);
+        this.playerScoreTextView = activity.findViewById(R.id.scoreView);
+        this.oppScoreTextView = activity.findViewById(R.id.oppScoreView);
+        this.phaseView = activity.findViewById(R.id.phaseDescription);
 
         //hands for each player
         Hand1 = myActivity.findViewById(R.id.PlayerHand1);
@@ -292,7 +450,18 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         Hand9 = myActivity.findViewById(R.id.PlayerHand9);
         Hand10 = myActivity.findViewById(R.id.PlayerHand10);
         Hand11 = myActivity.findViewById(R.id.PlayerHand11);
-        this.quitButton = activity.findViewById(R.id.QuitButton);
+
+        Hand.add(Hand1);
+        Hand.add(Hand2);
+        Hand.add(Hand3);
+        Hand.add(Hand4);
+        Hand.add(Hand5);
+        Hand.add(Hand6);
+        Hand.add(Hand7);
+        Hand.add(Hand8);
+        Hand.add(Hand9);
+        Hand.add(Hand10);
+        Hand.add(Hand11);
 
         //AI Phase and drawables
         AIPhase1 = myActivity.findViewById(R.id.AIPhase1);
@@ -310,6 +479,21 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         AIPhase13 = myActivity.findViewById(R.id.AIPhase13);
         AIPhase14 = myActivity.findViewById(R.id.AIPhase14);
 
+        AIphase.add(AIPhase1);
+        AIphase.add(AIPhase2);
+        AIphase.add(AIPhase3);
+        AIphase.add(AIPhase4);
+        AIphase.add(AIPhase5);
+        AIphase.add(AIPhase6);
+        AIphase.add(AIPhase7);
+        AIphase.add(AIPhase8);
+        AIphase.add(AIPhase9);
+        AIphase.add(AIPhase10);
+        AIphase.add(AIPhase11);
+        AIphase.add(AIPhase12);
+        AIphase.add(AIPhase13);
+        AIphase.add(AIPhase14);
+
         //playerPhases and it's drawables
         PlayerPhase1 = myActivity.findViewById(R.id.playerPhase1);
         PlayerPhase2 = myActivity.findViewById(R.id.playerPhase2);
@@ -326,6 +510,21 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         PlayerPhase13 = myActivity.findViewById(R.id.playerPhase13);
         PlayerPhase14 = myActivity.findViewById(R.id.playerPhase14);
 
+        playerPhase.add(PlayerPhase1);
+        playerPhase.add(PlayerPhase2);
+        playerPhase.add(PlayerPhase3);
+        playerPhase.add(PlayerPhase4);
+        playerPhase.add(PlayerPhase5);
+        playerPhase.add(PlayerPhase6);
+        playerPhase.add(PlayerPhase7);
+        playerPhase.add(PlayerPhase8);
+        playerPhase.add(PlayerPhase9);
+        playerPhase.add(PlayerPhase10);
+        playerPhase.add(PlayerPhase11);
+        playerPhase.add(PlayerPhase12);
+        playerPhase.add(PlayerPhase13);
+        playerPhase.add(PlayerPhase14);
+
         //AI decks and their drawables
         AIDeckCard1 = myActivity.findViewById(R.id.AIDeckCard1);
         AIDeckCard2 = myActivity.findViewById(R.id.AIDeckCard2);
@@ -339,6 +538,18 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         AIDeckCard10 = myActivity.findViewById(R.id.AIDeckCard10);
         AIDeckCard11 = myActivity.findViewById(R.id.AIDeckCard11);
 
+        AIDeck.add(AIDeckCard1);
+        AIDeck.add(AIDeckCard2);
+        AIDeck.add(AIDeckCard3);
+        AIDeck.add(AIDeckCard4);
+        AIDeck.add(AIDeckCard5);
+        AIDeck.add(AIDeckCard6);
+        AIDeck.add(AIDeckCard7);
+        AIDeck.add(AIDeckCard8);
+        AIDeck.add(AIDeckCard9);
+        AIDeck.add(AIDeckCard10);
+        AIDeck.add(AIDeckCard11);
+
         //Listen for button presses
         drawFaceUpImageButton.setOnClickListener(this);
         drawFaceDownImageButton.setOnClickListener(this);
@@ -347,17 +558,11 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         phaseButton.setOnClickListener(this);
         discardButton.setOnClickListener(this);
         quitButton.setOnClickListener(this);
-        Hand1.setOnClickListener(this);
-        Hand2.setOnClickListener(this);
-        Hand3.setOnClickListener(this);
-        Hand4.setOnClickListener(this);
-        Hand5.setOnClickListener(this);
-        Hand6.setOnClickListener(this);
-        Hand7.setOnClickListener(this);
-        Hand8.setOnClickListener(this);
-        Hand9.setOnClickListener(this);
-        Hand10.setOnClickListener(this);
-        Hand11.setOnClickListener(this);
+        restartButton.setOnClickListener(this);
+        helpButton.setOnClickListener(this);
+        for(ImageButton b : Hand){
+            b.setOnClickListener(this);
+        }
 
     }//setAsGui
 
@@ -372,176 +577,26 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      */
     private void createAIPhase(){
 
-        if(this.playerNum+1==2) {
-            if(state.getPlayer1PhaseContent().size()<1){
-                AIPhase1.setImageResource(0);
-            }
-            else {
-                AIPhase1.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(0)));
-            }
-            if(state.getPlayer1PhaseContent().size()<2){
-                AIPhase2.setImageResource(0);
-            }
-            else {
-                AIPhase2.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(1)));
-            }
-            if(state.getPlayer1PhaseContent().size()<3){
-                AIPhase3.setImageResource(0);
-            }
-            else {
-                AIPhase3.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(2)));
-            }
-            if(state.getPlayer1PhaseContent().size()<4){
-                AIPhase4.setImageResource(0);
-            }
-            else {
-                AIPhase4.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(3)));
-            }
-            if(state.getPlayer1PhaseContent().size()<5){
-                AIPhase5.setImageResource(0);
-            }
-            else {
-                AIPhase5.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(4)));
-            }
-            if(state.getPlayer1PhaseContent().size()<6){
-                AIPhase6.setImageResource(0);
-            }
-            else {
-                AIPhase6.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(5)));
-            }
-            if(state.getPlayer1PhaseContent().size()<7){
-                AIPhase7.setImageResource(0);
-            }
-            else {
-                AIPhase7.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(6)));
-            }
-            if(state.getPlayer1PhaseContent().size()<8){
-                AIPhase8.setImageResource(0);
-            }
-            else {
-                AIPhase8.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(7)));
-            }
-            if(state.getPlayer1PhaseContent().size()<9){
-                AIPhase9.setImageResource(0);
-            }
-            else {
-                AIPhase9.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(8)));
-            }
-            if(state.getPlayer1PhaseContent().size()<10){
-                AIPhase10.setImageResource(0);
-            }
-            else {
-                AIPhase10.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(9)));
-            }
-            if(state.getPlayer1PhaseContent().size()<11){
-                AIPhase11.setImageResource(0);
-            }
-            else {
-                AIPhase11.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(10)));
-            }
-            if(state.getPlayer1PhaseContent().size()<12){
-                AIPhase12.setImageResource(0);
-            }
-            else {
-                AIPhase12.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(11)));
-            }
-            if(state.getPlayer1PhaseContent().size()<13){
-                AIPhase13.setImageResource(0);
-            }
-            else {
-                AIPhase13.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(12)));
-            }
-            if(state.getPlayer1PhaseContent().size()<14){
-                AIPhase14.setImageResource(0);
-            }
-            else {
-                AIPhase14.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(13)));
+        if(this.playerNum==1) {
+            int i = 1;
+            for (ImageView Im : AIphase) {
+                if (state.getPlayer1PhaseContent().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(i - 1)));
+                }
+                i++;
             }
         }
-        else{
-            if(state.getPlayer2PhaseContent().size()<1){
-                AIPhase1.setImageResource(0);
-            }
-            else {
-                AIPhase1.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(0)));
-            }
-            if(state.getPlayer2PhaseContent().size()<2){
-                AIPhase2.setImageResource(0);
-            }
-            else {
-                AIPhase2.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(1)));
-            }
-            if(state.getPlayer2PhaseContent().size()<3){
-                AIPhase3.setImageResource(0);
-            }
-            else {
-                AIPhase3.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(2)));
-            }
-            if(state.getPlayer2PhaseContent().size()<4){
-                AIPhase4.setImageResource(0);
-            }
-            else {
-                AIPhase4.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(3)));
-            }
-            if(state.getPlayer2PhaseContent().size()<5){
-                AIPhase5.setImageResource(0);
-            }
-            else {
-                AIPhase5.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(4)));
-            }
-            if(state.getPlayer2PhaseContent().size()<6){
-                AIPhase6.setImageResource(0);
-            }
-            else {
-                AIPhase6.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(5)));
-            }
-            if(state.getPlayer2PhaseContent().size()<7){
-                AIPhase7.setImageResource(0);
-            }
-            else {
-                AIPhase7.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(6)));
-            }
-            if(state.getPlayer2PhaseContent().size()<8){
-                AIPhase8.setImageResource(0);
-            }
-            else {
-                AIPhase8.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(7)));
-            }
-            if(state.getPlayer2PhaseContent().size()<9){
-                AIPhase9.setImageResource(0);
-            }
-            else {
-                AIPhase9.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(8)));
-            }
-            if(state.getPlayer2PhaseContent().size()<10){
-                AIPhase10.setImageResource(0);
-            }
-            else {
-                AIPhase10.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(9)));
-            }
-            if(state.getPlayer2PhaseContent().size()<11){
-                AIPhase11.setImageResource(0);
-            }
-            else {
-                AIPhase11.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(10)));
-            }
-            if(state.getPlayer2PhaseContent().size()<12){
-                AIPhase12.setImageResource(0);
-            }
-            else {
-                AIPhase12.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(11)));
-            }
-            if(state.getPlayer2PhaseContent().size()<13){
-                AIPhase13.setImageResource(0);
-            }
-            else {
-                AIPhase13.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(12)));
-            }
-            if(state.getPlayer2PhaseContent().size()<14){
-                AIPhase14.setImageResource(0);
-            }
-            else {
-                AIPhase14.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(13)));
+        else if(this.playerNum==0) {
+            int i = 1;
+            for (ImageView Im : AIphase) {
+                if (state.getPlayer2PhaseContent().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(i - 1)));
+                }
+                i++;
             }
         }
     }
@@ -552,177 +607,26 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *
      */
     private void createPlayerPhase(){
-
-        if(this.playerNum+1==1) {
-            if(state.getPlayer1PhaseContent().size()<1){
-                PlayerPhase1.setImageResource(0);
-            }
-            else {
-                PlayerPhase1.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(0)));
-            }
-            if(state.getPlayer1PhaseContent().size()<2){
-                PlayerPhase2.setImageResource(0);
-            }
-            else {
-                PlayerPhase2.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(1)));
-            }
-            if(state.getPlayer1PhaseContent().size()<3){
-                PlayerPhase3.setImageResource(0);
-            }
-            else {
-                PlayerPhase3.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(2)));
-            }
-            if(state.getPlayer1PhaseContent().size()<4){
-                PlayerPhase4.setImageResource(0);
-            }
-            else {
-                PlayerPhase4.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(3)));
-            }
-            if(state.getPlayer1PhaseContent().size()<5){
-                PlayerPhase5.setImageResource(0);
-            }
-            else {
-                PlayerPhase5.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(4)));
-            }
-            if(state.getPlayer1PhaseContent().size()<6){
-                PlayerPhase6.setImageResource(0);
-            }
-            else {
-                PlayerPhase6.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(5)));
-            }
-            if(state.getPlayer1PhaseContent().size()<7){
-                PlayerPhase7.setImageResource(0);
-            }
-            else {
-                PlayerPhase7.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(6)));
-            }
-            if(state.getPlayer1PhaseContent().size()<8){
-                PlayerPhase8.setImageResource(0);
-            }
-            else {
-                PlayerPhase8.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(7)));
-            }
-            if(state.getPlayer1PhaseContent().size()<9){
-                PlayerPhase9.setImageResource(0);
-            }
-            else {
-                PlayerPhase9.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(8)));
-            }
-            if(state.getPlayer1PhaseContent().size()<10){
-                PlayerPhase10.setImageResource(0);
-            }
-            else {
-                PlayerPhase10.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(9)));
-            }
-            if(state.getPlayer1PhaseContent().size()<11){
-                PlayerPhase11.setImageResource(0);
-            }
-            else {
-                PlayerPhase11.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(10)));
-            }
-            if(state.getPlayer1PhaseContent().size()<12){
-                PlayerPhase12.setImageResource(0);
-            }
-            else {
-                PlayerPhase12.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(11)));
-            }
-            if(state.getPlayer1PhaseContent().size()<13){
-                PlayerPhase13.setImageResource(0);
-            }
-            else {
-                PlayerPhase13.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(12)));
-            }
-            if(state.getPlayer1PhaseContent().size()<14){
-                PlayerPhase14.setImageResource(0);
-            }
-            else {
-                PlayerPhase14.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(13)));
+        if(this.playerNum==0) {
+            int i = 1;
+            for (ImageView Im : playerPhase) {
+                if (state.getPlayer1PhaseContent().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer1PhaseContent().get(i - 1)));
+                }
+                i++;
             }
         }
-        else{
-            if(state.getPlayer2PhaseContent().size()<1){
-                PlayerPhase1.setImageResource(0);
-            }
-            else {
-                PlayerPhase1.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(0)));
-            }
-            if(state.getPlayer2PhaseContent().size()<2){
-                PlayerPhase2.setImageResource(0);
-            }
-            else {
-                PlayerPhase2.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(1)));
-            }
-            if(state.getPlayer2PhaseContent().size()<3){
-                PlayerPhase3.setImageResource(0);
-            }
-            else {
-                PlayerPhase3.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(2)));
-            }
-            if(state.getPlayer2PhaseContent().size()<4){
-                PlayerPhase4.setImageResource(0);
-            }
-            else {
-                PlayerPhase4.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(3)));
-            }
-            if(state.getPlayer2PhaseContent().size()<5){
-                PlayerPhase5.setImageResource(0);
-            }
-            else {
-                PlayerPhase5.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(4)));
-            }
-            if(state.getPlayer2PhaseContent().size()<6){
-                PlayerPhase6.setImageResource(0);
-            }
-            else {
-                PlayerPhase6.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(5)));
-            }
-            if(state.getPlayer2PhaseContent().size()<7){
-                PlayerPhase7.setImageResource(0);
-            }
-            else {
-                PlayerPhase7.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(6)));
-            }
-            if(state.getPlayer2PhaseContent().size()<8){
-                PlayerPhase8.setImageResource(0);
-            }
-            else {
-                PlayerPhase8.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(7)));
-            }
-            if(state.getPlayer2PhaseContent().size()<9){
-                PlayerPhase9.setImageResource(0);
-            }
-            else {
-                PlayerPhase9.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(8)));
-            }
-            if(state.getPlayer2PhaseContent().size()<10){
-                PlayerPhase10.setImageResource(0);
-            }
-            else {
-                PlayerPhase10.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(9)));
-            }
-            if(state.getPlayer2PhaseContent().size()<11){
-                PlayerPhase11.setImageResource(0);
-            }
-            else {
-                PlayerPhase11.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(10)));
-            }
-            if(state.getPlayer2PhaseContent().size()<12){
-                PlayerPhase12.setImageResource(0);
-            }
-            else {
-                PlayerPhase12.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(11)));
-            }
-            if(state.getPlayer2PhaseContent().size()<13){
-                PlayerPhase13.setImageResource(0);
-            }
-            else {
-                PlayerPhase13.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(12)));
-            }
-            if(state.getPlayer2PhaseContent().size()<14){
-                PlayerPhase14.setImageResource(0);
-            }
-            else {
-                PlayerPhase14.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(13)));
+        else if(this.playerNum==1) {
+            int i = 1;
+            for (ImageView Im : playerPhase) {
+                if (state.getPlayer2PhaseContent().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer2PhaseContent().get(i - 1)));
+                }
+                i++;
             }
         }
     } //create playerPhaseHand
@@ -733,140 +637,26 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      */
 //    Face down AI hand
     private void createAIHandDown(){
-        if(this.playerNum+1==2) {
-            if(state.getPlayer1Hand().size()<1){
-                AIDeckCard1.setImageResource(0);
-            }
-            else {
-                AIDeckCard1.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<2){
-                AIDeckCard2.setImageResource(0);
-            }
-            else {
-                AIDeckCard2.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<3){
-                AIDeckCard3.setImageResource(0);
-            }
-            else {
-                AIDeckCard3.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<4){
-                AIDeckCard4.setImageResource(0);
-            }
-            else {
-                AIDeckCard4.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<5){
-                AIDeckCard5.setImageResource(0);
-            }
-            else {
-                AIDeckCard5.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<6){
-                AIDeckCard6.setImageResource(0);
-            }
-            else {
-                AIDeckCard6.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<7){
-                AIDeckCard7.setImageResource(0);
-            }
-            else {
-                AIDeckCard7.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<8){
-                AIDeckCard8.setImageResource(0);
-            }
-            else {
-                AIDeckCard8.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<9){
-                AIDeckCard9.setImageResource(0);
-            }
-            else {
-                AIDeckCard9.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<10){
-                AIDeckCard10.setImageResource(0);
-            }
-            else {
-                AIDeckCard10.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer1Hand().size()<11){
-                AIDeckCard11.setImageResource(0);
-            }
-            else {
-                AIDeckCard11.setImageResource(R.drawable.cardback);
+        if(this.playerNum==1) {
+            int i = 1;
+            for (ImageView Im : AIDeck) {
+                if (state.getPlayer1Hand().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(R.drawable.cardback);
+                }
+                i++;
             }
         }
-        else{
-            if(state.getPlayer2Hand().size()<1){
-                AIDeckCard1.setImageResource(0);
-            }
-            else {
-                AIDeckCard1.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<2){
-                AIDeckCard2.setImageResource(0);
-            }
-            else {
-                AIDeckCard2.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<3){
-                AIDeckCard3.setImageResource(0);
-            }
-            else {
-                AIDeckCard3.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<4){
-                AIDeckCard4.setImageResource(0);
-            }
-            else {
-                AIDeckCard4.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<5){
-                AIDeckCard5.setImageResource(0);
-            }
-            else {
-                AIDeckCard5.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<6){
-                AIDeckCard6.setImageResource(0);
-            }
-            else {
-                AIDeckCard6.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<7){
-                AIDeckCard7.setImageResource(0);
-            }
-            else {
-                AIDeckCard7.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<8){
-                AIDeckCard8.setImageResource(0);
-            }
-            else {
-                AIDeckCard8.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<9){
-                AIDeckCard9.setImageResource(0);
-            }
-            else {
-                AIDeckCard9.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<10){
-                AIDeckCard10.setImageResource(0);
-            }
-            else {
-                AIDeckCard10.setImageResource(R.drawable.cardback);
-            }
-            if(state.getPlayer2Hand().size()<11){
-                AIDeckCard11.setImageResource(0);
-            }
-            else {
-                AIDeckCard11.setImageResource(R.drawable.cardback);
+        else if(this.playerNum==0) {
+            int i = 1;
+            for (ImageView Im : AIDeck) {
+                if (state.getPlayer2Hand().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(R.drawable.cardback);
+                }
+                i++;
             }
         }
     }
@@ -876,140 +666,26 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      */
 //    Shows face up AI hand
     private void createAIHandUp(){
-        if(this.playerNum+1==2) {
-            if(state.getPlayer1Hand().size()<1){
-                AIDeckCard1.setImageResource(0);
-            }
-            else {
-                AIDeckCard1.setImageResource(state.testSlot(state.getPlayer1Hand().get(0)));
-            }
-            if(state.getPlayer1Hand().size()<2){
-                AIDeckCard2.setImageResource(0);
-            }
-            else {
-                AIDeckCard2.setImageResource(state.testSlot(state.getPlayer1Hand().get(1)));
-            }
-            if(state.getPlayer1Hand().size()<3){
-                AIDeckCard3.setImageResource(0);
-            }
-            else {
-                AIDeckCard3.setImageResource(state.testSlot(state.getPlayer1Hand().get(2)));
-            }
-            if(state.getPlayer1Hand().size()<4){
-                AIDeckCard4.setImageResource(0);
-            }
-            else {
-                AIDeckCard4.setImageResource(state.testSlot(state.getPlayer1Hand().get(3)));
-            }
-            if(state.getPlayer1Hand().size()<5){
-                AIDeckCard5.setImageResource(0);
-            }
-            else {
-                AIDeckCard5.setImageResource(state.testSlot(state.getPlayer1Hand().get(4)));
-            }
-            if(state.getPlayer1Hand().size()<6){
-                AIDeckCard6.setImageResource(0);
-            }
-            else {
-                AIDeckCard6.setImageResource(state.testSlot(state.getPlayer1Hand().get(5)));
-            }
-            if(state.getPlayer1Hand().size()<7){
-                AIDeckCard7.setImageResource(0);
-            }
-            else {
-                AIDeckCard7.setImageResource(state.testSlot(state.getPlayer1Hand().get(6)));
-            }
-            if(state.getPlayer1Hand().size()<8){
-                AIDeckCard8.setImageResource(0);
-            }
-            else {
-                AIDeckCard8.setImageResource(state.testSlot(state.getPlayer1Hand().get(7)));
-            }
-            if(state.getPlayer1Hand().size()<9){
-                AIDeckCard9.setImageResource(0);
-            }
-            else {
-                AIDeckCard9.setImageResource(state.testSlot(state.getPlayer1Hand().get(8)));
-            }
-            if(state.getPlayer1Hand().size()<10){
-                AIDeckCard10.setImageResource(0);
-            }
-            else {
-                AIDeckCard10.setImageResource(state.testSlot(state.getPlayer1Hand().get(9)));
-            }
-            if(state.getPlayer1Hand().size()<11){
-                AIDeckCard11.setImageResource(0);
-            }
-            else {
-                AIDeckCard11.setImageResource(state.testSlot(state.getPlayer1Hand().get(10)));
+        if(this.playerNum==1) {
+            int i = 1;
+            for (ImageView Im : AIDeck) {
+                if (state.getPlayer1Hand().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer1Hand().get(i - 1)));
+                }
+                i++;
             }
         }
-        else{
-            if(state.getPlayer2Hand().size()<1){
-                AIDeckCard1.setImageResource(0);
-            }
-            else {
-                AIDeckCard1.setImageResource(state.testSlot(state.getPlayer2Hand().get(0)));
-            }
-            if(state.getPlayer2Hand().size()<2){
-                AIDeckCard2.setImageResource(0);
-            }
-            else {
-                AIDeckCard2.setImageResource(state.testSlot(state.getPlayer2Hand().get(1)));
-            }
-            if(state.getPlayer2Hand().size()<3){
-                AIDeckCard3.setImageResource(0);
-            }
-            else {
-                AIDeckCard3.setImageResource(state.testSlot(state.getPlayer2Hand().get(2)));
-            }
-            if(state.getPlayer2Hand().size()<4){
-                AIDeckCard4.setImageResource(0);
-            }
-            else {
-                AIDeckCard4.setImageResource(state.testSlot(state.getPlayer2Hand().get(3)));
-            }
-            if(state.getPlayer2Hand().size()<5){
-                AIDeckCard5.setImageResource(0);
-            }
-            else {
-                AIDeckCard5.setImageResource(state.testSlot(state.getPlayer2Hand().get(4)));
-            }
-            if(state.getPlayer2Hand().size()<6){
-                AIDeckCard6.setImageResource(0);
-            }
-            else {
-                AIDeckCard6.setImageResource(state.testSlot(state.getPlayer2Hand().get(5)));
-            }
-            if(state.getPlayer2Hand().size()<7){
-                AIDeckCard7.setImageResource(0);
-            }
-            else {
-                AIDeckCard7.setImageResource(state.testSlot(state.getPlayer2Hand().get(6)));
-            }
-            if(state.getPlayer2Hand().size()<8){
-                AIDeckCard8.setImageResource(0);
-            }
-            else {
-                AIDeckCard8.setImageResource(state.testSlot(state.getPlayer2Hand().get(7)));
-            }
-            if(state.getPlayer2Hand().size()<9){
-                AIDeckCard9.setImageResource(0);
-            }
-            else {
-                AIDeckCard9.setImageResource(state.testSlot(state.getPlayer2Hand().get(8)));
-            }
-            if(state.getPlayer2Hand().size()<10){
-                AIDeckCard10.setImageResource(0);
-            }
-            else {
-                AIDeckCard10.setImageResource(state.testSlot(state.getPlayer2Hand().get(9)));
-            }
-            if(state.getPlayer2Hand().size()<11){
-                AIDeckCard11.setImageResource(0);
-            }
-            else {
-                AIDeckCard11.setImageResource(state.testSlot(state.getPlayer2Hand().get(10)));
+        else if(this.playerNum==0) {
+            int i = 1;
+            for (ImageView Im : AIDeck) {
+                if (state.getPlayer2Hand().size() < i) {
+                    Im.setImageResource(0);
+                } else {
+                    Im.setImageResource(state.testSlot(state.getPlayer2Hand().get(i - 1)));
+                }
+                i++;
             }
         }
     } //drawFaceUp cards end
@@ -1023,144 +699,36 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      */
     private void createHand(){
 
-        if(this.playerNum+1==1) {
-            if(state.getPlayer1Hand().size()<1){
-                Hand1.setImageResource(0);
-            }
-            else {
-                Hand1.setImageResource(state.testSlot(state.getPlayer1Hand().get(0)));
-            }
-            if(state.getPlayer1Hand().size()<2){
-                Hand2.setImageResource(0);
-            }
-            else {
-                Hand2.setImageResource(state.testSlot(state.getPlayer1Hand().get(1)));
-            }
-            if(state.getPlayer1Hand().size()<3){
-                Hand3.setImageResource(0);
-            }
-            else {
-                Hand3.setImageResource(state.testSlot(state.getPlayer1Hand().get(2)));
-            }
-            if(state.getPlayer1Hand().size()<4){
-                Hand4.setImageResource(0);
-            }
-            else {
-                Hand4.setImageResource(state.testSlot(state.getPlayer1Hand().get(3)));
-            }
-            if(state.getPlayer1Hand().size()<5){
-                Hand5.setImageResource(0);
-            }
-            else {
-                Hand5.setImageResource(state.testSlot(state.getPlayer1Hand().get(4)));
-            }
-            if(state.getPlayer1Hand().size()<6){
-                Hand6.setImageResource(0);
-            }
-            else {
-                Hand6.setImageResource(state.testSlot(state.getPlayer1Hand().get(5)));
-            }
-            if(state.getPlayer1Hand().size()<7){
-                Hand7.setImageResource(0);
-            }
-            else {
-                Hand7.setImageResource(state.testSlot(state.getPlayer1Hand().get(6)));
-            }
-            if(state.getPlayer1Hand().size()<8){
-                Hand8.setImageResource(0);
-            }
-            else {
-                Hand8.setImageResource(state.testSlot(state.getPlayer1Hand().get(7)));
-            }
-            if(state.getPlayer1Hand().size()<9){
-                Hand9.setImageResource(0);
-            }
-            else {
-                Hand9.setImageResource(state.testSlot(state.getPlayer1Hand().get(8)));
-            }
-            if(state.getPlayer1Hand().size()<10){
-                Hand10.setImageResource(0);
-            }
-            else {
-                Hand10.setImageResource(state.testSlot(state.getPlayer1Hand().get(9)));
-            }
-            if(state.getPlayer1Hand().size()<11){
-                Hand11.setImageResource(0);
-            }
-            else {
-                Hand11.setImageResource(state.testSlot(state.getPlayer1Hand().get(10)));
+        if(this.playerNum==0) {
+            int i = 1;
+            for (ImageButton b : Hand) {
+                if (state.getPlayer1Hand().size() < i) {
+                    b.setImageResource(0);
+                    b.setClickable(false);
+                    b.setEnabled(false);
+                } else {
+                    b.setImageResource(state.testSlot(state.getPlayer1Hand().get(i-1)));
+                    b.setClickable(true);
+                    b.setEnabled(true);
+                }
+                i++;
             }
         }
-        else{
-            if(state.getPlayer2Hand().size()<1){
-                Hand1.setImageResource(0);
-            }
-            else {
-                Hand1.setImageResource(state.testSlot(state.getPlayer2Hand().get(0)));
-            }
-            if(state.getPlayer2Hand().size()<2){
-                Hand2.setImageResource(0);
-            }
-            else {
-                Hand2.setImageResource(state.testSlot(state.getPlayer2Hand().get(1)));
-            }
-            if(state.getPlayer2Hand().size()<3){
-                Hand3.setImageResource(0);
-            }
-            else {
-                Hand3.setImageResource(state.testSlot(state.getPlayer2Hand().get(2)));
-            }
-            if(state.getPlayer2Hand().size()<4){
-                Hand4.setImageResource(0);
-            }
-            else {
-                Hand4.setImageResource(state.testSlot(state.getPlayer2Hand().get(3)));
-            }
-            if(state.getPlayer2Hand().size()<5){
-                Hand5.setImageResource(0);
-            }
-            else {
-                Hand5.setImageResource(state.testSlot(state.getPlayer2Hand().get(4)));
-            }
-            if(state.getPlayer2Hand().size()<6){
-                Hand6.setImageResource(0);
-            }
-            else {
-                Hand6.setImageResource(state.testSlot(state.getPlayer2Hand().get(5)));
-            }
-            if(state.getPlayer2Hand().size()<7){
-                Hand7.setImageResource(0);
-            }
-            else {
-                Hand7.setImageResource(state.testSlot(state.getPlayer2Hand().get(6)));
-            }
-            if(state.getPlayer2Hand().size()<8){
-                Hand8.setImageResource(0);
-            }
-            else {
-                Hand8.setImageResource(state.testSlot(state.getPlayer2Hand().get(7)));
-            }
-            if(state.getPlayer2Hand().size()<9){
-                Hand9.setImageResource(0);
-            }
-            else {
-                Hand9.setImageResource(state.testSlot(state.getPlayer2Hand().get(8)));
-            }
-            if(state.getPlayer2Hand().size()<10){
-                Hand10.setImageResource(0);
-            }
-            else {
-                Hand10.setImageResource(state.testSlot(state.getPlayer2Hand().get(9)));
-            }
-            if(state.getPlayer2Hand().size()<11){
-                Hand11.setImageResource(0);
-            }
-            else {
-                Hand11.setImageResource(state.testSlot(state.getPlayer2Hand().get(10)));
+        else if(this.playerNum == 1) {
+            int i = 1;
+            for (ImageButton b : Hand) {
+                if (state.getPlayer2Hand().size() < i) {
+                    b.setImageResource(0);
+                    b.setClickable(false);
+                    b.setEnabled(false);
+                } else {
+                    b.setImageResource(state.testSlot(state.getPlayer2Hand().get(i-1)));
+                    b.setClickable(true);
+                    b.setEnabled(true);
+                }
+                i++;
             }
         }
-
-
     } // createHand end
 
 

@@ -8,6 +8,8 @@
 
 package up.edu.phase10;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -207,6 +209,7 @@ public class Phase10LocalGame extends LocalGame {
             pgs.setPlayer2Hand(tempP2Hand);
             return false;
         }
+
         return true;
     }
 

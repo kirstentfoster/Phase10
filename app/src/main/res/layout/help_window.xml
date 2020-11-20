@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#62def8">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:textSize="22sp"
+        android:text="Goal: fulfill the phase requirements to phase then get rid of all cards. Try to be the first to complete all 10 phases.\n
+What is a set? Multiple cards of the same number.\n
+What is a run? A set of cards with their numbers incrementing.\n
+What to do on your turn:\n
+1) Draw a card by tapping either the discard or draw piles (the two cards in the center of the screen
+that are face up and face down respectively)\n
+2) If you have cards that match the FULL requirements for the phase, select them all and tap 'Play Phase'\n
+3) If you have already phased (including in this turn), hit on yourself or other players by\n
+selecting a card that could add to the phase requirements and click the designated hit button for that player (Repeat until you have no more hits).
+4) Discard a card you don't want by selecting it and pressing 'Discard'\n
+Once one player has run out of cards, the other player(s) will get one more chance to get rid of their cards before the round advances.\n
+If you did not finish your phase that round, you will have to try to do the same phase the next round with new cards.\n
+Points are added for leftover cards each round.\n
+If two players finish phase 10 on the same round, the one with fewer points wins."/>
+
+</RelativeLayout>

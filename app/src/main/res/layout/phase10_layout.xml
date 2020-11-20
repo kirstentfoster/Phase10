@@ -24,6 +24,20 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/helpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Help" />
+
+            <Button
+                android:id="@+id/restartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="restart" />
+
+            <Button
                 android:id="@+id/QuitButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -291,7 +305,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/PhaseDesc"
+            android:id="@+id/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
@@ -299,12 +313,27 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/PhaseDescription"
+                android:id="@+id/scoreView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingRight="150dp" />
+
+            <TextView
+                android:id="@+id/phaseDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
-                android:text="Phase 3: \n1 set of 4\n1 run of 4"
                 android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/oppScoreView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="150dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -526,7 +555,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/red2" />
 
             <ImageButton
@@ -535,7 +567,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/green9" />
 
             <ImageButton
@@ -544,7 +579,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/green5" />
 
             <ImageButton
@@ -553,7 +591,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/yellow9" />
 
             <ImageButton
@@ -562,7 +603,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/blue12" />
 
             <ImageButton
@@ -571,7 +615,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/green5" />
 
             <ImageButton
@@ -580,7 +627,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/yellow5" />
 
             <ImageButton
@@ -589,7 +639,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/yellow5" />
 
             <ImageButton
@@ -598,7 +651,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/red9" />
 
             <ImageButton
@@ -607,7 +663,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/yellow9" />
 
             <ImageButton
@@ -616,8 +675,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:paddingRight="50dp"
+                android:background="#ffffff"
                 android:scaleType="fitCenter"
+                android:enabled = "false"
+                android:clickable="false"
                 android:src="@drawable/yellow9" />
         </LinearLayout>
 

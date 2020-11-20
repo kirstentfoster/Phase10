@@ -70,7 +70,6 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             hand = new ArrayList<Card>();
             Iterator<Card> it = copy.getPlayer1Hand().iterator();
             while (it.hasNext()) {
-
                 Card b = it.next();
                 Card c = new Card(b.getNumber(), b.getColor());
                 hand.add(new Card(c.getNumber(), c.getColor()));
