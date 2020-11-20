@@ -694,8 +694,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      * this method creates the Hand of each player on the GUI
      * making sure that the imageResource (the cards) are displayed properly to
      * their respective information
-     *
-     *
      */
     private void createHand(){
 
