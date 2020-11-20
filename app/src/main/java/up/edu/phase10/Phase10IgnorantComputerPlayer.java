@@ -1521,9 +1521,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      * @param size the group's size
      * @return true if it successfully grows the group
      */
-    public boolean checkGrowsRun(Card card, int groupNum, int size){ //I dont think this handles the card being a smaller number than the run
-        //check groups1 aren't null
-        if(groupNum == 1) {
+    public boolean checkGrowsRun(Card card, int groupNum, int size){
+        if(groupNum == 1) {//check groups1 aren't null
             if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
                 //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
