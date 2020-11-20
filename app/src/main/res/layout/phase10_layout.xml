@@ -158,7 +158,8 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/AIPhase1"
@@ -346,19 +347,20 @@
 
             <ImageButton
                 android:id="@+id/DiscardPile"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
                 android:adjustViewBounds="true"
+                android:background="#FFFFFF"
                 android:scaleType="fitCenter"
-                android:src="@drawable/blue2"
-                android:tint="@drawable/touch_selector" />
+                android:src="@drawable/blue2" />
 
             <ImageButton
                 android:id="@+id/DrawPile"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:background="#FFFFFF"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cardback" />
 
@@ -547,7 +549,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageButton
                 android:id="@+id/PlayerHand1"
@@ -556,9 +559,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/red2" />
 
             <ImageButton
@@ -568,9 +571,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/green9" />
 
             <ImageButton
@@ -580,9 +583,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
             <ImageButton
@@ -592,9 +595,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
             <ImageButton
@@ -604,9 +607,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/blue12" />
 
             <ImageButton
@@ -616,9 +619,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
             <ImageButton
@@ -628,9 +631,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
             <ImageButton
@@ -640,9 +643,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
             <ImageButton
@@ -652,9 +655,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/red9" />
 
             <ImageButton
@@ -664,9 +667,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
             <ImageButton
@@ -676,9 +679,9 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
-                android:scaleType="fitCenter"
-                android:enabled = "false"
                 android:clickable="false"
+                android:enabled="false"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
         </LinearLayout>
 
