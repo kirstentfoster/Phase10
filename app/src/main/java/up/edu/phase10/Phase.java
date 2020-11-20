@@ -617,6 +617,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
                 if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
+                    if(tempLoc >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];
                     tempLoc++;
                 } else {
@@ -824,13 +825,13 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if hit is successful
      */
     public boolean checkHitValid(Card selectedCard, int playerNum, boolean test) {
+        if(selectedCard == null) return false;
         if (playerNum == 0) {
             //Runs
             if(this.play1Run != null) {
                 Card[] tempPlay1Run = new Card[play1Run.length + 1];
-                int x;
-                if(selectedCard.getNumber() < tempPlay1Run[0].getNumber()) x = 1;
-                else x = 0;
+                int x = 0;
+                if(selectedCard != null && selectedCard.getNumber() < play1Run[0].getNumber()) x = 1;
                 for (int i = 0; i < play1Run.length; i++) {
                     tempPlay1Run[i+x] = play1Run[i];
                 }

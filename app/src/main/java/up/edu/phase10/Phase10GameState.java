@@ -203,9 +203,9 @@ public class Phase10GameState extends GameState {
 //        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
 //            drawPile.add(new Card(0, 0));
 //        }
-//        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
-//            drawPile.add(new Card(-1, -1));
-//        }
+        for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
+            drawPile.add(new Card(-1, -1));
+        }
 
 
         /**
@@ -559,6 +559,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player1Hand.remove(j);
+                            if(player1Hand.size() == 0) this.turnId = 1;
                             return true;
                         } else{
                             return false;
@@ -577,6 +578,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player2Hand.remove(j);
+                            if(player2Hand.size() == 0) this.turnId = 0;
                             return true;
                         } else{
                             return false;
@@ -597,6 +599,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player1Hand.remove(j);
+                            if(player1Hand.size() == 0) this.turnId = 1;
                             return true;
                         } else{
                             return false;
@@ -616,6 +619,7 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player2Hand.remove(j);
+                            if(player2Hand.size() == 0) this.turnId = 0;
                             return true;
                         } else{
                             return false;
