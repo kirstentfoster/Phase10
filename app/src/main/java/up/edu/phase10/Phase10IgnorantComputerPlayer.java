@@ -156,7 +156,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         /* DISCARD */
         if(copy.getTurnStage() == 4) {
             doDiscard(copy, hasPhased);
-            if (hand != null) {
+            if (hand != null || hand.size() != 0) {
                 Iterator<Card> it = hand.iterator();
                 while (it.hasNext()) {
                     Card c = it.next();
@@ -489,9 +489,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                     used = true;
                 }
             }
-            if(used = true) nonGroupCards.remove(c);
+            if(used == true) nonGroupCards.remove(c);
         }
-
+        if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
+        if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         return true;
     }
 
@@ -1940,10 +1941,10 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
      */
     public boolean checkPhaseReady(int phase) {
         if(phase == 1 || phase == 2 || phase == 3 ||  phase == 7 ||  phase == 9 ||  phase == 10) {
-            if (completeGroup1 != null && completeGroup2 != null) return true; //Return 2 groups
+            if (completeGroup1 != null && completeGroup2 != null && completeGroup1.size() != 0 && completeGroup2.size() != 0) return true; //Return 2 groups
         }
         else if(phase == 4 || phase == 5 || phase == 6 || phase == 8) {
-            if (completeGroup1 != null) return true; //Return 1 group
+            if (completeGroup1 != null && completeGroup1.size() != 0 ) return true; //Return 1 group
         }
         return false; //Not ready to phase
     }
