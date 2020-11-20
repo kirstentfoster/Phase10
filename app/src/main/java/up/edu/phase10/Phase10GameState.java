@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Stack;
 
 import up.edu.phase10.Framework.GameState;
@@ -224,7 +225,7 @@ public class Phase10GameState extends GameState {
         //deal cards to players and discard pile from draw pile
         discardPile.add(drawPile.get(0));
         discardPile.add(drawPile.get(0)); //TODO: FIX - FOR ALPHA ONLY
-        drawPile.remove(0);
+        discardPile.remove(0);
         for (int i = 0; i < 10; i++) {
             player1Hand.add(drawPile.get(0));
             drawPile.remove(0);
@@ -307,8 +308,14 @@ public class Phase10GameState extends GameState {
         Card drawn = this.drawPile.remove(0); //Remove top card from draw pile
 
         if(drawPile.isEmpty()){//shuffle discard into draw pile if they drew the final draw card
-            for(Card c : discardPile){
+            Iterator<Card> it = discardPile.iterator();
+            int i = 0;
+            while(it.hasNext()){
+                Card c = it.next();
                 drawPile.add(c);
+                i++;
+            }
+            for(; i > 0; i--){
                 discardPile.pop();
             }
             Collections.shuffle(drawPile);
