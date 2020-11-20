@@ -43,15 +43,15 @@ public class Phase { //Wild card handling will be added in beta release
 
     public Phase(){
         Phase1 = "2 sets of 3";
-        Phase2 = "1 set of 3 and 1 run of 4";
-        Phase3 = "1 set of 4 and 1 run of 4";
+        Phase2 = "1 set of 3 and\n1 run of 4";
+        Phase3 = "1 set of 4 and\n1 run of 4";
         Phase4 = "1 run of 7";
         Phase5 = "1 run of 8";
         Phase6 = "1 run of 9";
         Phase7 = "2 sets of 4";
         Phase8 = "7 cards of one color";
-        Phase9 = "1 set of 5 and 1 set of 2";
-        Phase10 = "1 set of 5 and 1 set of 3";
+        Phase9 = "1 set of 5 and\n1 set of 2";
+        Phase10 = "1 set of 5 and\n1 set of 3";
         //Player 1
         play1Run = null;
         play1Set1 = null;
@@ -150,6 +150,36 @@ public class Phase { //Wild card handling will be added in beta release
         }
     }
 
+    public String getPhase1(){
+        return Phase1;
+    }
+    public String getPhase2(){
+        return Phase2;
+    }
+    public String getPhase3(){
+        return Phase3;
+    }
+    public String getPhase4(){
+        return Phase4;
+    }
+    public String getPhase5(){
+        return Phase5;
+    }
+    public String getPhase6(){
+        return Phase6;
+    }
+    public String getPhase7(){
+        return Phase7;
+    }
+    public String getPhase8(){
+        return Phase8;
+    }
+    public String getPhase9(){
+        return Phase9;
+    }
+    public String getPhase10(){
+        return Phase10;
+    }
 
     /** checks if the play can play a phase, first by seeing what phase
      * the player is on, then by referencing two different methods that checks

@@ -223,7 +223,7 @@ public class Phase10GameState extends GameState {
 
         //deal cards to players and discard pile from draw pile
         discardPile.add(drawPile.get(0));
-        discardPile.add(drawPile.get(0)); //FOR ALPHA ONLY
+        discardPile.add(drawPile.get(0)); //TODO: FIX - FOR ALPHA ONLY
         drawPile.remove(0);
         for (int i = 0; i < 10; i++) {
             player1Hand.add(drawPile.get(0));
@@ -231,54 +231,6 @@ public class Phase10GameState extends GameState {
             player2Hand.add(drawPile.get(0));
             drawPile.remove(0);
         }
-        //FOR TESTING
-
-
-//        this.player1Phase = 2;
-//        this.player2Phase = 2;
-//        player1Hand.add(new Card(7,1));
-//        player1Hand.add(new Card(8,1));
-//        player1Hand.add(new Card(9,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(1,1));
-//        player1Hand.add(new Card(1,1));
-//        player1Hand.add(new Card(1,1));
-//        player1Hand.add(new Card(1,1));
-//        player1Hand.add(new Card(1,1));
-//        player1Hand.add(new Card(1,1));
-//
-//        player2Hand.add(new Card(2,1));
-//        player2Hand.add(new Card(3,1));
-//        player2Hand.add(new Card(4,1));
-//        player2Hand.add(new Card(5,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-
-        //        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//        player1Hand.add(new Card(10,1));
-//
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
-//        player2Hand.add(new Card(1,1));
 
     }
 
@@ -353,6 +305,17 @@ public class Phase10GameState extends GameState {
             return false;
 
         Card drawn = this.drawPile.remove(0); //Remove top card from draw pile
+
+        if(drawPile.isEmpty()){//shuffle discard into draw pile if they drew the final draw card
+            for(Card c : discardPile){
+                drawPile.add(c);
+                discardPile.pop();
+            }
+            Collections.shuffle(drawPile);
+            discardPile.add(drawPile.get(0));
+            drawPile.remove(0);
+        }
+
         this.playerHasDrawn = true;
 
         //determine which player hand it goes to
@@ -384,6 +347,7 @@ public class Phase10GameState extends GameState {
             return false;
 
         Card drawn = this.discardPile.pop(); //remove top card from discard
+
         this.playerHasDrawn = true;
 
         //determine which player hand it goes to
