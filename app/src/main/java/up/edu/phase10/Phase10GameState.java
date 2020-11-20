@@ -224,7 +224,7 @@ public class Phase10GameState extends GameState {
 
         //deal cards to players and discard pile from draw pile
         discardPile.add(drawPile.get(0));
-        discardPile.remove(0);
+        drawPile.remove(0);
         for (int i = 0; i < 10; i++) {
             player1Hand.add(drawPile.get(0));
             drawPile.remove(0);
@@ -613,8 +613,21 @@ public class Phase10GameState extends GameState {
      */
     public void drawDiscard(MainActivity MA){
         discardDraw = MA.findViewById(R.id.DiscardPile);
-        int id = testSlot(this.discardPile.peek());
-        discardDraw.setImageResource(id);
+        if(discardPile.size()==0){
+            /**
+             External Citation
+             Date: 11/20/20
+             Problem: I did not want to make my own empty discard slot drawable
+
+             Resource: https://keepcalms.com/p/there-s-nothing-left-here/
+             Solution: I used this one
+             */
+            discardDraw.setImageResource(R.drawable.empty);
+        }
+        else {
+            int id = testSlot(this.discardPile.peek());
+            discardDraw.setImageResource(id);
+        }
     }
 
     /**
