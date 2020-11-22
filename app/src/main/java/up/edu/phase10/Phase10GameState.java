@@ -7,6 +7,7 @@
  */
 package up.edu.phase10;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -453,6 +454,7 @@ public class Phase10GameState extends GameState {
      * @return if phasing was successful
      */
     public boolean playPhase(int playerNum, ArrayList<Card> phaseContent) {
+        Log.d("Game State","Enter playPhase()");
         if(!playerHasDrawn) {
             return false;
         }
@@ -472,6 +474,7 @@ public class Phase10GameState extends GameState {
                 }
                 turnStage++;
                 player1HasPhased = true;
+                Log.d("Game State","Exit playPhase()");
                 return true;
             }
         } else if (playerNum == 1) {
@@ -489,12 +492,12 @@ public class Phase10GameState extends GameState {
                 }
                 turnStage++;
                 player2HasPhased = true;
+                Log.d("Game State","Exit playPhase()");
                 return true;
             }
-            turnStage++;
-            return true;
         }
         turnStage++;
+        Log.d("Game State","Exit playPhase()");
         return false;
     }
 
@@ -529,7 +532,10 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player1Hand.remove(j);
-                            if(player1Hand.size() == 0) this.turnId = 1;
+                            if(player1Hand.size() == 0){
+                                this.hasGoneOut = 0;
+                                this.turnId = 1;
+                            }
                             return true;
                         } else{
                             return false;
@@ -548,7 +554,10 @@ public class Phase10GameState extends GameState {
                                 }
                             }
                             player2Hand.remove(j);
-                            if(player2Hand.size() == 0) this.turnId = 0;
+                            if(player2Hand.size() == 0){
+                                this.hasGoneOut = 1;
+                                this.turnId = 0;
+                            }
                             return true;
                         } else{
                             return false;
