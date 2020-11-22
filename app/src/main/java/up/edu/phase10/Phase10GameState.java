@@ -232,6 +232,8 @@ public class Phase10GameState extends GameState {
             player2Hand.add(drawPile.get(0));
             drawPile.remove(0);
         }
+        Collections.sort(this.player1Hand); //sort cards to improve ease of play
+        Collections.sort(this.player2Hand);
 
     }
 
@@ -415,6 +417,8 @@ public class Phase10GameState extends GameState {
             if (!discardPile.peek().isSkip()) this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
             turnStage = 1;
             this.playerHasDrawn = false;
+            Collections.sort(this.player1Hand); //sort cards to improve ease of play
+            Collections.sort(this.player2Hand);
             return true;
         } else if (playerId == 1) {
             if (this.player2Hand.size() < cardLoc) return false;
@@ -426,6 +430,8 @@ public class Phase10GameState extends GameState {
 
             turnStage = 1;
             this.playerHasDrawn = false;
+            Collections.sort(this.player1Hand); //sort cards to improve ease of play
+            Collections.sort(this.player2Hand);
             return true;
         } else {
             return false;

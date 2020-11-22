@@ -32,6 +32,7 @@ import android.view.View.OnClickListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *  @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
@@ -696,6 +697,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      * their respective information
      */
     private void createHand(){
+
+
 
         if(this.playerNum==0) {
             int i = 1;
