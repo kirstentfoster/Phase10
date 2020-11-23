@@ -10,14 +10,10 @@ package up.edu.phase10;
 
 import up.edu.phase10.Framework.GameHumanPlayer;
 import up.edu.phase10.Framework.GameMainActivity;
-import up.edu.phase10.R;
 import up.edu.phase10.Framework.GameInfo;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,9 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  *  @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
@@ -88,6 +82,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageView AIPhase12 = null;
     private ImageView AIPhase13 = null;
     private ImageView AIPhase14 = null;
+    private ImageView AIPhase15 = null;
+    private ImageView AIPhase16 = null;
 
     private ArrayList<ImageView> AIphase = new ArrayList<ImageView>();
 
@@ -105,6 +101,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private ImageView PlayerPhase12 = null;
     private ImageView PlayerPhase13 = null;
     private ImageView PlayerPhase14 = null;
+    private ImageView PlayerPhase15 = null;
+    private ImageView PlayerPhase16 = null;
 
     private ArrayList<ImageView> playerPhase = new ArrayList<ImageView>();
 
@@ -479,6 +477,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         AIPhase12 = myActivity.findViewById(R.id.AIPhase12);
         AIPhase13 = myActivity.findViewById(R.id.AIPhase13);
         AIPhase14 = myActivity.findViewById(R.id.AIPhase14);
+        AIPhase15 = myActivity.findViewById(R.id.AIPhase15);
+        AIPhase16 = myActivity.findViewById(R.id.AIPhase16);
+
 
         AIphase.add(AIPhase1);
         AIphase.add(AIPhase2);
@@ -494,6 +495,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         AIphase.add(AIPhase12);
         AIphase.add(AIPhase13);
         AIphase.add(AIPhase14);
+        AIphase.add(AIPhase15);
+        AIphase.add(AIPhase16);
 
         //playerPhases and it's drawables
         PlayerPhase1 = myActivity.findViewById(R.id.playerPhase1);
@@ -510,6 +513,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         PlayerPhase12 = myActivity.findViewById(R.id.playerPhase12);
         PlayerPhase13 = myActivity.findViewById(R.id.playerPhase13);
         PlayerPhase14 = myActivity.findViewById(R.id.playerPhase14);
+        PlayerPhase15 = myActivity.findViewById(R.id.playerPhase15);
+        PlayerPhase16 = myActivity.findViewById(R.id.playerPhase16);
 
         playerPhase.add(PlayerPhase1);
         playerPhase.add(PlayerPhase2);
@@ -525,6 +530,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         playerPhase.add(PlayerPhase12);
         playerPhase.add(PlayerPhase13);
         playerPhase.add(PlayerPhase14);
+        playerPhase.add(PlayerPhase15);
+        playerPhase.add(PlayerPhase16);
 
         //AI decks and their drawables
         AIDeckCard1 = myActivity.findViewById(R.id.AIDeckCard1);

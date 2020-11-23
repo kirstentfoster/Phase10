@@ -39,7 +39,7 @@ public class MainActivity extends GameMainActivity {
             }});
         playerTypes.add(new GamePlayerType("Computer Player") {
             public GamePlayer createPlayer(String name) {
-                return new Phase10IgnorantComputerPlayer(name);
+                return new SmartComputerPlayer(name);
             }});
         playerTypes.add(new GamePlayerType("Dumb Computer Player") {
             public GamePlayer createPlayer(String name) {

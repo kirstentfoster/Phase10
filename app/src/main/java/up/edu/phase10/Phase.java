@@ -69,15 +69,15 @@ public class Phase { //Wild card handling will be added in beta release
 
     public Phase(Phase p){
         Phase1 = "2 sets of 3";
-        Phase2 = "1 set of 3 and 1 run of 4";
-        Phase3 = "1 set of 4 and 1 run of 4";
+        Phase2 = "1 set of 3 and\n1 run of 4";
+        Phase3 = "1 set of 4 and\n1 run of 4";
         Phase4 = "1 run of 7";
         Phase5 = "1 run of 8";
         Phase6 = "1 run of 9";
         Phase7 = "2 sets of 4";
         Phase8 = "7 cards of one color";
-        Phase9 = "1 set of 5 and 1 set of 2";
-        Phase10 = "1 set of 5 and 1 set of 3";
+        Phase9 = "1 set of 5 and\n1 set of 2";
+        Phase10 = "1 set of 5 and\n1 set of 3";
         if(p.play1Run != null) {
             this.play1Run = new Card[p.play1Run.length];
             for (int i = 0; i < this.play1Run.length; i++) {
