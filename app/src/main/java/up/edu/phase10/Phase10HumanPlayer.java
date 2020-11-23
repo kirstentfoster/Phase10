@@ -637,7 +637,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *  method that draws all AI card, face down, so that the human player cannot see such
      *  that the game is more realistic
      */
-//    Face down AI hand
     private void createAIHandDown(){
         if(this.playerNum==1) {
             int i = 1;
@@ -666,7 +665,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     /**
      * Draws the AI's hand face up for testing purposes.
      */
-//    Shows face up AI hand
     private void createAIHandUp(){
         if(this.playerNum==1) {
             int i = 1;

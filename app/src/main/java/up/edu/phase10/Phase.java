@@ -638,9 +638,6 @@ public class Phase { //Wild card handling will be added in beta release
                             return checkForSet;
                         }
                         return notInSet;
-//                        if(notInSet.length > 0) {
-//                            return notInSet;
-//                        }
                     }
                 }
             }

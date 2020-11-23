@@ -518,11 +518,6 @@ public class Phase10GameState extends GameState {
         if(!playerHasDrawn){
             return false;
         }
-        //validity checks
-        //checks if player num == same as id
-        //checks if player has phased (if not return false)
-        //if hitOnplayer != playerNum -> check if other player has phased
-        //else, if hitOnPlayer != player num, and != other player number return false
         if (playerNum == this.turnId) {
             if (hitOnPlayer != playerNum) { //if this is false in a 2 player game, player is hitting on opposite player phase
                 if (playerNum == 0 && player1HasPhased) {
@@ -612,11 +607,6 @@ public class Phase10GameState extends GameState {
                     }
                 }
             }
-            //know what the phase is that the player being hit on is in, take their phase content, and see if this selectedCard is a valid addition
-            //could do this in phase class
-            // -> player phase, and phase content, and added card (checkHitValid method)
-            // -> if the move was valid, take card out of player hand, and add it to the appropriate phaseContent variable
-
 
         }
         return false;

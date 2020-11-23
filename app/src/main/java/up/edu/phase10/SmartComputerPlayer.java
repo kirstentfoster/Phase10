@@ -1345,11 +1345,8 @@ public class SmartComputerPlayer extends GameComputerPlayer /*extends blah blah 
                     for(Card c : temp){
                         completeGroup1.add(new Card(c.getNumber(), c.getColor()));
                     }
-//                    this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
-//                    Iterator<Card> temp2 = hand.iterator();
-//                    while(temp2.hasNext()){
                         int j = -1;
                         for(Card c : completeGroup1){
                             for(int x = 0; x<hand.size(); x++){
@@ -1572,11 +1569,10 @@ public class SmartComputerPlayer extends GameComputerPlayer /*extends blah blah 
      * @param size the group's size
      * @return true if it successfully grows the group
      */
-    public boolean checkGrowsRun(Card card, int groupNum, int size){ //I dont think this handles the card being a smaller number than the run
+    public boolean checkGrowsRun(Card card, int groupNum, int size){
         Log.d("Smart AI", "Enter checkGrowsRun()");
         if(groupNum == 1) { //check groups1 aren't null
             if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
-                //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
                     this.completeGroup1.add(0, card);
                     Log.d("Smart AI", "Exit checkGrowsRun()");
@@ -1618,7 +1614,6 @@ public class SmartComputerPlayer extends GameComputerPlayer /*extends blah blah 
         //check groups2 arent null
         else if(groupNum == 2) {
             if (this.completeGroup2 != null && this.completeGroup2.size() != 0) { //Will only reach here to test hit
-                //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
                     this.completeGroup2.add(0, card);
                     Log.d("Smart AI", "Exit checkGrowsRun()");
