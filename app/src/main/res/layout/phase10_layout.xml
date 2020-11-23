@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/helpButton"
@@ -51,7 +52,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/AIDeckCard1"
@@ -157,151 +159,152 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <ImageView
                 android:id="@+id/AIPhase1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
             <ImageView
                 android:id="@+id/AIPhase2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase7"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase9"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase11"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase12"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase13"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase14"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase15"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
             <ImageView
                 android:id="@+id/AIPhase16"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/yellow3" />
 
         </LinearLayout>
@@ -312,7 +315,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/HitButton"
@@ -329,7 +333,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginBottom="15dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/scoreView"
@@ -361,7 +366,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageButton
                 android:id="@+id/DiscardPile"
@@ -389,7 +395,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/DiscardButton"
@@ -428,9 +435,10 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="right"
-            android:layout_weight="1"
             android:gravity="bottom|right"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <ImageView
                 android:id="@+id/playerPhase1"
@@ -597,6 +605,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/red2" />
 
@@ -609,6 +618,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green9" />
 
@@ -621,6 +631,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
@@ -633,6 +644,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
@@ -645,6 +657,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/blue12" />
 
@@ -657,6 +670,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
@@ -669,6 +683,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
@@ -681,6 +696,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
@@ -693,6 +709,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/red9" />
 
@@ -705,6 +722,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
@@ -717,6 +735,7 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
         </LinearLayout>
