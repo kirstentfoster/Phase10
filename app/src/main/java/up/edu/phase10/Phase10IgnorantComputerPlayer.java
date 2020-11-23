@@ -130,6 +130,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             return;
         }
 
+        //PAUSE
+
         /* PHASE */
         if(copy.getTurnStage() == 2) {
             if (!hasPhased) {
@@ -148,6 +150,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             else copy.setTurnStage(3);
         }
 
+        //PAUSE
 
         /* HIT */
         if(copy.getTurnStage() == 3) {
@@ -160,6 +163,8 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
             else copy.setTurnStage(4);
 
         }
+
+        //PAUSE
 
         /* DISCARD */
         if(copy.getTurnStage() == 4) {
