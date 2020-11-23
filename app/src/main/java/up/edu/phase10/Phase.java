@@ -660,7 +660,6 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
-        if(checkForRun == null) return null;
         Log.d("Phase","Enter isRun()");
         Card[] temp;
         Card[] notInRun;
@@ -674,7 +673,6 @@ public class Phase { //Wild card handling will be added in beta release
             notInRun = new Card[checkForRun.length-size];
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
-                if(checkForRun[j] == null || temp[tempLoc] == null) break;
                 if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
                     if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];

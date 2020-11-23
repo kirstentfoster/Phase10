@@ -130,6 +130,8 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             return;
         }
 
+        //PAUSE
+
         /* PHASE */
         if(copy.getTurnStage() == 2) {
             if (!hasPhased) {
@@ -148,6 +150,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             else copy.setTurnStage(3);
         }
 
+        //PAUSE
 
         /* HIT */
         if(copy.getTurnStage() == 3) {
@@ -161,9 +164,11 @@ public class SmartComputerPlayer extends GameComputerPlayer {
 
         }
 
+        //PAUSE
+
         /* DISCARD */
         if(copy.getTurnStage() == 4) {
-            doDiscard(copy, hasPhased);
+            doDiscard(copy, hasPhased, phase, fullHand);
             if (hand != null || hand.size() != 0) {
                 Iterator<Card> it = hand.iterator();
                 while (it.hasNext()) {
@@ -1851,8 +1856,12 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 drawUp = true;
             } else if (hasPhased && checkIsHit(gameState, topCard))
                 drawUp = true; //If AI has already phased, always take cards that hit
-            else
-                drawUp = false; //Any other condition, draw from the drawPile (not visible, effectively random)
+            else if(phase >= 4 && phase <= 6 && !hasPhased){
+                if(topCard.getNumber() > 4 && topCard.getNumber() < 9){
+                    drawUp = true;
+                }
+            }
+            else drawUp = false; //Any other condition, draw from the drawPile (not visible, effectively random)
             if (drawUp && phase >= 4 && phase <= 6 && !hasPhased) {
                 Iterator<Card> it = fullHand.iterator();
                 while (it.hasNext()) {
@@ -1886,9 +1895,11 @@ public class SmartComputerPlayer extends GameComputerPlayer {
      *
      * @param gameState (shallow) copy of phase 10 gamestate
      * @param hasPhased true if the player has phased
+     * @param phase current player phase
+     * @param fullHand (shallow) copy of player hand
      * @return true if action successful
      */
-    public boolean doDiscard(Phase10GameState gameState, boolean hasPhased) {
+    public boolean doDiscard(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand) {
 
         Log.d("Smart AI", "Enter doDiscard()");
         int j = 0;
@@ -1912,6 +1923,17 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 game.sendAction(act); //Send Discard!!
                 Log.d("Smart AI", "Exit doDiscard()");
                 return true;
+            }
+        }
+        if (phase >= 4 && phase <= 6 && !hasPhased) { //In phases 4 5 6 ai will prioritize discarding doubles of a number
+            Iterator<Card> it = fullHand.iterator();
+            for(int i = 1; i< fullHand.size(); i++) {
+                if (fullHand.get(i).getNumber() == fullHand.get(i-1).getNumber()) {
+                    DiscardAction act = new DiscardAction(this, fullHand.get(i));
+                    game.sendAction(act); //Send Discard!!
+                    Log.d("Smart AI", "Exit doDiscard()");
+                    return true;
+                }
             }
         }
         //Next priority is a card from the smallest weak group
