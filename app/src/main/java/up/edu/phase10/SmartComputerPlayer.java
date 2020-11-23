@@ -17,7 +17,7 @@ import up.edu.phase10.Framework.GameInfo;
 
 //Think about one card is best groups
 
-public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends blah blah blah*/ {
+public class SmartComputerPlayer extends GameComputerPlayer /*extends blah blah blah*/ {
 
     private ArrayList<Card> hitList = null;
     private ArrayList<Integer> whereToHitList = null;
@@ -33,7 +33,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
     private ArrayList<Card> nonGroupCards = null;
 
 
-    public Phase10IgnorantComputerPlayer(String name) {
+    public SmartComputerPlayer(String name) {
         super(name);
     }
 
