@@ -69,15 +69,15 @@ public class Phase { //Wild card handling will be added in beta release
 
     public Phase(Phase p){
         Phase1 = "2 sets of 3";
-        Phase2 = "1 set of 3 and 1 run of 4";
-        Phase3 = "1 set of 4 and 1 run of 4";
+        Phase2 = "1 set of 3 and\n1 run of 4";
+        Phase3 = "1 set of 4 and\n1 run of 4";
         Phase4 = "1 run of 7";
         Phase5 = "1 run of 8";
         Phase6 = "1 run of 9";
         Phase7 = "2 sets of 4";
         Phase8 = "7 cards of one color";
-        Phase9 = "1 set of 5 and 1 set of 2";
-        Phase10 = "1 set of 5 and 1 set of 3";
+        Phase9 = "1 set of 5 and\n1 set of 2";
+        Phase10 = "1 set of 5 and\n1 set of 3";
         if(p.play1Run != null) {
             this.play1Run = new Card[p.play1Run.length];
             for (int i = 0; i < this.play1Run.length; i++) {
@@ -657,7 +657,6 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
-        if(checkForRun == null) return null;
         Log.d("Phase","Enter isRun()");
         Card[] temp;
         Card[] notInRun;
@@ -671,7 +670,6 @@ public class Phase { //Wild card handling will be added in beta release
             notInRun = new Card[checkForRun.length-size];
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
-                if(checkForRun[j] == null || temp[tempLoc] == null) break;
                 if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
                     if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];

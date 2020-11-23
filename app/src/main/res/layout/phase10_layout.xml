@@ -286,6 +286,24 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/yellow3" />
 
+            <ImageView
+                android:id="@+id/AIPhase15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow3" />
+
+            <ImageView
+                android:id="@+id/AIPhase16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/yellow3" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -540,6 +558,24 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
+            <ImageView
+                android:id="@+id/playerPhase15"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/yellow9" />
+
+            <ImageView
+                android:id="@+id/playerPhase16"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/yellow9" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -561,7 +597,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/red2" />
 
@@ -574,7 +609,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green9" />
 
@@ -587,7 +621,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
@@ -600,7 +633,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
@@ -613,7 +645,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/blue12" />
 
@@ -626,7 +657,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/green5" />
 
@@ -639,7 +669,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
@@ -652,7 +681,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow5" />
 
@@ -665,7 +693,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/red9" />
 
@@ -678,7 +705,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
 
@@ -691,7 +717,6 @@
                 android:background="#ffffff"
                 android:clickable="false"
                 android:enabled="false"
-                android:padding="5dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/yellow9" />
         </LinearLayout>

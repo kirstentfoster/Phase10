@@ -17,7 +17,7 @@ import up.edu.phase10.Framework.GameInfo;
 
 //Think about one card is best groups
 
-public class SmartComputerPlayer extends GameComputerPlayer /*extends blah blah blah*/ {
+public class SmartComputerPlayer extends GameComputerPlayer {
 
     private ArrayList<Card> hitList = null;
     private ArrayList<Integer> whereToHitList = null;
