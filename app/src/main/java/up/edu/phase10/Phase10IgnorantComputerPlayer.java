@@ -126,7 +126,7 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
         if(copy.getTurnStage() == 1) {
             doDraw(copy, hasPhased, phase, fullHand);
             copy.setTurnStage(2);
-            Log.d("Smart AI", "Exit receiveInfo()");
+             Log.d("Smart AI", "Exit receiveInfo()");
             return;
         }
 
@@ -136,14 +136,16 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
                 if (checkPhaseReady(phase)) {
                     boolean phased = doPhase(phase); //Phase action in here
                     hasPhased = phased;
-                    if(phased) copy.setTurnStage(3);
+                    if(phased) {
+                        copy.setTurnStage(3);
+                        Log.d("Smart AI", "Exit receiveInfo()");
+                        return;
+                    }
                     else copy.setTurnStage(4);
-                    Log.d("Smart AI", "Exit receiveInfo()");
-                    return;
                 }
+                else  copy.setTurnStage(3);
             }
-            copy.setTurnStage(3);
-
+            else copy.setTurnStage(3);
         }
 
 
@@ -1260,40 +1262,31 @@ public class Phase10IgnorantComputerPlayer extends GameComputerPlayer /*extends 
 
             for (int j = i + 1; j < hand.size(); j++) {
                 //works as part of a run
-                if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1 && tempLoc<size-1) {
+                if (hand.get(j).getNumber() == temp.get(tempLoc).getNumber() + 1 && tempLoc < size - 1) {
                     temp.add(hand.get(j));
                     tempLoc++;
                     //doesn't work as part of a run
-                } else {
-                    if (notInGroupSize > 0) {
-                        if (notInGroupLoc < notInGroupSize) {
-                            notInGroup.add(hand.get(j));
-                            notInGroupLoc++;
-                        } else {
-                            Log.d("Smart AI", "Exit testCompleteRun()");
-                            return false; //Not in group cards exceed possible per phase reqs
-                        }
-                    }
                 }
+
             }
             if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
-                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true) == null){
+                if (gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum, true) == null) {
                     Log.d("Smart AI", "Exit testCompleteRun()");
                     return false;
                 }
                 if (groupNum == 1) {
-                    if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
+                    if (this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
                     this.completeGroup1 = temp;
                     this.weakGroups1 = null;
                     this.viableGroups1 = null;
                 } else if (groupNum == 2) {
-                    if(this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
+                    if (this.completeGroup2 == null) this.completeGroup2 = new ArrayList<Card>();
                     this.completeGroup2 = temp;
                     this.weakGroups2 = null;
                     this.viableGroups2 = null;
                 }
-                if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
+                if (this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                 this.nonGroupCards = notInGroup;
                 Log.d("Smart AI", "Exit testCompleteRun()");
                 return true; //Complete group does exist

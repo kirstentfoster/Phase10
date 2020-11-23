@@ -552,6 +552,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum, boolean test){
+        if(checkForSet == null) return null;
         Card[] temp;
         Card[] notInSet;
         int notInSetLoc;
@@ -564,7 +565,9 @@ public class Phase { //Wild card handling will be added in beta release
             notInSet = new Card[checkForSet.length-size];
             notInSetLoc = 0;
             for (int j = i + 1; j < checkForSet.length; j++) {
+                if(checkForSet[j] == null || temp[tempLoc] == null) break;
                 if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc < size-1) {
+                    if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
                 } else {
@@ -657,6 +660,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
+        if(checkForRun == null) return null;
         Log.d("Phase","Enter isRun()");
         Card[] temp;
         Card[] notInRun;
@@ -670,6 +674,7 @@ public class Phase { //Wild card handling will be added in beta release
             notInRun = new Card[checkForRun.length-size];
             notInRunLoc = 0;
             for (int j = i + 1; j < checkForRun.length; j++) {
+                if(checkForRun[j] == null || temp[tempLoc] == null) break;
                 if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
                     if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];
@@ -748,6 +753,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
+        if(checkForColor == null) return null;
         Card[] temp;
         Card[] notInColor;
         int notInColorLoc;
@@ -760,8 +766,9 @@ public class Phase { //Wild card handling will be added in beta release
             notInColor = new Card[checkForColor.length-size];
             notInColorLoc = 0;
             for (int j = i + 1; j < checkForColor.length; j++) {
-
+                if(checkForColor[j] == null || temp[tempLoc] == null) break;
                 if (checkForColor[j].getColor() == temp[tempLoc].getColor()) {
+                    if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForColor[j];
                     tempLoc++;
                 } else {
