@@ -41,6 +41,13 @@ public class MainActivity extends GameMainActivity {
             public GamePlayer createPlayer(String name) {
                 return new Phase10IgnorantComputerPlayer(name);
             }});
+        playerTypes.add(new GamePlayerType("Dumb Computer Player") {
+            public GamePlayer createPlayer(String name) {
+                return new DumbComputerPlayer(name);
+            }});
+
+
+
 
         // Create a game configuration class for Pig:
         GameConfig defaultConfig = new GameConfig(playerTypes, 1, 2, "Pig", PORT_NUMBER);

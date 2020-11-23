@@ -630,6 +630,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                 i++;
             }
         }
+
     } //create playerPhaseHand
 
     /**
