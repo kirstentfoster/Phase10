@@ -155,7 +155,7 @@ public class Phase10LocalGame extends LocalGame {
         }
         if(pgs.getPlayer2Hand() != null && pgs.getPlayer2Hand().size() != 0) {
             for (Card c : pgs.getPlayer2Hand()) {
-                pgs.setPlayer1Score(pgs.getPlayer2Score() + c.getScore());
+                pgs.setPlayer2Score(pgs.getPlayer2Score() + c.getScore());
             }
         }
         //Check if game over
@@ -174,6 +174,7 @@ public class Phase10LocalGame extends LocalGame {
             pgs.setPlayer1HasPhased(false);
             pgs.setPlayer2HasPhased(false);
             pgs.setTurnStage(1);
+            pgs.phase = new Phase();
             //Re-deal Cards
             ArrayList<Card> tempDeck = new ArrayList<Card>();
             for (int i = 1; i <= 12; i++) { //add colored cards to drawPile
@@ -182,10 +183,9 @@ public class Phase10LocalGame extends LocalGame {
                     tempDeck.add(new Card(i, j));
                 }
             }
-            //TODO for Beta
-//            for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
-//            tempDeck.add(new Card(0, 0));
-//        }
+            for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
+            tempDeck.add(new Card(100, 100));
+        }
             for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
                 tempDeck.add(new Card(-1, -1));
             }

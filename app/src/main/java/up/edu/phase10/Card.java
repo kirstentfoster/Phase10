@@ -21,7 +21,7 @@ import android.graphics.Paint;
 public class Card implements Comparable{
     private int number; //1-12 number
     private int color; // 1-4 to represent the 4 colors
-    //wild cards are 0,0
+    //wild cards are 100,100
     //skip cards are -1,-1
     private int score;
     //Score is determined based on number value
@@ -38,9 +38,9 @@ public class Card implements Comparable{
         this.color = c;
 
         //Cards with values 1-9 are worth 5 points
-        if(this.number < 10 && this.number > 0) { this.score = 5;}
+        if(this.number < 10 && this.number > 0 && !this.isWild()) { this.score = 5;}
         //Cards with value 10-12 are worth 10 points
-        else if(this.number >= 10){this.score = 10;}
+        else if(this.number >= 10 && !this.isWild()){this.score = 10;}
         //Skip cards are worth 15 points
         else if(isSkip()){this.score = 15;}
         //Wild cards are worth 25 points
@@ -64,8 +64,8 @@ public class Card implements Comparable{
 
     public int getScore(){return this.score;}
 
-    public boolean isWild(){
-        return (this.number == 0 && this.color == 0);
+    public boolean isWild(){ //Wild card number or color will change to fit group it joins, one value will always be 100
+        return (this.number == 100 || this.color == 100);
     }
     public boolean isSkip(){
         return (this.number == -1 && this.color == -1);

@@ -9,9 +9,10 @@ package up.edu.phase10;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Phase { //Wild card handling will be added in beta release
+public class Phase {
 
     //Phase Rules
     private String Phase1 = null; //"2 sets of 3";
@@ -28,17 +29,48 @@ public class Phase { //Wild card handling will be added in beta release
     //Phase reqs are placed in these variables when phasing happens
 
     //Player 1
-    Card[] play1Run;
-    Card[] play1Set1;
-    Card[] play1Set2;
-    Card[] play1Color;
+    public Card[] play1Run;
+    public Card[] play1Set1;
+    public Card[] play1Set2;
+    public Card[] play1Color;
 
     //Player 2
-    Card[] play2Run;
-    Card[] play2Set1;
-    Card[] play2Set2;
-    Card[] play2Color;
+    public Card[] play2Run;
+    public Card[] play2Set1;
+    public Card[] play2Set2;
+    public Card[] play2Color;
 
+    //getters for phase strings
+    public String getPhase1(){
+        return Phase1;
+    }
+    public String getPhase2(){
+        return Phase2;
+    }
+    public String getPhase3(){
+        return Phase3;
+    }
+    public String getPhase4(){
+        return Phase4;
+    }
+    public String getPhase5(){
+        return Phase5;
+    }
+    public String getPhase6(){
+        return Phase6;
+    }
+    public String getPhase7(){
+        return Phase7;
+    }
+    public String getPhase8(){
+        return Phase8;
+    }
+    public String getPhase9(){
+        return Phase9;
+    }
+    public String getPhase10(){
+        return Phase10;
+    }
     /**
      * constructor class, with instance variables
      **/
@@ -67,7 +99,12 @@ public class Phase { //Wild card handling will be added in beta release
         play2Color = null;
     }
 
+    /**
+     * copy constructor
+     * @param p phase objec that is being copied
+     */
     public Phase(Phase p){
+        //Set strings
         Phase1 = "2 sets of 3";
         Phase2 = "1 set of 3 and\n1 run of 4";
         Phase3 = "1 set of 4 and\n1 run of 4";
@@ -78,6 +115,8 @@ public class Phase { //Wild card handling will be added in beta release
         Phase8 = "7 cards of one color";
         Phase9 = "1 set of 5 and\n1 set of 2";
         Phase10 = "1 set of 5 and\n1 set of 3";
+        //copy over phase groups
+        //Player 1
         if(p.play1Run != null) {
             this.play1Run = new Card[p.play1Run.length];
             for (int i = 0; i < this.play1Run.length; i++) {
@@ -114,6 +153,7 @@ public class Phase { //Wild card handling will be added in beta release
         else{
             this.play1Color = null;
         }
+        //Player 2
         if(p.play2Run != null) {
             this.play2Run = new Card[p.play2Run.length];
             for (int i = 0; i < this.play2Run.length; i++) {
@@ -152,36 +192,7 @@ public class Phase { //Wild card handling will be added in beta release
         }
     }
 
-    public String getPhase1(){
-        return Phase1;
-    }
-    public String getPhase2(){
-        return Phase2;
-    }
-    public String getPhase3(){
-        return Phase3;
-    }
-    public String getPhase4(){
-        return Phase4;
-    }
-    public String getPhase5(){
-        return Phase5;
-    }
-    public String getPhase6(){
-        return Phase6;
-    }
-    public String getPhase7(){
-        return Phase7;
-    }
-    public String getPhase8(){
-        return Phase8;
-    }
-    public String getPhase9(){
-        return Phase9;
-    }
-    public String getPhase10(){
-        return Phase10;
-    }
+
 
     /** checks if the play can play a phase, first by seeing what phase
      * the player is on, then by referencing two different methods that checks
@@ -193,81 +204,81 @@ public class Phase { //Wild card handling will be added in beta release
      */
     public boolean checkPhase(int playerPhase, ArrayList<Card> phaseContent, int playerNum) {
         Log.d("Phase","Enter checkPhase()");
-        Card[] sorted = sortCards(phaseContent);
+        Card[] sorted = sortCards(phaseContent); //Sort cards by number
+        //Identify phase and check if cards qualify
         switch (playerPhase) {
             case 1:
-                if(sorted.length != 6){
+                if(sorted.length != 6){ //Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseOne(sorted, playerNum);
+                return checkIfPhaseOne(sorted, playerNum); //Checks card validity
             case 2:
-                if(sorted.length != 7){
+                if(sorted.length != 7){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseTwo(sorted, playerNum);
+                return checkIfPhaseTwo(sorted, playerNum);//Checks card validity
             case 3:
-                if(sorted.length != 8){
+                if(sorted.length != 8){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseThree(sorted, playerNum);
+                return checkIfPhaseThree(sorted, playerNum);//Checks card validity
             case 4:
-                if(sorted.length != 7){
+                if(sorted.length != 7){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseFour(sorted, playerNum);
+                return checkIfPhaseFour(sorted, playerNum);//Checks card validity
             case 5:
-                if(sorted.length != 8){
+                if(sorted.length != 8){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseFive(sorted, playerNum);
+                return checkIfPhaseFive(sorted, playerNum);//Checks card validity
             case 6:
-                if(sorted.length != 9){
+                if(sorted.length != 9){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseSix(sorted, playerNum);
+                return checkIfPhaseSix(sorted, playerNum);//Checks card validity
             case 7:
-                if(sorted.length != 8){
+                if(sorted.length != 8){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                return checkIfPhaseSeven(sorted, playerNum);
+                return checkIfPhaseSeven(sorted, playerNum);//Checks card validity
             case 8: //Special Boy - 7 cards of 1 color
                 sorted = sortCardsByColor(phaseContent);
                 Log.d("Phase","Exit checkPhase()");
-                if(isColorGroup(sorted, 7,playerNum, false) != null) return true;
-                if(sorted.length != 7){
+                if(sorted.length != 7){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                if(isColorGroup(sorted, 7, playerNum, false) != null) return true;
+                if(isColorGroup(sorted, 7, playerNum, false) != null) return true;//Checks card validity
                 else return false;
             case 9:
-                if(sorted.length != 7){
+                if(sorted.length != 7){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 Log.d("Phase","Exit checkPhase()");
-                return checkIfPhaseNine(sorted, playerNum);
+                return checkIfPhaseNine(sorted, playerNum);//Checks card validity
             case 10:
-                if(sorted.length != 8){
+                if(sorted.length != 8){//Checks length validity
                     Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                return checkIfPhaseTen(sorted, playerNum);
-            default:
+                return checkIfPhaseTen(sorted, playerNum);//Checks card validity
+            default: //Default - exit
                 Log.d("Phase","Exit checkPhase()");
                 return false;
         }
@@ -318,8 +329,8 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if phase valid
      */
     public boolean checkIfPhaseTwo(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,4, playerNum, false) != null) {
-            Card[] temp = isRun(phaseContent,4, playerNum, false); //Check for run
+        if(isRun(phaseContent,4, playerNum, false,3) != null) {
+            Card[] temp = isRun(phaseContent,4, playerNum, false, 3); //Check for run
 
             if(isSet(temp,3,playerNum,1, false) != null){ //Check for set
 
@@ -347,8 +358,8 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if phase valid
      */
     public boolean checkIfPhaseThree(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,4, playerNum, false) != null) {
-            Card[] temp = isRun(phaseContent,4, playerNum, false); //Check for run
+        if(isRun(phaseContent,4, playerNum, false, 4) != null) {
+            Card[] temp = isRun(phaseContent,4, playerNum, false, 4); //Check for run
 
             if(isSet(temp,4,playerNum,1, false) != null){ //Check for set
 
@@ -376,7 +387,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if phase valid
      */
     public boolean checkIfPhaseFour(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,7,playerNum, false) == null) return false; //Check for run
+        if(isRun(phaseContent,7,playerNum, false, 0) == null) return false; //Check for run
         else{
 
             //set other phase qualifiers as null
@@ -390,7 +401,7 @@ public class Phase { //Wild card handling will be added in beta release
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,7,playerNum, false) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,7,playerNum, false, 0) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -404,7 +415,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if phase valid
      */
     public boolean checkIfPhaseFive(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,8,playerNum, false) == null) return false; //Check for run
+        if(isRun(phaseContent,8,playerNum, false, 0) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
             if(playerNum == 0) {
@@ -417,7 +428,7 @@ public class Phase { //Wild card handling will be added in beta release
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,8,playerNum, false) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,8,playerNum, false, 0) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -431,7 +442,7 @@ public class Phase { //Wild card handling will be added in beta release
      * @return true if phase valid
      */
     public boolean checkIfPhaseSix(Card[] phaseContent, int playerNum){
-        if(isRun(phaseContent,9,playerNum, false) == null) return false; //Check for run
+        if(isRun(phaseContent,9,playerNum, false, 0) == null) return false; //Check for run
         else{
             //set other phase qualifiers as null
             if(playerNum == 0) {
@@ -444,7 +455,7 @@ public class Phase { //Wild card handling will be added in beta release
                 this.play2Set2 = null;
                 this.play2Color = null;
             }
-            if(isRun(phaseContent,9,playerNum, false) == phaseContent) return true; //make sure no cards are left
+            if(isRun(phaseContent,9,playerNum, false, 0) == phaseContent) return true; //make sure no cards are left
         }
         return false;
     }
@@ -552,26 +563,41 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum, boolean test){
+        Card[] checkForSetStore = checkForSet;
+        if(checkForSet[0] != null && checkForSet[0].isWild()){ //Sometimes will be passed an unsorted group
+            ArrayList<Card> toSort = new ArrayList<Card>();
+            for(int i = 0; i < checkForSet.length; i++){
+                if(checkForSet[i] != null) toSort.add(checkForSet[i]);
+            }
+            checkForSet = sortCards(toSort); //sort
+        }
         if(checkForSet == null) return null;
         Card[] temp;
         Card[] notInSet;
         int notInSetLoc;
         int tempLoc;
-        for(int i = 0; i < checkForSet.length; i++) {
+        for(int i = 0; i < checkForSet.length; i++) {  //Increment through cards in hand
             //Reset temp
             temp = new Card[size];
             temp[0] = checkForSet[i];
+            int currentNum = 0;
+            if(temp[0] != null) currentNum = temp[0].getNumber();
             tempLoc = 0;
-            notInSet = new Card[checkForSet.length-size];
+            int z = checkForSet.length - size;
+            if(z < 0) z = 0;
+            notInSet = new Card[z];
             notInSetLoc = 0;
-            for (int j = i + 1; j < checkForSet.length; j++) {
-                if(checkForSet[j] == null || temp[tempLoc] == null) break;
-                if (checkForSet[j].getNumber() == temp[tempLoc].getNumber() && tempLoc < size-1) {
-                    if(tempLoc+1 >= temp.length) break;
+            for (int j = i + 1; j < checkForSet.length; j++) {//Check against following cards for set
+                if(checkForSet[j] == null || temp[tempLoc] == null || checkForSet[j] == null) break;
+                if ((currentNum == checkForSet[j].getNumber() || checkForSet[j].isWild()) && tempLoc < size-1 && !checkForSet[j].isSkip()) { //same num or wild
+                    if(tempLoc + 1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForSet[j];
                     tempLoc++;
+                   if(checkForSet[j].isWild()){
+                        checkForSet[j].setNumber(currentNum); //Wild card number changed to agree with set
+                   }
                 } else {
-                    if(notInSet.length > 0) {
+                    if(notInSet.length > 0) { //else, add to extra card array
                         if(notInSetLoc < notInSet.length) {
                             notInSet[notInSetLoc] = checkForSet[j];
                             notInSetLoc++;
@@ -582,62 +608,72 @@ public class Phase { //Wild card handling will be added in beta release
                     }
                 }
             }
-            if(tempLoc >= temp.length -1){
+            if(tempLoc >= (temp.length - 1)){
                 if(playerNum == 0) {
-                    for(int b = 0; b < i; b++){
-                        while(notInSetLoc < notInSet.length) {
+                    for(int b = 0; b < i; b++){ //Add any missed cards back into extra array
+                        if(notInSetLoc < notInSet.length) {
                             notInSet[notInSetLoc] = checkForSet[b];
                             notInSetLoc++;
                         }
                     }
-
-                    if(test){
+                    for(int b = checkForSet.length - 1; b > tempLoc + i; b--){ //Add any missed cards back into extra array
+                        if(notInSetLoc < notInSet.length) {
+                            notInSet[notInSetLoc] = checkForSet[b];
+                            notInSetLoc++;
+                        }
+                    }
+                    if(test){ //if test and test successful, return an arbitrary array
                         Card[] test1 = new Card[11];
                         test1[0] = new Card(40,40);
                         return test1;}
-
+                    //Set instance variables
                     if(setNum == 1){
                         this.play1Set1 = temp;
-                        if(notInSetLoc == 0){
-                            return checkForSet;
+                        if(notInSetLoc == 0){ //No extra cards -> return set
+                            return checkForSetStore;
                         }
-                        return notInSet;
+                        return notInSet; //Extra cards -> return them
                     }
                     else if(setNum == 2){
                         this.play1Set2 = temp;
-                        if(notInSetLoc == 0){
-                            return checkForSet;
+                        if(notInSetLoc == 0){//No extra cards -> return set
+                            return checkForSetStore;
                         }
-                        return notInSet;
+                        return notInSet;//Extra cards -> return them
                     }
 
                 }
                 else if(playerNum == 1){
-                    for(int b = 0; b < i; b++){
-                        while(notInSetLoc < notInSet.length) {
+                    for(int b = 0; b < i; b++){//Add any missed cards back into extra array
+                        if(notInSetLoc < notInSet.length) {
                             notInSet[notInSetLoc] = checkForSet[b];
                             notInSetLoc++;
                         }
                     }
-
-                    if(test){
+                    for(int b = checkForSet.length - 1; b > tempLoc + i; b--){ //Add any missed cards back into extra array
+                        if(notInSetLoc < notInSet.length) {
+                            notInSet[notInSetLoc] = checkForSet[b];
+                            notInSetLoc++;
+                        }
+                    }
+                    if(test){//if test and test successful, return an arbitrary array
                         Card[] test1 = new Card[11];
                         test1[0] = new Card(40,40);
                         return test1;}
-
+                    //Set instance variables
                     if(setNum == 1){
                         this.play2Set1 = temp;
-                        if(notInSetLoc == 0){
-                            return checkForSet;
+                        if(notInSetLoc == 0){//No extra cards -> return set
+                            return checkForSetStore;
                         }
-                        return notInSet;
+                        return notInSet; //Extra cards -> return them
                     }
                     else if(setNum == 2){
                         this.play2Set2 = temp;
-                        if(notInSetLoc == 0){
-                            return checkForSet;
+                        if(notInSetLoc == 0){//No extra cards -> return set
+                            return checkForSetStore;
                         }
-                        return notInSet;
+                        return notInSet; //Extra cards -> return them
                     }
                 }
             }
@@ -654,76 +690,166 @@ public class Phase { //Wild card handling will be added in beta release
      * @param size the size of the color set being searched for
      * @param playerNum the number of the player that is phasing
      * @param test if true it is used by computer player and instance variables will not be set
+     * @param setSize size of set if phase req also has a set, if not setSize = 0
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test){
+    public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test, int setSize){
         Log.d("Phase","Enter isRun()");
+        if(checkForRun == null){
+            Log.d("Phase","Exit isRun()");
+            return null;
+        }
+        int wildsStore = 0;
+        for(int i = 0; i < checkForRun.length; i++){ //Count wilds
+            if(checkForRun[i].isWild()) wildsStore++;
+        }
         Card[] temp;
         Card[] notInRun;
         int notInRunLoc;
         int tempLoc;
-        for(int i = 0; i<checkForRun.length; i++) {
-            //Reset temp
+        for(int i = 0; i<checkForRun.length; i++) {//Increment through cards in hand
+            //Reset temporary values
             temp = new Card[size];
             temp[0] = checkForRun[i];
+            int currentNum = 0;
+            if(temp[0] != null) currentNum = temp[0].getNumber();
             tempLoc = 0;
-            notInRun = new Card[checkForRun.length-size];
+            int z = checkForRun.length - size;
+            if(z < 0) z = 0;
+            notInRun = new Card[z];
             notInRunLoc = 0;
-            for (int j = i + 1; j < checkForRun.length; j++) {
-                if (checkForRun[j].getNumber() == temp[tempLoc].getNumber() + 1) {
+            int wilds = wildsStore;
+            for (int j = i + 1; j < checkForRun.length; j++) { //Check against following cards for consecutive
+                if(notInRunLoc > 1 && notInRun[notInRunLoc - 1].getNumber() == notInRun[notInRunLoc - 2].getNumber()
+                        && notInRunLoc < setSize && notInRun[notInRunLoc - 1].getNumber() == checkForRun[j].getNumber() ) { //ignore card match if its part of a set
+                    if(notInRunLoc < notInRun.length) {
+                        notInRun[notInRunLoc] = checkForRun[j];
+                        notInRunLoc++;
+                    }
+                }
+                else if(checkForRun[j].getNumber() == currentNum + 1 ) { //card is one number higher than previous
                     if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForRun[j];
                     tempLoc++;
-                } else {
-                    if(notInRun.length > 0) {
-                        if(notInRunLoc < notInRun.length) {
-                            notInRun[notInRunLoc] = checkForRun[j];
-                            notInRunLoc++;
-                        }
-                        else{
+                    currentNum++;
+                }
+                else if(wilds > 0){ //available wild card
+                    if(checkForRun[checkForRun.length - wilds].isWild() && tempLoc < temp.length -1){
+                        temp[tempLoc + 1] = checkForRun[checkForRun.length - wilds];
+                        tempLoc++;
+                        //Wild card number changed to agree with run
+                        if(currentNum + 1 <= 12) checkForRun[checkForRun.length - wilds].setNumber(currentNum + 1); //Case wild is placed after a 12
+                        else if(currentNum == 100) checkForRun[checkForRun.length - wilds].setNumber(100); //Case for run of wilds
+                        else checkForRun[checkForRun.length - wilds].setNumber(temp[0].getNumber() -1);
+                        if(!(tempLoc > 0 && currentNum == 100)) currentNum++;
+                        wilds--;
+                        j--; //Card was no actually compared, compare again
+                        if(tempLoc >= temp.length -1)break;
+                    }
+                }
+                else {
+                    if(notInRun.length > 0) { //else, add to extra card array
+                        if (notInRunLoc < notInRun.length) {
+                            if (checkForRun[j].isWild()) { // only add wilds to extra card array if they havent been used in run
+                                if (wilds > 0) {
+                                    notInRun[notInRunLoc] = checkForRun[j];
+                                    notInRunLoc++;
+                                    wilds--;
+                                }
+                            } else {
+                                notInRun[notInRunLoc] = checkForRun[j];
+                                notInRunLoc++;
+                            }
+                        } else {
                             break;
                         }
                     }
+                    else{
+                        break;
+                    }
+
                 }
 
             }
             if(tempLoc >= temp.length -1){
 
-                if(test){
+                if(test){ //if test and test successful, return an arbitrary array
                     Card[] test1 = new Card[11];
                     test1[0] = new Card(40,40);
                     Log.d("Phase","Exit isRun()");
-                    return test1;}
+                    return test1;
+                }
 
                 if(playerNum == 0) {
-
-                    for(int b = 0; b < i; b++){
-                        while(notInRunLoc < notInRun.length) {
+                    for(int b = 0; b < i; b++){ //Add any missed cards back into extra array
+                        if(notInRunLoc < notInRun.length) {
                             notInRun[notInRunLoc] = checkForRun[b];
                             notInRunLoc++;
                         }
                     }
-                    this.play1Run = temp;
-                    if(notInRunLoc == 0){
+                    for(int b = checkForRun.length - 1; b+1 >= tempLoc + i; b--){ //Add any missed cards back into extra array
+                        if(notInRunLoc < notInRun.length) {
+                            if(checkForRun[b].isWild()){
+                                if(wilds > 0){
+                                   notInRun[notInRunLoc] = checkForRun[b];
+                                   notInRunLoc++;
+                                   wilds--;
+                               }
+                            }
+                            else {
+                                notInRun[notInRunLoc] = checkForRun[b];
+                                notInRunLoc++;
+                            }
+                        }
+                    }
+                    if(setSize > 0 ){ //if phase includes a set, make sure the extra cards are a set, otherwise move on
+                        if(isSet(notInRun, setSize, playerNum, 1, true) == null){
+                            continue;
+                        }
+                    }
+                    this.play1Run = temp; //set instance variable
+                    if(notInRunLoc == 0){//No extra cards -> return run
                         Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
-                    Log.d("Phase","Exit isRun()");
-                    return notInRun;
+                    if(notInRun.length > 0) { //extra cards -> return those for continued testing
+                        Log.d("Phase", "Exit isRun()");
+                        return notInRun;
+                    }
                 }
                 else if(playerNum == 1){
-                    for(int b = 0; b < i; b++){
-                        while(notInRunLoc < notInRun.length) {
+                    for(int b = 0; b < i; b++){ //Add any missed cards back into extra array
+                        if(notInRunLoc < notInRun.length) {
                             notInRun[notInRunLoc] = checkForRun[b];
                             notInRunLoc++;
                         }
                     }
-                    this.play2Run = temp;
-                    if(notInRunLoc == 0){
+                    for(int b = checkForRun.length - 1; b +1 >= tempLoc + i; b--){ //Add any missed cards back into extra array
+                        if(notInRunLoc < notInRun.length) {
+                            if(checkForRun[b].isWild()){
+                                if(wilds > 0){
+                                    notInRun[notInRunLoc] = checkForRun[b];
+                                    notInRunLoc++;
+                                    wilds--;
+                                }
+                            }
+                            else {
+                                notInRun[notInRunLoc] = checkForRun[b];
+                                notInRunLoc++;
+                            }
+                        }
+                    }
+                    if(setSize > 0){//if phase includes a set, make sure the extra cards are a set, otherwise move on
+                        if(isSet(notInRun, setSize, playerNum, 1, true) == null){
+                            continue;
+                        }
+                    }
+                    this.play2Run = temp;//set instance variable
+                    if(notInRunLoc == 0){//No extra cards -> return run
                         Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
-                    if(notInRun.length > 0) {
+                    if(notInRun.length > 0) { //extra cards -> return those for continued testing
                         Log.d("Phase","Exit isRun()");
                         return notInRun;
                     }
@@ -748,26 +874,31 @@ public class Phase { //Wild card handling will be added in beta release
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
-        if(checkForColor == null) return null;
+        if(checkForColor == null) return null; //illegal play, exit
         Card[] temp;
         Card[] notInColor;
         int notInColorLoc;
         int tempLoc;
-        for(int i = 0; i<checkForColor.length; i++) {
+        for(int i = 0; i<checkForColor.length; i++) { //Increment through cards in hand
             //Reset temp
             temp = new Card[size];
             temp[0] = checkForColor[i];
             tempLoc = 0;
-            notInColor = new Card[checkForColor.length-size];
+            int currentCol = 0;
+            if(temp[0] != null) currentCol = temp[0].getColor();
+            int z = checkForColor.length - size;
+            if(z < 0) z = 0;
+            notInColor = new Card[z];
             notInColorLoc = 0;
-            for (int j = i + 1; j < checkForColor.length; j++) {
+            for (int j = i + 1; j < checkForColor.length; j++) {//Check against following cards for same color
                 if(checkForColor[j] == null || temp[tempLoc] == null) break;
-                if (checkForColor[j].getColor() == temp[tempLoc].getColor()) {
+                if (checkForColor[j].getColor() == currentCol || checkForColor[j].isWild() && !checkForColor[j].isSkip()) { //Same color or wild
                     if(tempLoc+1 >= temp.length) break;
                     temp[tempLoc + 1] = checkForColor[j];
                     tempLoc++;
+                    if(checkForColor[j].isWild()) checkForColor[j].setColor(currentCol); //Wild card number changed to agree with color
                 } else {
-                    if(notInColor.length > 0) {
+                    if(notInColor.length > 0) { //Not part of color group
                         if(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[j];
                             notInColorLoc++;
@@ -780,42 +911,54 @@ public class Phase { //Wild card handling will be added in beta release
 
             }
             if(tempLoc >= temp.length -1){
-
-                if(test){
+                if(test){//test successful - return arbitrary array
                     Card[] test1 = new Card[11];
                     test1[0] = new Card(40,40);
                     return test1;}
 
                 if(playerNum == 0) {
-                    for(int b = 0; b < i; b++){
-                        while(notInColorLoc < notInColor.length) {
+                    for(int b = 0; b < i; b++){//Add any missed cards back into extra array
+                        if(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[b];
                             notInColorLoc++;
                         }
                     }
-                    this.play1Color = temp;
-                    if(notInColorLoc == 0){
+                    for(int b = checkForColor.length - 1; b > tempLoc + i; b--){ //Add any missed cards back into extra array
+                        if(notInColorLoc < notInColor.length) {
+                            notInColor[notInColorLoc] = checkForColor[b];
+                            notInColorLoc++;
+                        }
+                    }
+                    this.play1Color = temp;;//set instance variable
+                    if(notInColorLoc == 0){//No extra cards -> return run
                         return checkForColor;
                     }
-                    return notInColor;
+                    if(notInColor.length>0) { //extra cards -> return those for continued testing
+                        return notInColor;
+                    }
                 }
                 else if(playerNum == 1){
-                    for(int b = 0; b < i; b++){
-                        while(notInColorLoc < notInColor.length) {
+                    for(int b = 0; b < i; b++){//Add any missed cards back into extra array
+                        if(notInColorLoc < notInColor.length) {
                             notInColor[notInColorLoc] = checkForColor[b];
                             notInColorLoc++;
                         }
                     }
-                    this.play2Color = temp;
-                    if(notInColorLoc == 0){
+                    for(int b = checkForColor.length - 1; b > tempLoc + i; b--){//Add any missed cards back into extra array
+                        if(notInColorLoc < notInColor.length) {
+                            notInColor[notInColorLoc] = checkForColor[b];
+                            notInColorLoc++;
+                        }
+                    }
+                    this.play2Color = temp;;//set instance variable
+                    if(notInColorLoc == 0){//No extra cards -> return run
                         return checkForColor;
                     }
-                    if(notInColor.length>0) {
+                    if(notInColor.length>0) { //extra cards -> return those for continued testing
                         return notInColor;
                     }
                 }
             }
-
         }
         return null;
     }
@@ -831,10 +974,40 @@ public class Phase { //Wild card handling will be added in beta release
     public Card[] sortCards(ArrayList<Card> attempt){
         Card[] arr = new Card[attempt.size()];
         int x = 0;
-        while(x < attempt.size()){
+        while(x < attempt.size()){ //convert arraylist to array
             arr[x] = attempt.get(x);
             x++;
         }
+        //Sort by number
+        for (int i = 0; i < arr.length - 1; i++){
+            int index = i;
+            for (int j = i + 1; j < arr.length; j++){
+                if (arr[j].getNumber() < arr[index].getNumber()) {
+                    index = j; //searching for lowest index
+                }
+            }
+            Card smallestNumberCard = arr[index];
+            arr[index] = arr[i];
+            arr[i] = smallestNumberCard;
+        }
+        return arr;
+    }
+
+    /**
+     * sorts the cards by number order in an array
+     * helper method for handling wilds
+     *
+     * @param attempt the cards attempting to be phased
+     * @return the sorted card array
+     */
+    private Card[] sortRaw(Card[] attempt){
+        Card[] arr = new Card[attempt.length];
+        int x = 0;
+        while(x < attempt.length){ //Copy array
+            arr[x] = attempt[x];
+            x++;
+        }
+        //Sort by number
         for (int i = 0; i < arr.length - 1; i++){
             int index = i;
             for (int j = i + 1; j < arr.length; j++){
@@ -851,6 +1024,7 @@ public class Phase { //Wild card handling will be added in beta release
 
     /**
      * sortCards sorts the cards by color instead of number
+     * for specific use in phase 8
      *
      * @param attempt the cards attempting to be phased
      * @return the sorted card array
@@ -858,10 +1032,12 @@ public class Phase { //Wild card handling will be added in beta release
     private Card[] sortCardsByColor(ArrayList<Card> attempt){
         Card[] arr = new Card[attempt.size()];
         int x = 0;
+        //Convert into an array
         while(x < attempt.size()){
             arr[x] = attempt.get(x);
             x++;
         }
+        //Sort by color
         for (int i = 0; i < arr.length - 1; i++){
             int index = i;
             for (int j = i + 1; j < arr.length; j++){
@@ -891,93 +1067,187 @@ public class Phase { //Wild card handling will be added in beta release
         if (playerNum == 0) {
             //Runs
             if(this.play1Run != null) {
-                Card[] tempPlay1Run = new Card[play1Run.length + 1];
-                int x = 0;
-                if(selectedCard != null && selectedCard.getNumber() < play1Run[0].getNumber()) x = 1;
-                for (int i = 0; i < play1Run.length; i++) {
-                    tempPlay1Run[i+x] = play1Run[i];
+                if(selectedCard.isWild()){ //wilds are always accepted
+                    Card[] tempPlay1Run = new Card[play1Run.length + 1];
+                    for (int i = 0; i < play1Run.length; i++) {
+                        tempPlay1Run[i] = play1Run[i];
+                    }
+                    if(this.play1Run[play1Run.length-1].getNumber() < 12) selectedCard.setNumber(this.play1Run[play1Run.length-1].getNumber()+1);
+                    else if(this.play1Run[play1Run.length-1].getNumber() == 100)selectedCard.setNumber(100);
+                    else selectedCard.setNumber(this.play1Run[0].getNumber()-1);
+                    tempPlay1Run[play1Run.length] = selectedCard;
+                    play1Run = this.sortRaw(tempPlay1Run);
+                    return true;
                 }
-                if(x == 0) tempPlay1Run[play1Run.length] = selectedCard;
-                else if(x == 1) tempPlay1Run[0] = selectedCard;
-
-                if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test) == null)) return true;
+                else {
+                    int x = -1;
+                    if (selectedCard != null && selectedCard.getNumber() < play1Run[0].getNumber()) x = 1;
+                    else if(selectedCard != null && selectedCard.getNumber() > play1Run[play1Run.length-1].getNumber()) x = 0;
+                    if(x != -1) {
+                        Card[] tempPlay1Run = new Card[play1Run.length + 1];
+                        for (int i = 0; i < play1Run.length; i++) {
+                            tempPlay1Run[i + x] = play1Run[i];
+                        }
+                        if (x == 0) tempPlay1Run[play1Run.length] = selectedCard;
+                        else if (x == 1) tempPlay1Run[0] = selectedCard;
+                        if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test, 0) == null))
+                            return true;
+                    }
+                }
             }
             //Sets
             if(this.play1Set1 != null) {
-                Card[] tempPlay1Set1 = new Card[play1Set1.length + 1];
-                for (int i = 0; i < play1Set1.length; i++) {
-                    tempPlay1Set1[i] = play1Set1[i];
-                }
-                tempPlay1Set1[play1Set1.length] = selectedCard;
-                if(!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum,1, test)==null)){
+                if(selectedCard.isWild()){//wilds are always accepted
+                    Card[] tempPlay1Set1 = new Card[play1Set1.length + 1];
+                    for (int i = 0; i < play1Set1.length; i++) {
+                        tempPlay1Set1[i] = play1Set1[i];
+                    }
+                    selectedCard.setNumber(this.play1Set1[play1Set1.length-1].getNumber());
+                    tempPlay1Set1[play1Set1.length] = selectedCard;
+                    play1Set1 = this.sortRaw(tempPlay1Set1);
                     return true;
+                }
+                else { //Else check if group is valid
+                    Card[] tempPlay1Set1 = new Card[play1Set1.length + 1];
+                    for (int i = 0; i < play1Set1.length; i++) {
+                        tempPlay1Set1[i] = play1Set1[i];
+                    }
+                    tempPlay1Set1[play1Set1.length] = selectedCard;
+                    if (!(isSet(tempPlay1Set1, tempPlay1Set1.length, playerNum, 1, test) == null)) {
+                        return true;
+                    }
                 }
             }
             if(this.play1Set2 != null) {
-                Card[] tempPlay1Set2 = new Card[play1Set2.length + 1];
-                for (int i = 0; i < play1Set2.length; i++) {
-                    tempPlay1Set2[i] = play1Set2[i];
+                if(selectedCard.isWild()){//wilds are always accepted
+                    Card[] tempPlay1Set2 = new Card[play1Set2.length + 1];
+                    for (int i = 0; i < play1Set2.length; i++) {
+                        tempPlay1Set2[i] = play1Set2[i];
+                    }
+                    selectedCard.setNumber(this.play1Set2[play1Set2.length-1].getNumber());
+                    tempPlay1Set2[play1Set2.length] = selectedCard;
+                    play1Set2 = this.sortRaw(tempPlay1Set2);
+                    return true;
                 }
-                tempPlay1Set2[play1Set2.length] = selectedCard;
-                if(!(isSet(tempPlay1Set2, tempPlay1Set2.length, playerNum, 2, test)==null)) return true;
+                else { //Else check if group is valid
+                    Card[] tempPlay1Set2 = new Card[play1Set2.length + 1];
+                    for (int i = 0; i < play1Set2.length; i++) {
+                        tempPlay1Set2[i] = play1Set2[i];
+                    }
+                    tempPlay1Set2[play1Set2.length] = selectedCard;
+                    if (!(isSet(tempPlay1Set2, tempPlay1Set2.length, playerNum, 2, test) == null))
+                        return true;
+                }
             }
 
 
             //Colors
             if(this.play1Color != null) {
-                Card[] tempPlay1Color = new Card[play1Color.length + 1];
-                for (int i = 0; i < play1Color.length; i++) {
-                    tempPlay1Color[i] = play1Color[i];
-                }
-                tempPlay1Color[play1Color.length] = selectedCard;
-
-                if (!(isColorGroup(tempPlay1Color, tempPlay1Color.length, playerNum, test) == null))
+                if(this.play1Color[0].getColor() == selectedCard.getColor() || selectedCard.isWild()){  //Same color or wild accepted
+                    selectedCard.setColor(this.play1Color[0].getColor());
+                    Card[] tempPlay1Color = new Card[play1Color.length + 1];
+                    for (int i = 0; i < play1Color.length; i++) {
+                        tempPlay1Color[i] = play1Color[i];
+                    }
+                    if(selectedCard.isWild()) selectedCard.setColor(this.play1Color[play1Color.length-1].getColor());
+                    tempPlay1Color[play1Color.length] = selectedCard;
+                    play1Color = this.sortRaw(tempPlay1Color);
                     return true;
+                }
+
+
             }
         } else if (playerNum == 1) {
 
             //Runs
             if(this.play2Run != null) {
-                int x = 0;
-                if(selectedCard != null && selectedCard.getNumber() < play2Run[0].getNumber()) x = 1;
-                Card[] tempPlay2Run = new Card[play2Run.length + 1];
-                for (int i = 0; i < play2Run.length; i++) {
-                    tempPlay2Run[i+x] = play2Run[i];
+                if(selectedCard.isWild()){//wilds are always accepted
+                    Card[] tempPlay2Run = new Card[play2Run.length + 1];
+                    for (int i = 0; i < play2Run.length; i++) {
+                        tempPlay2Run[i] = play2Run[i];
+                    }
+                    if(this.play2Run[play2Run.length-1].getNumber() < 12) selectedCard.setNumber(this.play2Run[play2Run.length-1].getNumber()+1);
+                    else if(this.play2Run[play2Run.length-1].getNumber() == 100)selectedCard.setNumber(100);
+                    else selectedCard.setNumber(this.play2Run[0].getNumber()-1);
+                    tempPlay2Run[play2Run.length] = selectedCard;
+                    play2Run = this.sortRaw(tempPlay2Run);
+                    return true;
                 }
-                if(x == 0) tempPlay2Run[play2Run.length] = selectedCard;
-                else if(x == 1) tempPlay2Run[0] = selectedCard;
+                else {//Else check if group is valid
+                    int x = -1;
+                    if (selectedCard != null && selectedCard.getNumber() < play2Run[0].getNumber()) x = 1;
+                    else if(selectedCard != null && selectedCard.getNumber() > play2Run[play2Run.length-1].getNumber()) x = 0;
+                    if(x != -1) {
+                        Card[] tempPlay2Run = new Card[play2Run.length + 1];
+                        for (int i = 0; i < play2Run.length; i++) {
+                            tempPlay2Run[i + x] = play2Run[i];
+                        }
+                        if (x == 0) tempPlay2Run[play2Run.length] = selectedCard;
+                        else if (x == 1) tempPlay2Run[0] = selectedCard;
 
-                if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum, test) == null)) return true;
+                        if (!(isRun(tempPlay2Run, tempPlay2Run.length, playerNum, test, 0) == null))
+                            return true;
+                    }
+                }
             }
 
             //Sets
             if(this.play2Set1 != null) {
-                Card[] tempPlay2Set1 = new Card[play2Set1.length + 1];
-                for (int i = 0; i < play2Set1.length; i++) {
-                    tempPlay2Set1[i] = play2Set1[i];
+                if(selectedCard.isWild()){//wilds are always accepted
+                    Card[] tempPlay2Set1 = new Card[play2Set1.length + 1];
+                    for (int i = 0; i < play2Set1.length; i++) {
+                        tempPlay2Set1[i] = play2Set1[i];
+                    }
+                    selectedCard.setNumber(this.play2Set1[play2Set1.length-1].getNumber());
+                    tempPlay2Set1[play2Set1.length] = selectedCard;
+                    play2Set1 = this.sortRaw(tempPlay2Set1);
+                    return true;
                 }
-                tempPlay2Set1[play2Set1.length] = selectedCard;
-                if(!(isSet(tempPlay2Set1, tempPlay2Set1.length, playerNum,1, test)==null)) return true;
+                else {//Else check if group is valid
+                    Card[] tempPlay2Set1 = new Card[play2Set1.length + 1];
+                    for (int i = 0; i < play2Set1.length; i++) {
+                        tempPlay2Set1[i] = play2Set1[i];
+                    }
+                    tempPlay2Set1[play2Set1.length] = selectedCard;
+                    if (!(isSet(tempPlay2Set1, tempPlay2Set1.length, playerNum, 1, test) == null))
+                        return true;
+                }
             }
             if(this.play2Set2 != null) {
-                Card[] tempPlay2Set2 = new Card[play2Set2.length + 1];
-                for (int i = 0; i < play2Set2.length; i++) {
-                    tempPlay2Set2[i] = play2Set2[i];
+                if(selectedCard.isWild()){//wilds are always accepted
+                    Card[] tempPlay2Set2 = new Card[play2Set2.length + 1];
+                    for (int i = 0; i < play2Set2.length; i++) {
+                        tempPlay2Set2[i] = play2Set2[i];
+                    }
+                    selectedCard.setNumber(this.play2Set2[play2Set2.length-1].getNumber());
+                    tempPlay2Set2[play2Set2.length] = selectedCard;
+                    play2Set2 = this.sortRaw(tempPlay2Set2);
+                    return true;
                 }
-                tempPlay2Set2[play2Set2.length] = selectedCard;
-                if(!(isSet(tempPlay2Set2, tempPlay2Set2.length, playerNum, 2, test)==null)) return true;
+                else {
+                    Card[] tempPlay2Set2 = new Card[play2Set2.length + 1];
+                    for (int i = 0; i < play2Set2.length; i++) {
+                        tempPlay2Set2[i] = play2Set2[i];
+                    }
+                    tempPlay2Set2[play2Set2.length] = selectedCard;
+                    if (!(isSet(tempPlay2Set2, tempPlay2Set2.length, playerNum, 2, test) == null))
+                        return true;
+                }
             }
 
             //Colors
             if(this.play2Color != null) {
-                Card[] tempPlay2Color = new Card[play2Color.length + 1];
-                for (int i = 0; i < play2Color.length; i++) {
-                    tempPlay2Color[i] = play2Color[i];
-                }
-                tempPlay2Color[play2Color.length] = selectedCard;
-
-                if (!(isColorGroup(tempPlay2Color, tempPlay2Color.length, playerNum, test) == null))
+                if(this.play2Color[0].getColor() == selectedCard.getColor() || selectedCard.isWild()){ //Same color or wild accepted
+                    selectedCard.setColor(this.play2Color[0].getColor());
+                    Card[] tempPlay2Color = new Card[play2Color.length + 1];
+                    for (int i = 0; i < play2Color.length; i++) {
+                        tempPlay2Color[i] = play2Color[i];
+                    }
+                    if(selectedCard.isWild()) selectedCard.setColor(this.play2Color[play2Color.length-1].getColor());
+                    tempPlay2Color[play2Color.length] = selectedCard;
+                    play2Color = this.sortRaw(tempPlay2Color);
                     return true;
+                }
             }
         }
         return false;

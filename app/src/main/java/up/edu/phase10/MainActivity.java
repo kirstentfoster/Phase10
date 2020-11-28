@@ -37,7 +37,7 @@ public class MainActivity extends GameMainActivity {
             public GamePlayer createPlayer(String name) {
                 return new Phase10HumanPlayer(name);
             }});
-        playerTypes.add(new GamePlayerType("Computer Player") {
+        playerTypes.add(new GamePlayerType("Smart Computer Player") {
             public GamePlayer createPlayer(String name) {
                 return new SmartComputerPlayer(name);
             }});

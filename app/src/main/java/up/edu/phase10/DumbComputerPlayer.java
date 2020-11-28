@@ -186,7 +186,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     /**
      * clears the variables of this class
      */
-    public void clearVars(){
+    private void clearVars(){
         Log.d("Dumb AI", "Enter clearVars()");
         this.hitList = null;
         this.whereToHitList = null;
@@ -210,7 +210,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param gameState the gameState (shallow)
      * @return true if sort successful
      */
-    public boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
+    private boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
         Log.d("Dumb AI", "Enter sortGroups()");
         this.completeGroup1 = null;
         this.completeGroup2 = null;
@@ -391,7 +391,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param groupNum 1 or 2 depending on group order
      * @return true if groups get made
      */
-    public boolean makeRunGroups(ArrayList<Card> hand, int size, int groupNum) {
+    private boolean makeRunGroups(ArrayList<Card> hand, int size, int groupNum) {
         Log.d("Dumb AI", "Enter makeRunGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
@@ -500,7 +500,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @return true if groups get made
      */
 
-    public boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
+    private boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
         Log.d("Dumb AI", "Enter makeSetGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
@@ -593,7 +593,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param groupNum 1 or 2 depending on group order
      * @return true if groups get made
      */
-    public boolean makeColorGroups(ArrayList<Card> hand, int size, int groupNum){ //same as makeSetGroups but compares color
+    private boolean makeColorGroups(ArrayList<Card> hand, int size, int groupNum){ //same as makeSetGroups but compares color
         Log.d("Dumb AI", "Enter makeColorGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
@@ -689,14 +689,13 @@ public class DumbComputerPlayer extends GameComputerPlayer {
 
     /**
      * identifies the largest viable group and clears out all overlapping
-     * (may need update in beta)
      *
      * cards from other groups
      * @param groupNum 1 or 2 depending on phase reqs
      * @param fullHand (deep) copy of hand
      * @param same true if Phase requirements are the same
      */
-    public void findLargestViable(int groupNum, ArrayList<Card> fullHand, boolean same){
+    private void findLargestViable(int groupNum, ArrayList<Card> fullHand, boolean same){
         Log.d("Dumb AI", "Enter findLargestViable()");
         int biggest = 0;
         int loc = 0;
@@ -827,7 +826,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param size1 group1 size from phase reqs
      * @param size2 group2 size from phase reqs
      */
-    public void checkGroupOrg(int size1, int size2) {
+    private void checkGroupOrg(int size1, int size2) {
         Log.d("Dumb AI", "Enter checkGroupOrg()");
 
         if (viableGroups1 != null) {//remove or move from viable groups
@@ -959,7 +958,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param groupNum which group (1 or 2)
      * @return true if a complete run exists
      */
-    public boolean testCompleteRun(Phase10GameState gs, ArrayList<Card> hand, int size, int groupNum) {
+    private boolean testCompleteRun(Phase10GameState gs, ArrayList<Card> hand, int size, int groupNum) {
         Log.d("Dumb AI", "Enter testCompleteRun()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
@@ -995,7 +994,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
             if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
-                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true) == null){
+                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true, 0) == null){
                     Log.d("Dumb AI", "Exit testCompleteRun()");
                     return false;
                 }
@@ -1029,7 +1028,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @return true if a complete set exists
      * Known issues: Needs to handle wild cards
      */
-    public boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
+    private boolean testCompleteSet(ArrayList<Card> hand, int size, int groupNum) { //same as run but compares same number
         Log.d("Dumb AI", "Enter testCompleteSet()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
@@ -1109,7 +1108,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param groupNum which group (1 or 2)
      * @return true if a complete color group exists
      */
-    public boolean testCompleteColor(ArrayList<Card> hand, int size, int groupNum) { //same as color but compares same color
+    private boolean testCompleteColor(ArrayList<Card> hand, int size, int groupNum) { //same as color but compares same color
         Log.d("Dumb AI", "Enter testCompleteColor()");
         ArrayList<Card> temp;
         ArrayList<Card> notInGroup;
@@ -1174,7 +1173,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param fullHand (shallow) AI's hand
      * @return true if cards successfully grows the group
      */
-    public boolean checkGrowsGroup(Card card, int phase, ArrayList<Card> fullHand){
+    private boolean checkGrowsGroup(Card card, int phase, ArrayList<Card> fullHand){
         Log.d("Dumb AI", "Enter checkGrowsGroup()");
         boolean growsSomething = false;
         switch(phase){
@@ -1285,14 +1284,13 @@ public class DumbComputerPlayer extends GameComputerPlayer {
 
     /**
      * checks if a card grows a run group based on phase reqs
-     * (may need updating to handle wilds in beta)
      *
      * @param card the card that hopefully grows the group
      * @param groupNum the group's identity
      * @param size the group's size
      * @return true if it successfully grows the group
      */
-    public boolean checkGrowsRun(Card card, int groupNum, int size){
+    private boolean checkGrowsRun(Card card, int groupNum, int size){
         Log.d("Dumb AI", "Enter checkGrowsRun()");
         if(groupNum == 1) { //check groups1 aren't null
             if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
@@ -1357,13 +1355,12 @@ public class DumbComputerPlayer extends GameComputerPlayer {
 
     /**
      * checks if a card grows a set group based on phase reqs
-     * (may need updating to handle wilds in beta)
      *
      * @param card the card that hopefully grows the group
      * @param groupNum the group's identity
      * @return true if it successfully grows the group
      */
-    public boolean checkGrowsSet(Card card, int groupNum){
+    private boolean checkGrowsSet(Card card, int groupNum){
         Log.d("Dumb AI", "Enter checkGrowsSet()");
         //check groups1 aren't null
         if(groupNum == 1) {
@@ -1411,13 +1408,12 @@ public class DumbComputerPlayer extends GameComputerPlayer {
 
     /**
      * checks if a card grows a color group based on phase reqs
-     * (may need updating to handle wilds in beta)
      *
      * @param card the card that hopefully grows the group
      * @param groupNum the group's identity
      * @return true if it successfully grows the group
      */
-    public boolean checkGrowsColor(Card card, int groupNum){
+    private boolean checkGrowsColor(Card card, int groupNum){
         //check groups1 arent null
         Log.d("Dumb AI", "Enter checkGrowsColor()");
         if(groupNum == 1) {
@@ -1503,7 +1499,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param fullHand (shallow) AI's hand
      * @return true if the draw action is successfully executed
      */
-    public boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
+    private boolean doDraw(Phase10GameState gameState, boolean hasPhased, int phase, ArrayList<Card> fullHand){
         Log.d("Dumb AI", "Enter doDraw()");
         boolean drawUp = false; //true means draw from draw pile, false means draw from discard pile
         if(gameState.getDiscardPile() != null || gameState.getDiscardPile().size() > 0 ) {
@@ -1544,13 +1540,12 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     /**
      * identifies which card should be discarded from the AI's hand
      * and executes the discard to send it to the game
-     * (double check wilds handling and highScore from smallest group in beta)
      *
      * @param gameState (shallow) copy of phase 10 gamestate
      * @param hasPhased true if the player has phased
      * @return true if action successful
      */
-    public boolean doDiscard(Phase10GameState gameState, boolean hasPhased) {
+    private boolean doDiscard(Phase10GameState gameState, boolean hasPhased) {
 
         Log.d("Dumb AI", "Enter doDiscard()");
         Random r = new Random();
@@ -1598,7 +1593,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param phase current AI phase
      * @return false if not ready to phase, or true if ready
      */
-    public boolean checkPhaseReady(int phase) {
+    private boolean checkPhaseReady(int phase) {
         Log.d("Dumb AI", "Enter checkPhaseReady()");
         if(phase == 1 || phase == 2 || phase == 3 ||  phase == 7 ||  phase == 9 ||  phase == 10) {
             if (completeGroup1 != null && completeGroup2 != null && completeGroup1.size() != 0 && completeGroup2.size() != 0){
@@ -1622,7 +1617,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param phase AI's current phase
      * @return true if action sent successfully
      */
-    public boolean doPhase(int phase) {
+    private boolean doPhase(int phase) {
         Log.d("Dumb AI", "Enter doPhase()");
         ArrayList<Card> temp = new ArrayList<Card>();
         switch(phase){
@@ -1833,7 +1828,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      *
      * @return true if hits exist
      */
-    public boolean checkHitsExist(){
+    private boolean checkHitsExist(){
         Log.d("Dumb AI", "Enter checkHitsExist()");
         if(this.hitList != null && this.hitList.size() != 0){
             Log.d("Dumb AI", "Exit checkHitsExist()");
@@ -1853,7 +1848,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param fullHand (shallow) copy of AI's hand
      * @return true once executed
      */
-    public boolean doHits(int phase, ArrayList<Card> fullHand){
+    private boolean doHits(int phase, ArrayList<Card> fullHand){
         Log.d("Dumb AI", "Enter doHits()");
         Random r = new Random();
         if(hitList == null || whereToHitList == null){
@@ -1884,7 +1879,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param c card that is being tested to hit
      * @return true if hit is possible
      */
-    public boolean checkIsHit(Phase10GameState gs, Card c){
+    private boolean checkIsHit(Phase10GameState gs, Card c){
         Log.d("Dumb AI", "Enter checkIsit()");
         if(gs.phase.checkHitValid(c, 0, true)){
             Log.d("Dumb AI", "Exit checkIsit()");
@@ -1909,7 +1904,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * @param phased2 true if player 2 has phased
      * @return true when finished
      */
-    public boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
+    private boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
         Log.d("Dumb AI", "Enter makeHits()");
         if(phased1) {
             if(this.nonGroupCards != null) {
