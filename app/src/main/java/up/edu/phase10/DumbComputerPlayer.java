@@ -1019,7 +1019,7 @@ public class DumbComputerPlayer extends GameComputerPlayer /*extends blah blah b
             }
             if (tempLoc >= size - 1) { //Is a complete group
                 //Place in groups
-                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true) == null){
+                if(gs.getPhase().isRun(gs.getPhase().sortCards(temp), size, this.playerNum,true, 0) == null){
                     Log.d("Dumb AI", "Exit testCompleteRun()");
                     return false;
                 }

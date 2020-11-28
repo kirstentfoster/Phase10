@@ -201,10 +201,10 @@ public class Phase10GameState extends GameState {
             }
         }
 
-        //TODO Beta
-//        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
-//            drawPile.add(new Card(0, 0));
-//        }
+
+        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
+            drawPile.add(new Card(100, 100));
+        }
         for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
             drawPile.add(new Card(-1, -1));
         }
@@ -383,10 +383,13 @@ public class Phase10GameState extends GameState {
      * @return true if the action was successful, else will return false
      */
     public boolean discard(int playerId, Card card) {
+        Log.d("Game State", "Enter discard(), playerId = "+playerId+", Card = " + card.toString()+" Hand = "+this.player1Hand.toString());
         if (playerId != this.turnId || this.hasGoneOut == playerId || !this.playerHasDrawn) return false;
         int cardLoc = 0;
         boolean notFound = true;
-        while (notFound) {
+        boolean exit = false;
+        while (notFound && !exit) {
+            Log.d("Game State", "In discard(), looping, Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
             if (playerId == 0) {
                 for (int i = 0; i < this.player1Hand.size(); i++) {
                     if (card.getNumber()==this.player1Hand.get(i).getNumber() && card.getColor() == this.player1Hand.get(i).getColor()) {
@@ -394,6 +397,7 @@ public class Phase10GameState extends GameState {
                         notFound = false;
                     }
                 }
+                exit = true;
             } else if (playerId == 1) {
                 for (int i = 0; i < this.player2Hand.size(); i++) {
                     if (card.getNumber()==this.player2Hand.get(i).getNumber() && card.getColor() == this.player2Hand.get(i).getColor()) {
@@ -401,18 +405,28 @@ public class Phase10GameState extends GameState {
                         notFound = false;
                     }
                 }
+                exit = true;
             } else{
-                this.turnStage = 1;
+                Log.d("Game State", "Exit discard(), playerId = "+playerId);
                 return false;
             }
         }
+        if(notFound){
+            Log.d("Game State Error", "In discard(), Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
+            turnId++;
+            if(turnId == 2) turnId = 0;
+        }
+
         //determine which player is discarding
         if (playerId == 0) {
-            if (this.player1Hand.size() < cardLoc) return false;
+            if (this.player1Hand.size() < cardLoc){
+                Log.d("Game State", "Exit discard(), playerId = "+playerId+"Exit code 000");
+                return false;
+            }
 
             discardPile.push(this.player1Hand.remove(cardLoc)); //discard to discard pile
 
-            if (this.player1Hand.size() == 0)
+            if (this.player1Hand.size() == 0 && this.hasGoneOut < 0)
                 this.hasGoneOut = playerId; //If a player's hand is empty, the other player gets one turn before round ends
             if (!discardPile.peek().isSkip()) this.turnId = 1; //Skips in 2 player mode allow current player to take 2 back-to-back turns
             turnStage = 1;
@@ -421,19 +435,24 @@ public class Phase10GameState extends GameState {
             Collections.sort(this.player2Hand);
             return true;
         } else if (playerId == 1) {
-            if (this.player2Hand.size() < cardLoc) return false;
+            if (this.player2Hand.size() < cardLoc){
+                Log.d("Game State", "Exit discard(), playerId = "+playerId+"Exit code 000");
+                return false;
+            }
 
             discardPile.push(this.player2Hand.remove(cardLoc)); //discard to discard pile
 
-            if (this.player2Hand.size() == 0) this.hasGoneOut = playerId;
+            if (this.player2Hand.size() == 0 && this.hasGoneOut < 0) this.hasGoneOut = playerId;
             if (!discardPile.peek().isSkip()) this.turnId = 0;
 
             turnStage = 1;
             this.playerHasDrawn = false;
             Collections.sort(this.player1Hand); //sort cards to improve ease of play
             Collections.sort(this.player2Hand);
+            Log.d("Game State", "Exit discard(), playerId = "+playerId);
             return true;
         } else {
+            Log.d("Game State", "Exit discard(), playerId = "+playerId);
             return false;
         }
 
@@ -462,6 +481,7 @@ public class Phase10GameState extends GameState {
     public boolean playPhase(int playerNum, ArrayList<Card> phaseContent) {
         Log.d("Game State","Enter playPhase()");
         if(!playerHasDrawn) {
+
             return false;
         }
         //checks if valid, player num == playerId, needs to have not phased
@@ -470,7 +490,7 @@ public class Phase10GameState extends GameState {
                 for (Card c : phaseContent) {
                     int j = 0;
                     for(int i=0; i<player1Hand.size(); i++){
-                        if(player1Hand.get(i).getColor()==c.getColor() && player1Hand.get(i).getNumber()==c.getNumber()){
+                        if(player1Hand.get(i).getColor()==c.getColor() && player1Hand.get(i).getNumber()==c.getNumber() || (player1Hand.get(i).isWild() && c.isWild())){
                             j = i;
                             break;
                         }
@@ -488,7 +508,7 @@ public class Phase10GameState extends GameState {
                 for (Card c : phaseContent) {
                     int j = 0;
                     for(int i=0; i<player2Hand.size(); i++){
-                        if(player2Hand.get(i).getColor()==c.getColor() && player2Hand.get(i).getNumber()==c.getNumber()){
+                        if(player2Hand.get(i).getColor()==c.getColor() && player2Hand.get(i).getNumber()==c.getNumber() || (player2Hand.get(i).isWild() && c.isWild())){
                             j = i;
                             break;
                         }
@@ -518,11 +538,6 @@ public class Phase10GameState extends GameState {
         if(!playerHasDrawn){
             return false;
         }
-        //validity checks
-        //checks if player num == same as id
-        //checks if player has phased (if not return false)
-        //if hitOnplayer != playerNum -> check if other player has phased
-        //else, if hitOnPlayer != player num, and != other player number return false
         if (playerNum == this.turnId) {
             if (hitOnPlayer != playerNum) { //if this is false in a 2 player game, player is hitting on opposite player phase
                 if (playerNum == 0 && player1HasPhased) {
@@ -530,20 +545,23 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             int j = 0;
-                            for(int i=0; i<player1Hand.size(); i++){
-                                if(player1Hand.get(i).getColor()==selectedCard.getColor() &&
-                                        player1Hand.get(i).getNumber()==selectedCard.getNumber()){
+                            for (int i = 0; i < player1Hand.size(); i++) {
+                                if (player1Hand.get(i).getColor() == selectedCard.getColor() &&
+                                        player1Hand.get(i).getNumber() == selectedCard.getNumber()
+                                        || (player1Hand.get(i).isWild() && selectedCard.isWild())) {
                                     j = i;
                                     break;
                                 }
                             }
                             player1Hand.remove(j);
-                            if(player1Hand.size() == 0){
-                                this.hasGoneOut = 0;
+                            if (player1Hand.size() == 0) {
+                                if (hasGoneOut < 0) this.hasGoneOut = 0;
                                 this.turnId = 1;
+                                this.playerHasDrawn = false;
+                                this.turnStage = 1;
                             }
                             return true;
-                        } else{
+                        } else {
                             return false;
                         }
                     }
@@ -552,41 +570,50 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             int j = 0;
-                            for(int i=0; i<player2Hand.size(); i++){
-                                if(player2Hand.get(i).getColor()==selectedCard.getColor() &&
-                                        player2Hand.get(i).getNumber()==selectedCard.getNumber()){
+                            for (int i = 0; i < player2Hand.size(); i++) {
+                                if (player2Hand.get(i).getColor() == selectedCard.getColor() &&
+                                        player2Hand.get(i).getNumber() == selectedCard.getNumber()
+                                        || (player2Hand.get(i).isWild() && selectedCard.isWild())) {
                                     j = i;
                                     break;
                                 }
                             }
                             player2Hand.remove(j);
-                            if(player2Hand.size() == 0){
-                                this.hasGoneOut = 1;
+                            if (player2Hand.size() == 0) {
+                                if (hasGoneOut < 0) this.hasGoneOut = 1;
                                 this.turnId = 0;
+                                this.playerHasDrawn = false;
+                                this.turnStage = 1;
                             }
                             return true;
-                        } else{
+                        } else {
                             return false;
                         }
                     }
                 }
-            }else if (hitOnPlayer == playerNum) { // if hitOnPlayer is the same as playerNum then the player hits on their own phaseContext
+            } else if (hitOnPlayer == playerNum) { // if hitOnPlayer is the same as playerNum then the player hits on their own phaseContext
                 if (playerNum == 0) {
                     if (player1HasPhased) {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             int j = 0;
-                            for(int i=0; i<player1Hand.size(); i++){
-                                if(player1Hand.get(i).getColor()==selectedCard.getColor()
-                                        && player1Hand.get(i).getNumber()==selectedCard.getNumber()){
+                            for (int i = 0; i < player1Hand.size(); i++) {
+                                if (player1Hand.get(i).getColor() == selectedCard.getColor()
+                                        && player1Hand.get(i).getNumber() == selectedCard.getNumber()
+                                        || (player1Hand.get(i).isWild() && selectedCard.isWild())) {
                                     j = i;
                                     break;
                                 }
                             }
                             player1Hand.remove(j);
-                            if(player1Hand.size() == 0) this.turnId = 1;
+                            if (player1Hand.size() == 0) {
+                                if (hasGoneOut < 0) this.hasGoneOut = 0;
+                                this.turnId = 1;
+                                this.playerHasDrawn = false;
+                                this.turnStage = 1;
+                            }
                             return true;
-                        } else{
+                        } else {
                             return false;
                         }
                     }
@@ -596,28 +623,28 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             int j = 0;
-                            for(int i=0; i<player2Hand.size(); i++){
-                                if(player2Hand.get(i).getColor()==selectedCard.getColor()
-                                        && player2Hand.get(i).getNumber()==selectedCard.getNumber()){
+                            for (int i = 0; i < player2Hand.size(); i++) {
+                                if (player2Hand.get(i).getColor() == selectedCard.getColor()
+                                        && player2Hand.get(i).getNumber() == selectedCard.getNumber()
+                                        || (player2Hand.get(i).isWild() && selectedCard.isWild())) {
                                     j = i;
                                     break;
                                 }
                             }
                             player2Hand.remove(j);
-                            if(player2Hand.size() == 0) this.turnId = 0;
+                            if (player2Hand.size() == 0) {
+                                if (hasGoneOut < 0) this.hasGoneOut = 1;
+                                this.turnId = 0;
+                                this.playerHasDrawn = false;
+                                this.turnStage = 1;
+                            }
                             return true;
-                        } else{
+                        } else {
                             return false;
                         }
                     }
                 }
             }
-            //know what the phase is that the player being hit on is in, take their phase content, and see if this selectedCard is a valid addition
-            //could do this in phase class
-            // -> player phase, and phase content, and added card (checkHitValid method)
-            // -> if the move was valid, take card out of player hand, and add it to the appropriate phaseContent variable
-
-
         }
         return false;
     }
