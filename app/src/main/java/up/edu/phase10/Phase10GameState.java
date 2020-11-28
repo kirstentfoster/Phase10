@@ -202,7 +202,7 @@ public class Phase10GameState extends GameState {
         }
 
 
-        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0) //NOT IMPLEMENTED IN ALPHA
+        for (int i = 0; i < 8; i++) { //add wild cards (represented by 0,0)
             drawPile.add(new Card(100, 100));
         }
         for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
@@ -242,6 +242,7 @@ public class Phase10GameState extends GameState {
      * @param PhaseGS used to send info to the phase game state class
      */
     public Phase10GameState(Phase10GameState PhaseGS) {
+        //Copy primitive variables
         this.setTurnId(PhaseGS.getTurnId());
         this.setHasGoneOut(PhaseGS.getHasGoneOut());
         this.setGoesFirst(PhaseGS.getGoesFirst());
@@ -384,13 +385,13 @@ public class Phase10GameState extends GameState {
      */
     public boolean discard(int playerId, Card card) {
         Log.d("Game State", "Enter discard(), playerId = "+playerId+", Card = " + card.toString()+" Hand = "+this.player1Hand.toString());
-        if (playerId != this.turnId || this.hasGoneOut == playerId || !this.playerHasDrawn) return false;
+        if (playerId != this.turnId || this.hasGoneOut == playerId || !this.playerHasDrawn) return false; //Exit if discard is illegal
         int cardLoc = 0;
         boolean notFound = true;
         boolean exit = false;
-        while (notFound && !exit) {
+        while (notFound && !exit) { //Find card location in the hand
             Log.d("Game State", "In discard(), looping, Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
-            if (playerId == 0) {
+            if (playerId == 0) { //Player 1
                 for (int i = 0; i < this.player1Hand.size(); i++) {
                     if (card.getNumber()==this.player1Hand.get(i).getNumber() && card.getColor() == this.player1Hand.get(i).getColor()) {
                         cardLoc = i;
@@ -398,7 +399,7 @@ public class Phase10GameState extends GameState {
                     }
                 }
                 exit = true;
-            } else if (playerId == 1) {
+            } else if (playerId == 1) { //Player 2
                 for (int i = 0; i < this.player2Hand.size(); i++) {
                     if (card.getNumber()==this.player2Hand.get(i).getNumber() && card.getColor() == this.player2Hand.get(i).getColor()) {
                         cardLoc = i;
@@ -411,7 +412,7 @@ public class Phase10GameState extends GameState {
                 return false;
             }
         }
-        if(notFound){
+        if(notFound){ //Error quit
             Log.d("Game State Error", "In discard(), Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
             turnId++;
             if(turnId == 2) turnId = 0;
@@ -480,14 +481,13 @@ public class Phase10GameState extends GameState {
      */
     public boolean playPhase(int playerNum, ArrayList<Card> phaseContent) {
         Log.d("Game State","Enter playPhase()");
-        if(!playerHasDrawn) {
-
+        if(!playerHasDrawn) { //not player turn
             return false;
         }
         //checks if valid, player num == playerId, needs to have not phased
         if (playerNum == 0) {
-            if (phase.checkPhase(player1Phase, phaseContent, playerNum) && !player1HasPhased) {
-                for (Card c : phaseContent) {
+            if (phase.checkPhase(player1Phase, phaseContent, playerNum) && !player1HasPhased) { //see if phase is legal
+                for (Card c : phaseContent) { // match phase content to locations in player hand
                     int j = 0;
                     for(int i=0; i<player1Hand.size(); i++){
                         if(player1Hand.get(i).getColor()==c.getColor() && player1Hand.get(i).getNumber()==c.getNumber() || (player1Hand.get(i).isWild() && c.isWild())){
@@ -504,8 +504,8 @@ public class Phase10GameState extends GameState {
                 return true;
             }
         } else if (playerNum == 1) {
-            if (phase.checkPhase(player2Phase, phaseContent, playerNum) && !player2HasPhased) {
-                for (Card c : phaseContent) {
+            if (phase.checkPhase(player2Phase, phaseContent, playerNum) && !player2HasPhased) {//see if phase is legal
+                for (Card c : phaseContent) {// match phase content to locations in player hand
                     int j = 0;
                     for(int i=0; i<player2Hand.size(); i++){
                         if(player2Hand.get(i).getColor()==c.getColor() && player2Hand.get(i).getNumber()==c.getNumber() || (player2Hand.get(i).isWild() && c.isWild())){
@@ -535,7 +535,7 @@ public class Phase10GameState extends GameState {
      * @return if hit successful
      */
     public boolean hitPlayer(int playerNum, Card selectedCard, int hitOnPlayer) {
-        if(!playerHasDrawn){
+        if(!playerHasDrawn){ //Illegal move, exit
             return false;
         }
         if (playerNum == this.turnId) {
@@ -545,7 +545,7 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             int j = 0;
-                            for (int i = 0; i < player1Hand.size(); i++) {
+                            for (int i = 0; i < player1Hand.size(); i++) { //Find card location
                                 if (player1Hand.get(i).getColor() == selectedCard.getColor() &&
                                         player1Hand.get(i).getNumber() == selectedCard.getNumber()
                                         || (player1Hand.get(i).isWild() && selectedCard.isWild())) {
@@ -570,7 +570,7 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             int j = 0;
-                            for (int i = 0; i < player2Hand.size(); i++) {
+                            for (int i = 0; i < player2Hand.size(); i++) {//Find card location
                                 if (player2Hand.get(i).getColor() == selectedCard.getColor() &&
                                         player2Hand.get(i).getNumber() == selectedCard.getNumber()
                                         || (player2Hand.get(i).isWild() && selectedCard.isWild())) {
@@ -597,7 +597,7 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player1PhaseContent.add(selectedCard);
                             int j = 0;
-                            for (int i = 0; i < player1Hand.size(); i++) {
+                            for (int i = 0; i < player1Hand.size(); i++) {//Find card location
                                 if (player1Hand.get(i).getColor() == selectedCard.getColor()
                                         && player1Hand.get(i).getNumber() == selectedCard.getNumber()
                                         || (player1Hand.get(i).isWild() && selectedCard.isWild())) {
@@ -623,7 +623,7 @@ public class Phase10GameState extends GameState {
                         if (phase.checkHitValid(selectedCard, hitOnPlayer, false)) {
                             player2PhaseContent.add(selectedCard);
                             int j = 0;
-                            for (int i = 0; i < player2Hand.size(); i++) {
+                            for (int i = 0; i < player2Hand.size(); i++) {//Find card location
                                 if (player2Hand.get(i).getColor() == selectedCard.getColor()
                                         && player2Hand.get(i).getNumber() == selectedCard.getNumber()
                                         || (player2Hand.get(i).isWild() && selectedCard.isWild())) {
@@ -672,7 +672,7 @@ public class Phase10GameState extends GameState {
         }
     }
 
-    /**
+    /** //does this need return?
      * takes card drawn and tests to see what the new top of the discard pile should be set to
      * @param card the card that is dealt
      * @return
