@@ -209,6 +209,13 @@ public class Phase10LocalGame extends LocalGame {
             pgs.setPlayer2Hand(tempP2Hand);
             return false;
         }
+        ArrayList<Card> tempP1 = pgs.getPlayer1Hand();
+        ArrayList<Card> tempP2 = pgs.getPlayer2Hand();
+
+        Collections.sort(tempP1);
+        Collections.sort(tempP2);
+        pgs.setPlayer1Hand(tempP1);
+        pgs.setPlayer2Hand(tempP2);
 
         return true;
     }
