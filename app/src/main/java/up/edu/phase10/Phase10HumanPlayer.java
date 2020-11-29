@@ -37,7 +37,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     // the android activity that we are running
     private GameMainActivity myActivity;
 
-    final static boolean faceUp = true; //use to show AI cards
+    final static boolean faceUp = false; //use to show AI cards
 
     /* instance variables */
 
