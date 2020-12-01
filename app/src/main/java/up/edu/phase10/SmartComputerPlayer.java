@@ -6,16 +6,18 @@
  */
 package up.edu.phase10;
 
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
-//Think about one card is best groups
 
 public class SmartComputerPlayer extends GameComputerPlayer {
 
@@ -62,6 +64,8 @@ public class SmartComputerPlayer extends GameComputerPlayer {
     protected void receiveInfo(GameInfo info) {
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
         clearVars();
+        ThreadPause tp = new ThreadPause();
+        tp.wait(1);
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
@@ -135,10 +139,8 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             doDraw(copy, hasPhased, phase, fullHand);
             copy.setTurnStage(2);
              Log.d("Smart AI", "Exit receiveInfo()");
-            return;
+             return;
         }
-
-        //PAUSE
 
         /* PHASE */
         if(copy.getTurnStage() == 2) {
@@ -158,8 +160,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             else copy.setTurnStage(3);
         }
 
-        //PAUSE
-
         /* HIT */
         if(copy.getTurnStage() == 3) {
             if (hasPhased && checkHitsExist()) {
@@ -169,22 +169,21 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 return;
             }
             else copy.setTurnStage(4);
-
         }
-
-        //PAUSE
 
         /* DISCARD */
         if(copy.getTurnStage() == 4) {
             doDiscard(copy, hasPhased, phase, fullHand);
+            return;
         }
         Log.d("Smart AI", "Exit receiveInfo()");
-        // count++;
         return;
+
     }
 
     /**
-     * clears the variables of this class
+     * Clears the instance variables of this class
+     * Intended to revert changes between calls
      */
     private void clearVars(){
         Log.d("Smart AI", "Enter clearVars()");
@@ -212,15 +211,10 @@ public class SmartComputerPlayer extends GameComputerPlayer {
      */
     private boolean sortGroups(ArrayList<Card> hand, int phase, ArrayList<Card> fullHand, Phase10GameState gameState) {
         Log.d("Smart AI", "Enter sortGroups()");
-        this.completeGroup1 = null;
-        this.completeGroup2 = null;
-        this.weakGroups1 = null;
-        this.weakGroups2 = null;
-        this.viableGroups2 = null;
-        this.viableGroups1 = null;
-        boolean complete1 = false;
-        boolean complete2 = false;
-        boolean sorted = false;
+        //Variables set up
+        boolean complete1 = false; //Set to true when first phase group is complete
+        boolean complete2 = false; //Set to true when second phase group is complete
+        boolean sorted = false; //Set to true when cards get organized
 
         //Remove skips (cannot phase with skip cards)
         ArrayList<Card> skips = new ArrayList<Card>();
@@ -240,121 +234,135 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 complete1 = testCompleteSet(hand, 3, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 //If not complete, it will make weak/viable groups
-                if (!complete1) {
-                    makeSetGroups(hand, 3, 1);
-                }
-                if (!complete2) {
-                    makeSetGroups(hand, 3, 2);
-                }
-                if(complete1 && complete2){
-                    for(Card c : completeGroup1){
-                        hand.add(c);
-                    }
-                }
+                if (!complete1) makeSetGroups(hand, 3, 1);
+                if (!complete2)  makeSetGroups(hand, 3, 2);
                 //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, true, 3,3);
+                    findLargestViable(2, fullHand, 3,3);
                     checkGroupOrg(3, 3); //Reorganize to accommodate largest viable
                 }
                 sorted = true; //Sort successful
                 break;
             case 2:
+                //test if the groups are complete first
                 complete1 = testCompleteRun(gameState, hand, 4, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
+                //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, false,4,3);
-                    checkGroupOrg(4, 3);
-                    cleanRunWilds();
+                    findLargestViable(2, fullHand, 4,3);
+                    checkGroupOrg(4, 3); //Reorganize to accommodate largest viable
+                    cleanRunWilds(); //Fix wild placement in run
                 }
-                sorted = true;
+                sorted = true; //Sort successful
                 break;
             case 3:
+                //test if the groups are complete first
                 complete1 = testCompleteRun(gameState,hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeRunGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
+                //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, false,4,4);
-                    checkGroupOrg(4, 4);
-                    cleanRunWilds();
+                    findLargestViable(2, fullHand, 4,4);
+                    checkGroupOrg(4, 4); //Reorganize to accommodate largest viable
+                    cleanRunWilds(); //Fix wild placement in run
                 }
                 sorted = true;
                 break;
             case 4:
+                //test if the group is complete first
                 complete1 = testCompleteRun(gameState, hand, 7, 1);
-                if (!complete1) makeRunGroups(hand, 7, 1);
                 //no second group
+                //If not complete, it will make weak/viable groups and identify the largest viable group
                 if(!complete1) {
-                    findLargestViable(1, fullHand, false, 7, 0);
-                    checkGroupOrg(7, 0);
+                    makeRunGroups(hand, 7, 1);
+                    findLargestViable(1, fullHand, 7, 0);
+                    checkGroupOrg(7, 0); //Reorganize to accommodate largest viable
                     cleanRunWilds();
                 }
                 sorted = true;
                 break;
             case 5:
+                //test if the group is complete first
                 complete1 = testCompleteRun(gameState, hand, 8, 1);
-                if (!complete1) makeRunGroups(hand, 8, 1);
                 //no second group
+                //If not complete, it will make weak/viable groups and identify the largest viable group
                 if(!complete1 ){
-                    findLargestViable(1, fullHand,false,8, 0);
-                    checkGroupOrg(8, 0);
-                    cleanRunWilds();
+                    makeRunGroups(hand, 8, 1);
+                    findLargestViable(1, fullHand, 8, 0);
+                    checkGroupOrg(8, 0); //Reorganize to accommodate largest viable
+                    cleanRunWilds(); //Fix wild placement in run
                 }
                 sorted = true;
                 break;
             case 6:
+                //test if the group is complete first
                 complete1 = testCompleteRun(gameState,hand, 9, 1);
-                if (!complete1) makeRunGroups(hand, 9, 1);
                 //no second group
+                //If not complete, it will make weak/viable groups and identify the largest viable group
                 if(!complete1) {
-                    findLargestViable(1, fullHand, false,9 ,0);
-                    checkGroupOrg(9, 0);
-                    cleanRunWilds();
+                    makeRunGroups(hand, 9, 1);
+                    findLargestViable(1, fullHand, 9 ,0);
+                    checkGroupOrg(9, 0); //Reorganize to accommodate largest viable
+                    cleanRunWilds(); //Fix wild placement in run
                 }
                 sorted = true;
                 break;
             case 7:
+                //test if the groups are complete first
                 complete1 = testCompleteSet(hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 4, 1);
                 if (!complete2) makeSetGroups(hand, 4, 2);
+                //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, true,4,4);
-                    checkGroupOrg(4, 4);
+                    findLargestViable(2, fullHand, 4,4);
+                    checkGroupOrg(4, 4); //Reorganize to accommodate largest viable
                 }
                 sorted = true;
                 break;
             case 8:
+                //test if the group is complete first
                 complete1 = testCompleteColor(hand, 7, 1);
-                if (!complete1) makeColorGroups(hand, 7, 1);
                 //no second group
+                //If not complete, it will make weak/viable groups and identify the largest viable group
                 if(!complete1) {
-                    findLargestViable(1, fullHand, false,7,0);
-                    checkGroupOrg(7, 0);
+                    makeColorGroups(hand, 7, 1);
+                    findLargestViable(1, fullHand, 7,0);
+                    checkGroupOrg(7, 0); //Reorganize to accommodate largest viable
                 }
                 sorted = true;
                 break;
             case 9:
+                //test if the groups are complete first
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 2, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 5, 1);
                 if (!complete2) makeSetGroups(hand, 2, 2);
+                //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, true,5,2);
-                    checkGroupOrg(5, 2);
+                    findLargestViable(2, fullHand, 5,2);
+                    checkGroupOrg(5, 2); //Reorganize to accommodate largest viable
                 }
                 sorted = true;
                 break;
             case 10:
+                //test if the groups are complete first
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
+                //If not complete, it will make weak/viable groups
                 if (!complete1) makeSetGroups(hand, 3, 1);
                 if (!complete2) makeSetGroups(hand, 3, 2);
+                //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
-                    findLargestViable(2, fullHand, true,5,3);
-                    checkGroupOrg(5, 3);
+                    findLargestViable(2, fullHand, 5,3);
+                    checkGroupOrg(5, 3); //Reorganize to accommodate largest viable
                 }
                 sorted = true;
                 break;
@@ -410,15 +418,12 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             temp = new ArrayList<Card>();
             temp.add(hand.get(i));
             tempLoc = 0;
-
             for (int j = i + 1; j < hand.size(); j++) {//Compare card is within run Size of initial card
-
                 if (hand.get(j).getNumber() < (temp.get(0).getNumber() + size) && hand.get(j).getNumber() > temp.get(0).getNumber() && hand.get(j).getNumber() != temp.get(tempLoc).getNumber()) {
                     temp.add(hand.get(j));
                     tempLoc++;
                 }
             }
-
             //add as another group to collective of viable and weak groups
             if (temp.size() > 1) allLowGroups.add(temp);
         }
@@ -438,8 +443,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         if (weaks.size() != 0) this.weakGroups1 = weaks;
         if (viables.size() != 0) this.viableGroups1 = viables;
         //Groups are set to instance variables
-        if (groupNum == 1) {
-            if (weaks.size() != 0) {
+        if (groupNum == 1 && weaks.size() != 0) {
                 if (viables.size() > size - 3) {
                     this.viableGroups1 = viables;
                     for (ArrayList<Card> group : viables) {
@@ -454,11 +458,10 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                             }
                         }
                     }
-                }
                 nonGroupCards = hand;  //Non group cards are anything remaining in hand
             }
         }
-
+        //Double check that complete groups are assigned properly
         if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
         if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         Log.d("Smart AI", "Exit makeRunGroups()");
@@ -473,22 +476,18 @@ public class SmartComputerPlayer extends GameComputerPlayer {
      * @param groupNum 1 or 2 depending on group order
      * @return true if groups get made
      */
-
     private boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
         Log.d("Smart AI", "Enter makeSetGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
-        int tempLoc;
 
         for (int i = 0; i < hand.size(); i++) { //Look at each card
             //Reset temp
             temp = new ArrayList<Card>();
             temp.add(hand.get(i));
-            tempLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {//Compare card number
                 if (hand.get(j).getNumber() == temp.get(0).getNumber() && !hand.get(j).isWild()) {
                     temp.add(hand.get(j));
-                    tempLoc++;
                 }
             }
             //add as another group to collective of viable and weak groups
@@ -519,6 +518,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
 
         //Groups are set to class variables
         if (groupNum == 1) {
+            //Add weaks to instance weakGroups
             if (weaks.size() != 0) {
                 this.weakGroups1 = weaks;
                 for (ArrayList<Card> group : weaks) {
@@ -534,6 +534,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                     }
                 }
             }
+            //Add viables to instance viable Groups
             if (viables.size() != 0) {
                 this.viableGroups1 = viables;
                 for (ArrayList<Card> group : viables) {
@@ -552,6 +553,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
            this.nonGroupCards = hand;
         }
         else if (groupNum == 2) {
+            //Add weaks to instance weakGroups
             if (weaks.size() != 0) {
                 this.weakGroups2 = weaks;
                 for (ArrayList<Card> group : weaks) {
@@ -567,6 +569,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                     }
                 }
             }
+            //Add viables to instance viable Groups
             if (viables.size() != 0) {
                 this.viableGroups2 = viables;
                 for (ArrayList<Card> group : viables) {
@@ -590,6 +593,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             }
             this.nonGroupCards = hand; //nonGroupCards set to remaining cards
         }
+        //Double check that complete groups are assigned properly
         if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
         if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         Log.d("Smart AI", "Exit makeSetGroups()");
@@ -608,17 +612,14 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         Log.d("Smart AI", "Enter makeColorGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
-        int tempLoc;
         for (int i = 0; i < hand.size(); i++) {
             //Reset temp
             temp = new ArrayList<Card>();
             temp.add(hand.get(i));
-            tempLoc = 0;
             for (int j = i + 1; j < hand.size(); j++) {
                 //Compare card color
                 if (hand.get(j).getColor() == temp.get(0).getColor() && !hand.get(j).isWild()) {
                     temp.add(hand.get(j));
-                    tempLoc++;
                 }
             }
             //add as another group to collective of viable and weak groups
@@ -639,6 +640,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
 
         //Groups are set to class variables
         if (groupNum == 1) {
+            //Add weaks to instance weakGroups
             if (weaks.size() != 0) {
                 this.weakGroups1 = weaks;
                 for (ArrayList<Card> group : weaks) {
@@ -653,6 +655,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                 }
+                //Add viables to instance viable Groups
                 if (viables.size() != 0) {
                     this.viableGroups1 = viables;
                     for (ArrayList<Card> group : viables) {
@@ -668,9 +671,10 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                 }
-                nonGroupCards = hand;
+                nonGroupCards = hand; //nonGroupCards set to remaining cards
             }
         }
+        //Double check that complete groups are assigned properly
         if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
         if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         Log.d("Smart AI", "Exit makeColorGroups()");
@@ -683,15 +687,14 @@ public class SmartComputerPlayer extends GameComputerPlayer {
      * cards from other groups
      * @param groupNum 1 or 2 depending on phase reqs
      * @param fullHand (shallow) copy of hand
-     * @param same true if Phase requirements are the same
      * @param size1 size of 1st phase requirement
      * @param size2 size of 2nd phase req (0 if no 2nd phase req)
      */
-    private void findLargestViable(int groupNum, ArrayList<Card> fullHand, boolean same, int size1, int size2){
+    private void findLargestViable(int groupNum, ArrayList<Card> fullHand, int size1, int size2) {
         Log.d("Smart AI", "Enter findLargestViable()");
         int biggest = 0;
         int loc = 0;
-        if(viableGroups1!=null) {
+        if (viableGroups1 != null) {
             //Find biggest viable group
             if (viableGroups1.size() > 0) {
                 biggest = viableGroups1.get(0).size();
@@ -710,7 +713,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 viableGroups1.set(loc, tempHold);
                 //Remove the cards of the biggest viable group from other groups
                 //To eliminate overlap
-                if(viableGroups1!=null) {
+                if (viableGroups1 != null) {
                     Iterator<Card> it2 = this.viableGroups1.get(0).iterator();
                     while (it2.hasNext()) {
                         Card b = it2.next();
@@ -725,7 +728,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                             while (it1.hasNext()) {
                                 ArrayList<Card> grp = it1.next();
                                 ArrayList<Card> group = new ArrayList<Card>();
-                                for(Card cd : grp) {
+                                for (Card cd : grp) {
                                     group.add(new Card(cd.getNumber(), cd.getColor()));
                                 }
                                 int copies = 0;
@@ -746,7 +749,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                             while (it1.hasNext()) {
                                 ArrayList<Card> grp = it1.next();
                                 ArrayList<Card> group = new ArrayList<Card>();
-                                for(Card cd : grp) {
+                                for (Card cd : grp) {
                                     group.add(new Card(cd.getNumber(), cd.getColor()));
                                 }
                                 int copies = 0;
@@ -764,31 +767,45 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                     //Add wilds into top groups if applicable
-                    for(int i = 0; i < this.nonGroupCards.size(); i++){
-                        if(this.nonGroupCards.get(i).isWild() && this.viableGroups1.get(0).size() != size1){
+                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                        if (this.nonGroupCards.get(i).isWild() && this.viableGroups1.get(0).size() != size1) {
                             this.viableGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if(this.viableGroups1.size() > 1) this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
+                            if (this.viableGroups1.size() > 1)
+                                this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
                             this.nonGroupCards.remove(i);
                         }
                     }
-                    for(int i = 0; i < this.nonGroupCards.size(); i++){
-                        if(this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1){
+                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                        if (this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1) {
                             this.weakGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if(this.weakGroups1.size() > 1) this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
+                            if (this.weakGroups1.size() > 1)
+                                this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
                             this.nonGroupCards.remove(i);
                         }
                     }
                 }
             }
         }
-        if(groupNum == 2){
+        if(groupNum == 2) findLargestViable2(fullHand, size1, size2);
+        Log.d("Smart AI", "Exit findLargestViable()");
+    }
+    /**
+     * identifies the largest viable group and clears out all overlapping
+     *
+     * cards from other groups
+     * @param fullHand (shallow) copy of hand
+     * @param size1 size of 1st phase requirement
+     * @param size2 size of 2nd phase req (0 if no 2nd phase req)
+     */
+    private void findLargestViable2(ArrayList<Card> fullHand, int size1, int size2){
+        Log.d("Smart AI", "Enter findLargestViable2()");
             if(viableGroups2==null){
-                Log.d("Smart AI", "Exit findLargestViable()");
+                Log.d("Smart AI", "Exit findLargestViable2()");
                 return;
             }
             //Find best viable
-            biggest = 0;
-            loc = 0;
+            int biggest = 0;
+            int loc = 0;
             if (viableGroups2 != null && viableGroups2.size() > 0) {
                 biggest = viableGroups2.get(0).size();
                 if (viableGroups2.size() > 1) {
@@ -807,7 +824,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                     //To eliminate overlap
                     Iterator<Card> it2 = this.viableGroups2.get(0).iterator();
                     while (it2.hasNext()) {
-
                         Card b = it2.next();
                         Card c = new Card(b.getNumber(), b.getColor());
                         int uniqueness = 0;
@@ -859,14 +875,14 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                             }
                         }
                     }
-                    //Add wilds into top groups if applicable
-
+                    //Add wilds into top viable group
                     for(int i = 0; i < this.nonGroupCards.size(); i++){
                         if(this.nonGroupCards.get(i).isWild() && this.viableGroups2.get(0).size() != size2){
                             this.viableGroups2.get(0).add(this.nonGroupCards.get(i));
                             this.nonGroupCards.remove(i);
                         }
                     }
+                    //Add wilds into top weak group
                     for(int i = 0; i < this.nonGroupCards.size(); i++){
                         if(this.nonGroupCards.get(i).isWild() && this.weakGroups2 != null && this.weakGroups2.get(0).size() != size1){
                             this.weakGroups2.get(0).add(this.nonGroupCards.get(i));
@@ -875,13 +891,13 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                 }
-            }
-        }
-        Log.d("Smart AI", "Exit findLargestViable()");
+             }
+        Log.d("Smart AI", "Exit findLargestViable2()");
     }
 
     /**
      * reorganizes weak/viable/complete/non groups based on size changes
+     *
      * @param size1 group1 size from phase reqs
      * @param size2 group2 size from phase reqs
      */
@@ -895,37 +911,37 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                     for(Card cd : grp) {
                         group.add(new Card(cd.getNumber(), cd.getColor()));
                     }
-                    if (size1 < 4) {
-                        if (group.size() < 2) {
+                    if (size1 < 4) { //Phase size is <4, thus all viable groups must of size 2 or more
+                        if (group.size() < 2) { //Too small! Remove from weaks
                             for (Card d : group) {
                                 if (this.nonGroupCards == null)
                                     this.nonGroupCards = new ArrayList<Card>();
                                 nonGroupCards.add(d);
                             }
                             weakGroups1.remove(group);
-                        } else if (group.size() >= 2) {
+                        } else if (group.size() >= 2) { //Big enough to move to viables
                             if (this.viableGroups1 == null)
                                 this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                             viableGroups1.add(group);
                             weakGroups1.remove(group);
                         }
                     }
-                    if (size1 == 4) {
-                        if (group.size() < 2){
+                    if (size1 == 4) {//Phase size is 4, thus all viable groups must of size 3 or more
+                        if (group.size() < 2){//Too small! Remove from weaks
                             for(Card d : group){
                                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                                 nonGroupCards.add(d);
                             }
                             weakGroups1.remove(group);
                          }
-                        else if (group.size() > 2) {
+                        else if (group.size() > 2) {//Big enough to move to viables
                             if(this.viableGroups1 == null) this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                             viableGroups1.add(group);
                             weakGroups1.remove(group);
                         }
                     }
-                    if (size1 > 4) {
-                        if (group.size() < 2){
+                    if (size1 > 4) { //Phase size is >4, thus all viable groups must of size 4 or more
+                        if (group.size() < 2){//Too small! Remove from weaks
                             for(Card d : group){
                                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
                                 nonGroupCards.add(d);
@@ -933,7 +949,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                             weakGroups1.remove(group);
                         }
                     }
-                    else if (group.size() > 3) {
+                    else if (group.size() > 3) {//Big enough to move to viables
                         if(this.viableGroups1 == null) this.viableGroups1 = new ArrayList<ArrayList<Card>>();
                         viableGroups1.add(group);
                         weakGroups1.remove(group);
@@ -944,7 +960,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                     }
                 }
         }
-
         if (viableGroups1 != null) {//remove or move from viable groups
                 Iterator<ArrayList<Card>> it = this.viableGroups1.iterator();
                 while (it.hasNext()) {//remove from weak groups
@@ -1262,8 +1277,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 //Place in groups
                 if (groupNum == 1) {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
-
-
                     for(Card c : temp){
                         completeGroup1.add(new Card(c.getNumber(), c.getColor()));
                     }
@@ -1379,33 +1392,33 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         switch(phase){
             case 1:
                 growsSomething = checkGrowsSet(card,1); //Check first req
-                if(growsSomething)  findLargestViable(1, fullHand, true,3,3);
+                if(growsSomething)  findLargestViable(1, fullHand, 3,3);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2); //Check second req
-                    if(temp) findLargestViable(2, fullHand, true,3,3);
+                    if(temp) findLargestViable(2, fullHand, 3,3);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(3, 3); //Recheck group organization
                 break;
             case 2:
                 growsSomething = checkGrowsRun(card,1, 4);//Check first req
-                if(growsSomething) findLargestViable(1, fullHand, false,4,3);
+                if(growsSomething) findLargestViable(1, fullHand, 4,3);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);//Check second req
-                    if(temp) findLargestViable(2, fullHand, false,4,3);
+                    if(temp) findLargestViable(2, fullHand, 4,3);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(4, 3);//Recheck group organization
                 break;
             case 3:
                 growsSomething = checkGrowsRun(card,1, 4);//Check first req
-                if(growsSomething) findLargestViable(1, fullHand, false,4,4);
+                if(growsSomething) findLargestViable(1, fullHand, 4,4);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);//Check second req
-                    if(temp)findLargestViable(2, fullHand, false,4,4);
+                    if(temp)findLargestViable(2, fullHand, 4,4);
                     growsSomething = temp;
                 }
                 if(growsSomething)checkGroupOrg(4, 4);//Recheck group organization
@@ -1414,7 +1427,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 growsSomething = checkGrowsRun(card,1, 7);//Check first req
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand, false,7,0);
+                    findLargestViable(1, fullHand, 7,0);
                     checkGroupOrg(7, 0);//Recheck group organization
                 }
                 break;
@@ -1422,7 +1435,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 growsSomething = checkGrowsRun(card, 1, 8);//Check first req
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand, false,8,0);
+                    findLargestViable(1, fullHand, 8,0);
                     checkGroupOrg(8, 0);//Recheck group organization
                 }
                 break;
@@ -1430,17 +1443,17 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 growsSomething = checkGrowsRun(card, 1, 9);//Check first req
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand, false,9 ,0);
+                    findLargestViable(1, fullHand, 9 ,0);
                     checkGroupOrg(9, 0);//Recheck group organization
                 }
                 break;
             case 7:
                 growsSomething = checkGrowsSet(card,1);//Check first req
-                if(growsSomething)  findLargestViable(1, fullHand, true,4,4);
+                if(growsSomething)  findLargestViable(1, fullHand, 4,4);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);//Check second req
-                    if(temp) findLargestViable(2, fullHand, true,4,4);
+                    if(temp) findLargestViable(2, fullHand, 4,4);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(4, 4);//Recheck group organization
@@ -1449,28 +1462,28 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 growsSomething = checkGrowsColor(card, 1);//Check first req
                 //no second group
                 if(growsSomething) {
-                    findLargestViable(1, fullHand, false,7,0);
+                    findLargestViable(1, fullHand, 7,0);
                     checkGroupOrg(7, 0);//Recheck group organization
                 }
                 break;
             case 9:
                 growsSomething = checkGrowsSet(card,1);//Check first req
-                if(growsSomething)  findLargestViable(1, fullHand, true,5,2);
+                if(growsSomething)  findLargestViable(1, fullHand, 5,2);
                 if(!growsSomething){
                     boolean temp;
                     temp = checkGrowsSet(card,2);//Check second req
-                    if(temp)  findLargestViable(2, fullHand, true,5,2);
+                    if(temp)  findLargestViable(2, fullHand, 5,2);
                     growsSomething = temp;
                 }
                 if(growsSomething)checkGroupOrg(5, 2);//Recheck group organization
                 break;
             case 10:
                 growsSomething = checkGrowsSet(card,1);//Check first req
-                if(growsSomething) findLargestViable(1, fullHand, true,5,3);
+                if(growsSomething) findLargestViable(1, fullHand, 5,3);
                 if(!growsSomething) {
                     boolean temp;
                     temp = checkGrowsSet(card,2);//Check second req
-                    if(temp) findLargestViable(2, fullHand, true,5,3);
+                    if(temp) findLargestViable(2, fullHand, 5,3);
                     growsSomething = temp;
                 }
                 if(growsSomething) checkGroupOrg(5, 3);//Recheck group organization
@@ -1509,7 +1522,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 for(ArrayList<Card> group : viableGroups1) {
                     int base = group.get(0).getNumber();
                     for (int j = 1; j < size; j++) { //Compare card is within run Size of initial card
-                        if(size >= group.size())break;
+                        if(size >= group.size()) break;
                         if(group.get(j).getNumber() != base + j && card.getNumber() == base + j ){
                             group.add(j, card);
                             Log.d("Smart AI", "Exit checkGrowsRun()");

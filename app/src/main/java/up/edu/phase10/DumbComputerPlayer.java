@@ -45,6 +45,8 @@ public class DumbComputerPlayer extends GameComputerPlayer {
         Random r = new Random();
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
         clearVars();
+        ThreadPause tp = new ThreadPause();
+        tp.wait(1);
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
@@ -235,11 +237,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 }
                 if (!complete2) {
                     makeSetGroups(hand, 2);
-                }
-                if(complete1 && complete2){
-                    for(Card c : completeGroup1){
-                        hand.add(c);
-                    }
                 }
                 //If something wasnt complete, find largest viable group
                 if(!complete1 || !complete2) {
