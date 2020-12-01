@@ -3,6 +3,9 @@
  * Manages pausing the AI to create more user-friendly play
  */
 package up.edu.phase10;
+
+import android.util.Log;
+
 /**
  External Citation
  Date: 12/1/20
@@ -20,9 +23,11 @@ class ThreadPause {
      *            sec = 1, it will pause for .3 seconds
      */
     public void wait(int sec) {
+        Log.d("Thread Pause", "Attempting to sleep");
         try {
             Thread.currentThread().sleep(sec * 300);
         } catch (InterruptedException e) {
+            Log.d("Thread Pause", "Sleep failed");
             e.printStackTrace();
         }
     }
