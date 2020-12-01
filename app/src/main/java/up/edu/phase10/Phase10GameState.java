@@ -672,13 +672,12 @@ public class Phase10GameState extends GameState {
         }
     }
 
-    /** //does this need return?
+    /**
      * takes card drawn and tests to see what the new top of the discard pile should be set to
      * @param card the card that is dealt
-     * @return
+     * @return id of the card drawable
      */
     public int testSlot(Card card){
-        int i = 0;
         if(card.isSkip()){
             return R.drawable.skip;
         }

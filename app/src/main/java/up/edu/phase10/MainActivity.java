@@ -1,6 +1,19 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * this is the primary activity for Phase10
+ *
+ * Game state commentary:
+ * No known bugs
+ * Fully functional GUI
+ * Smart AI plays game intelligently with a good strategy
+ * Dumb AI plays the game poorly with a poor strategy, but will not necessarily lose
+ * Working quit, restart, and help (rules) buttons
+ * Displays current score and phase of both players, as well as requirement for
+ *  current human phase
+ * Working phase/round progression, scoring, as well as skip and wild cards
+ * All actions currently work when player follows action constrictions
+ * Working end game (who wins)
+ *
  */
 
 package up.edu.phase10;

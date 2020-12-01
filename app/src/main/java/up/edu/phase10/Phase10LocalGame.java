@@ -99,6 +99,9 @@ public class Phase10LocalGame extends LocalGame {
         int s1 = this.pgs.getPlayer2Phase();
         boolean oneDone = false;
         boolean twoDone = false;
+        if(this.pgs.getHasGoneOut() < 0 || this.pgs.getHasGoneOut() != this.pgs.getTurnId()){ //Round must be over
+            return null;
+        }
         if(s0 == 10 && this.pgs.getPlayer1HasPhased()){
             oneDone = true;
         }

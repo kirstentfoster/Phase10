@@ -1,8 +1,9 @@
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * Where the AI methods are
- * Creates an dumb AI for the use to play against
- * Should be able to do all actions necessary to complete games
+ * Creates an relatively 'dumb' AI for the user to play against
+ * Should be able to do all actions necessary to complete games, but
+ * does not hit strategically and discards card randomly
  */
 package up.edu.phase10;
 
@@ -34,15 +35,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     public DumbComputerPlayer(String name) {
         super(name);
     }
-
-    /**
-     External Citation
-     Date: 11/6/20
-     Problem: I needed more clarification on how to make a deep copy
-
-     Resource: https://howtodoinjava.com/java/collections/arraylist/arraylist-clone-deep-copy/
-     Solution: I used the example from this link and adapted it to my code.
-     */
 
     /**
      * receives information from game
@@ -239,10 +231,10 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 complete2 = testCompleteSet(hand, 3, 2);
                 //If not complete, it will make viable groups
                 if (!complete1) {
-                    makeSetGroups(hand, 3, 1);
+                    makeSetGroups(hand, 1);
                 }
                 if (!complete2) {
-                    makeSetGroups(hand, 3, 2);
+                    makeSetGroups(hand, 2);
                 }
                 if(complete1 && complete2){
                     for(Card c : completeGroup1){
@@ -260,7 +252,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 complete1 = testCompleteRun(gameState, hand, 4, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
-                if (!complete2) makeSetGroups(hand, 3, 2);
+                if (!complete2) makeSetGroups(hand, 2);
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, false);
                     checkGroupOrg(4, 3);
@@ -271,7 +263,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 complete1 = testCompleteRun(gameState,hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
                 if (!complete1) makeRunGroups(hand, 4, 1);
-                if (!complete2) makeSetGroups(hand, 4, 2);
+                if (!complete2) makeSetGroups(hand, 2);
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, false);
                     checkGroupOrg(4, 4);
@@ -311,8 +303,8 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             case 7:
                 complete1 = testCompleteSet(hand, 4, 1);
                 complete2 = testCompleteSet(hand, 4, 2);
-                if (!complete1) makeSetGroups(hand, 4, 1);
-                if (!complete2) makeSetGroups(hand, 4, 2);
+                if (!complete1) makeSetGroups(hand, 1);
+                if (!complete2) makeSetGroups(hand, 2);
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, true);
                     checkGroupOrg(4, 4);
@@ -332,8 +324,8 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             case 9:
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 2, 2);
-                if (!complete1) makeSetGroups(hand, 5, 1);
-                if (!complete2) makeSetGroups(hand, 2, 2);
+                if (!complete1) makeSetGroups(hand, 1);
+                if (!complete2) makeSetGroups(hand, 2);
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, true);
                     checkGroupOrg(5, 2);
@@ -343,8 +335,8 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             case 10:
                 complete1 = testCompleteSet(hand, 5, 1);
                 complete2 = testCompleteSet(hand, 3, 2);
-                if (!complete1) makeSetGroups(hand, 3, 1);
-                if (!complete2) makeSetGroups(hand, 3, 2);
+                if (!complete1) makeSetGroups(hand, 1);
+                if (!complete2) makeSetGroups(hand, 2);
                 if(!complete1 || !complete2) {
                     findLargestViable(2, fullHand, true);
                     checkGroupOrg(5, 3);
@@ -411,19 +403,12 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 }
             }
 
-            //add as another group to collective of viable groups
+            //add as another group to collective of viable and groups
             if (temp.size() > 1) allLowGroups.add(temp);
         }
 
-        /* Separate into viable groups based on size conditions */
+        /* Separate into and viable groups based on size conditions */
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
-
-        Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
-        while (it1.hasNext()) {
-            ArrayList<Card> group = it1.next();
-            if(group.size() < 2) allLowGroups.remove(group); //Too small
-            else viables.add(group);
-        }
 
         //Groups are set to instance variables
         if (groupNum == 1) {
@@ -446,25 +431,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 nonGroupCards = hand;  //Non group cards are anything remaining in hand
             }
 
-         else if (groupNum == 2) { //Same for group 2
-
-            if (viables.size() != 0) {
-                this.viableGroups2 = viables;
-                for (ArrayList<Card> group : viables) {
-                    for (Card c : group) {
-                        Iterator<Card> it = hand.iterator();
-                        while (it.hasNext()) {
-                            Card d = it.next();
-                            if (c.equals(d)){
-                                hand.remove(d); //Remove from (deep) hand
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            this.nonGroupCards = hand;
-        }
 
         //Put in wilds
         boolean used = false;
@@ -495,12 +461,11 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      * sorts cards into viable set groups
      *
      * @param hand (Deep) AI's hand
-     * @param size of phase requirement
      * @param groupNum 1 or 2 depending on group order
      * @return true if groups get made
      */
 
-    private boolean makeSetGroups(ArrayList<Card> hand, int size, int groupNum){
+    private boolean makeSetGroups(ArrayList<Card> hand, int groupNum){
         Log.d("Dumb AI", "Enter makeSetGroups()");
         ArrayList<ArrayList<Card>> allLowGroups = new ArrayList<ArrayList<Card>>();
         ArrayList<Card> temp;
@@ -523,7 +488,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
         }
 
-        //separate into viable
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
 
         Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
@@ -577,8 +541,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
             this.nonGroupCards = hand;
         }
-
-
         if(completeGroup1 != null && completeGroup1.size() == 0) completeGroup1 = null;
         if(completeGroup2 != null && completeGroup2.size() == 0) completeGroup2 = null;
         Log.d("Dumb AI", "Exit makeSetGroups()");
@@ -614,7 +576,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             if (temp.size() > 1) allLowGroups.add(temp);
         }
 
-        //separate into viable
         ArrayList<ArrayList<Card>> viables = new ArrayList<ArrayList<Card>>();
 
         Iterator<ArrayList<Card>> it1 = allLowGroups.iterator();
@@ -644,26 +605,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 }
                 nonGroupCards = hand;
         }
-        else if (groupNum == 2) {
-
-            if (viables.size() != 0) {
-                this.viableGroups2 = viables;
-                for (ArrayList<Card> group : viables) {
-                    for (Card c : group) {
-                        Iterator<Card> it = hand.iterator();
-                        while (it.hasNext()) {
-                            Card d = it.next();
-                            if (c.equals(d)){
-                                hand.remove(d); //Remove from (deep) hand
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            this.nonGroupCards = hand;
-        }
-
+        //Put in wilds
         boolean used = false;
         if(this.nonGroupCards == null || this.nonGroupCards.size() == 0) return true;
         Iterator<Card> it3 = this.nonGroupCards.iterator();
@@ -828,7 +770,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private void checkGroupOrg(int size1, int size2) {
         Log.d("Dumb AI", "Enter checkGroupOrg()");
-
         if (viableGroups1 != null) {//remove or move from viable groups
             Iterator<ArrayList<Card>> it = this.viableGroups1.iterator();
             while (it.hasNext()) {
@@ -891,7 +832,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
 
         if (viableGroups2 != null) {//remove or move from viable groups
             Iterator<ArrayList<Card>> it = this.viableGroups2.iterator();
-            while (it.hasNext()) {
+            while (it.hasNext()) {//remove from groups
                 ArrayList<Card> grp = it.next();
                 ArrayList<Card> group = new ArrayList<Card>();
                 for(Card c : grp) {
@@ -916,7 +857,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                     }
                 }
                 if (size2 > 4) {
-                    if (group.size() < 4) {
+                    if (group.size() < 4) { //Moved to nonGroupCards
                          if (group.size() < 2){
                             for(Card d : group){
                                 if(this.nonGroupCards == null) this.nonGroupCards = new ArrayList<Card>();
@@ -1065,7 +1006,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                     if(this.completeGroup1 == null) this.completeGroup1 = new ArrayList<Card>();
 
 
-                    for(Card c : temp) {
+                    for(Card c : temp){
                         completeGroup1.add(new Card(c.getNumber(), c.getColor()));
                     }
                     this.viableGroups1 = null;
@@ -1294,6 +1235,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
         Log.d("Dumb AI", "Enter checkGrowsRun()");
         if(groupNum == 1) { //check groups1 aren't null
             if (this.completeGroup1 != null && this.completeGroup1.size() != 0) {
+                //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup1.get(0).getNumber() - 1) {
                     this.completeGroup1.add(0, card);
                     Log.d("Dumb AI", "Exit checkGrowsRun()");
@@ -1323,6 +1265,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
         //check groups2 arent null
         else if(groupNum == 2) {
             if (this.completeGroup2 != null && this.completeGroup2.size() != 0) { //Will only reach here to test hit
+                //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
                     this.completeGroup2.add(0, card);
                     Log.d("Dumb AI", "Exit checkGrowsRun()");
@@ -1362,7 +1305,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private boolean checkGrowsSet(Card card, int groupNum){
         Log.d("Dumb AI", "Enter checkGrowsSet()");
-        //check groups1 aren't null
+        //check groups1 arent null
         if(groupNum == 1) {
             if (completeGroup1 != null) { //Will only reach here to test hit
                 if(card.getNumber() == completeGroup1.get(0).getNumber()){
@@ -1382,7 +1325,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
 
         }
-        //check groups2 aren't null
+        //check groups2 arent null
         else if(groupNum == 2) {
             if (completeGroup2 != null) { //Will only reach here to test hit
                 if (card.getNumber() == completeGroup2.get(0).getNumber()) {
@@ -1572,6 +1515,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
             DiscardAction act = new DiscardAction(this, this.hitList.get(highestScoreLoc));
             game.sendAction(act); //Send Discard!!
+            //this.hitList.remove(highestScoreLoc);
             return true;
         }
         if (playerNum == 0) {
