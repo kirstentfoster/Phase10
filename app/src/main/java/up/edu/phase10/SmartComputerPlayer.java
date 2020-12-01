@@ -138,8 +138,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             return;
         }
 
-        //PAUSE
-
         /* PHASE */
         if(copy.getTurnStage() == 2) {
             if (!hasPhased) {
@@ -1535,7 +1533,6 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         //check groups2 arent null
         else if(groupNum == 2) {
             if (this.completeGroup2 != null && this.completeGroup2.size() != 0) { //Will only reach here to test hit
-                //Does card add to either end of complete group?
                 if (card.getNumber() == this.completeGroup2.get(0).getNumber() - 1) {
                     this.completeGroup2.add(0, card);
                     Log.d("Smart AI", "Exit checkGrowsRun()");
