@@ -5,6 +5,7 @@
     android:id="@+id/top_gui_layout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background1"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -15,35 +16,57 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/TopRow"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:padding="10dp">
 
-            <Button
-                android:id="@+id/helpButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Help" />
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/restartButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="restart" />
+                <Button
+                    android:id="@+id/helpButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Help" />
 
-            <Button
-                android:id="@+id/QuitButton"
+                <Button
+                    android:id="@+id/phasesButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phases" />
+
+                <Button
+                    android:id="@+id/pointButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Card Points" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="QUIT" />
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/QuitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QUIT" />
+
+                <Button
+                    android:id="@+id/restartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="restart" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/AIDeck"
@@ -157,6 +180,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/AIPhase"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="left"
@@ -312,11 +336,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/AIPhase"
+            android:id="@+id/hitRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -344,6 +367,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#ffffff"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="18dp"
                 android:paddingRight="150dp" />
 
             <TextView
@@ -351,7 +380,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|center_horizontal"
-                android:textSize="15sp" />
+                android:textColor="#ffffff"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/oppScoreView"
@@ -359,13 +393,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#ffffff"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="18dp"
                 android:paddingLeft="150dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/DrawPiles"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:orientation="horizontal"
@@ -376,7 +416,7 @@
                 android:layout_width="200dp"
                 android:layout_height="300dp"
                 android:adjustViewBounds="true"
-                android:background="#FFFFFF"
+                android:background="#00FFFFFF"
                 android:scaleType="fitCenter"
                 android:src="@drawable/blue2" />
 
@@ -386,42 +426,45 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#FFFFFF"
+                android:background="#00FFFFFF"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cardback" />
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/PlayButtons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/DiscardButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:text="Discard" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/turnPart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_centerHorizontal="true"
+                android:shadowColor="#000000"
+                android:text="Draw a card!"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#000000" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/hitOnMe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center|right"
                     android:text="Hit Self" />
 
                 <Button
@@ -430,7 +473,7 @@
                     android:layout_height="wrap_content"
                     android:text="Play Phase" />
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/PlayerPhase"
@@ -604,7 +647,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -617,7 +660,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -630,7 +673,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -643,7 +686,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -656,7 +699,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -669,7 +712,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -682,7 +725,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00E91E63"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -695,7 +738,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -708,7 +751,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -721,7 +764,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"
@@ -734,7 +777,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="#ffffff"
+                android:background="#00000000"
                 android:clickable="false"
                 android:enabled="false"
                 android:padding="5dp"

@@ -10,6 +10,7 @@ package up.edu.phase10;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,6 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import up.edu.phase10.Framework.GameState;
-
 public class Phase10GameState extends GameState {
 
     //Resources

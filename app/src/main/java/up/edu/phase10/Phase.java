@@ -15,16 +15,16 @@ import java.util.List;
 public class Phase {
 
     //Phase Rules
-    private String Phase1 = null; //"2 sets of 3";
-    private String Phase2 = null; //"1 set of 3 and 1 run of 4";
-    private String Phase3 = null; //"1 set of 4 and 1 run of 4";
-    private String Phase4 = null; //"1 run of 7";
-    private String Phase5 = null; //"1 run of 8";
-    private String Phase6 = null; //"1 run of 9";
-    private String Phase7 = null; //"2 sets of 4";
-    private String Phase8 = null; //"7 cards of one color";
-    private String Phase9 = null; //"1 set of 5 and 1 set of 2";
-    private String Phase10 = null; //"1 set of 5 and 1 set of 3";
+    private String Phase1; //"2 sets of 3";
+    private String Phase2; //"1 set of 3 and 1 run of 4";
+    private String Phase3; //"1 set of 4 and 1 run of 4";
+    private String Phase4; //"1 run of 7";
+    private String Phase5; //"1 run of 8";
+    private String Phase6; //"1 run of 9";
+    private String Phase7; //"2 sets of 4";
+    private String Phase8; //"7 cards of one color";
+    private String Phase9; //"1 set of 5 and 1 set of 2";
+    private String Phase10; //"1 set of 5 and 1 set of 3";
 
     //Phase reqs are placed in these variables when phasing happens
 
