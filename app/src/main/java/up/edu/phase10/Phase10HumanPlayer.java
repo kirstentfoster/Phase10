@@ -26,7 +26,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *  @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
@@ -584,7 +586,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *
      */
     private void createAIPhase(){
-
         if(this.playerNum==1) {
             int i = 1;
             for (ImageView Im : AIphase) {
@@ -609,13 +610,88 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
     }
 
+    private void fixPhase(){
+        if (this.playerNum==0){
+            //Displays phase in more user friendly order
+            ArrayList<Card> fixPhase1 = new ArrayList<Card>();
+            ArrayList<Card> fixPhase2 = new ArrayList<Card>();
+            if(state.getPlayer1Phase()==1) {
+                if (state.getPhase().play1Set1 != null) {
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==2){
+                if(state.getPhase().play1Set1 != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==3){
+                if(state.getPhase().play1Set1 != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==4){
+                if(state.getPhase().play1Run != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==5){
+                if(state.getPhase().play1Run != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==6){
+                if(state.getPhase().play1Run != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==7) {
+                if (state.getPhase().play1Set1 != null) {
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==6){
+                if(state.getPhase().play1Color != null){
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Color));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==9) {
+                if (state.getPhase().play1Set1 != null) {
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+            else if(state.getPlayer1Phase()==10) {
+                if (state.getPhase().play1Set1 != null) {
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+            }
+        }
+    }
+
     /**
      * void method createPlayerPhase draws the player's selected phase (if valid)
      * and gets the information, to draw it to the GUI
      *
      */
     private void createPlayerPhase(){
-        if(this.playerNum==0) {
+       if(this.playerNum==0) {
+
             int i = 1;
             for (ImageView Im : playerPhase) {
                 if (state.getPlayer1PhaseContent().size() < i) {
@@ -705,9 +781,6 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      * their respective information
      */
     private void createHand(){
-
-
-
         if(this.playerNum==0) {
             int i = 1;
             for (ImageButton b : Hand) {
