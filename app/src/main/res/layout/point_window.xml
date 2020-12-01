@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#673AB7">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:lineSpacingMultiplier="1.25"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="
+Cards with values 1-9 are worth 5 points\n
+Cards with value 10-12 are worth 10 points\n
+Skip cards are worth 15 points\n
+Wild cards are worth 25 points"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:typeface="serif" />
+
+</RelativeLayout>
