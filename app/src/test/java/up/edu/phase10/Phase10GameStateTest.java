@@ -106,7 +106,7 @@ public class Phase10GameStateTest {
     }
 
     @Test
-    public void hitPlayer() {
+    public void hitPlayer(){
         Phase10GameState state = new Phase10GameState();
         state.setTurnId(0);
         ArrayList<Card> givenHand = new ArrayList<Card>(); //dummy hand to make phase successful
