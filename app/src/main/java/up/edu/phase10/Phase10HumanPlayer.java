@@ -47,13 +47,15 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private TextView    playerScoreTextView = null;
     private TextView    oppScoreTextView    = null;
     private TextView    phaseView     = null;
-    private Button      phaseButton         = null; // do we want this to be an image button?
+    private Button      phaseButton         = null;
     private Button      hitButton           = null;
     private Button hitSelfButton = null;
     public Button discardButton = null;
     private Button quitButton = null;
     private Button restartButton = null;
     private Button helpButton = null;
+    private Button phasesButton = null;
+    private Button cardPoints = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
 
@@ -172,7 +174,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
         state.drawDiscard((MainActivity) myActivity);
 
-        //print info about phase
+        //print info about phase and player turn
         if(playerNum == 0) {
             switch(state.getPlayer1Phase()){
                 case 1:
@@ -276,7 +278,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
             selected.clear();
             for(ImageButton b : Hand){
-                b.setBackgroundColor(Color.parseColor("#ffffff"));
+                b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
         }
         if(button.equals(quitButton)){//end program
@@ -298,7 +300,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
             selected.clear();
             for(ImageButton b : Hand){
-                b.setBackgroundColor(Color.parseColor("#ffffff"));
+                b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
         }
         if(button.equals(hitSelfButton)){
@@ -308,7 +310,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
             selected.clear();
             for(ImageButton b : Hand){
-                b.setBackgroundColor(Color.parseColor("#ffffff"));
+                b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
         }
 
@@ -319,7 +321,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
             selected.clear();
             for(ImageButton b : Hand){
-                b.setBackgroundColor(Color.parseColor("#ffffff"));
+                b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
         }
 
@@ -335,6 +337,12 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
         if(button.equals(helpButton)){
             this.displayHelp(getTopView());
+        }
+        if(button.equals(phasesButton)){
+            this.displayPhases(getTopView());
+        }
+        if(button.equals(cardPoints)){
+            this.displayPoints(getTopView());
         }
 
         //select cards
@@ -356,19 +364,19 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         if(playerNum==1) {
             if (!selected.contains(state.getPlayer2Hand().get(cardNum))) {
                 selected.add(state.getPlayer2Hand().get(cardNum));
-                b.setBackgroundColor(Color.parseColor("#00ffff"));
+                b.setBackgroundColor(Color.parseColor("#FF9C27B0"));
             } else {
                 selected.remove(state.getPlayer2Hand().get(cardNum));
-                b.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                b.setBackgroundColor(Color.parseColor("#00000000"));
             }
         }
         else if(playerNum==0){
             if (!selected.contains(state.getPlayer1Hand().get(cardNum))) {
                 selected.add(state.getPlayer1Hand().get(cardNum));
-                b.setBackgroundColor(Color.parseColor("#00ffff"));
+                b.setBackgroundColor(Color.parseColor("#FF9C27B0"));
             } else {
                 selected.remove(state.getPlayer1Hand().get(cardNum));
-                b.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                b.setBackgroundColor(Color.parseColor("#00000000"));
             }
         }
     }
@@ -411,6 +419,67 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
         });
     }
+
+    /**
+     * Displays info about each phase
+     * @param view passes top view for where to display overlay
+     */
+    public void displayPhases(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.phase_window, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Displays overlay for pont values of each card
+     * @param view passes top view for where to display overlay
+     */
+    public void displayPoints(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.point_window, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
     /**
      * callback method--our game has been chosen/rechosen to be the GUI,
      * called from the GUI thread
@@ -435,6 +504,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.quitButton = activity.findViewById(R.id.QuitButton);
         this.restartButton = activity.findViewById(R.id.restartButton);
         this.helpButton = activity.findViewById(R.id.helpButton);
+        this.phasesButton = activity.findViewById(R.id.phasesButton);
+        this.cardPoints = activity.findViewById(R.id.pointButton);
         this.playerScoreTextView = activity.findViewById(R.id.scoreView);
         this.oppScoreTextView = activity.findViewById(R.id.oppScoreView);
         this.phaseView = activity.findViewById(R.id.phaseDescription);
@@ -570,6 +641,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         quitButton.setOnClickListener(this);
         restartButton.setOnClickListener(this);
         helpButton.setOnClickListener(this);
+        phasesButton.setOnClickListener(this);
+        cardPoints.setOnClickListener(this);
         for(ImageButton b : Hand){
             b.setOnClickListener(this);
         }
@@ -586,6 +659,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *
      */
     private void createAIPhase(){
+        fixPhase();
         if(this.playerNum==1) {
             int i = 1;
             for (ImageView Im : AIphase) {
@@ -610,77 +684,83 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
     }
 
+    /**
+     * adjusts the phase so it will be grouped by sets, runs, and color groups
+     * even after hitting or when selecting cards in an unusual order
+     */
     private void fixPhase(){
-        if (this.playerNum==0){
-            //Displays phase in more user friendly order
-            ArrayList<Card> fixPhase1 = new ArrayList<Card>();
-            ArrayList<Card> fixPhase2 = new ArrayList<Card>();
-            if(state.getPlayer1Phase()==1) {
+        //Displays phase in more user friendly order
+        ArrayList<Card> fixPhase1 = new ArrayList<Card>();
+        ArrayList<Card> fixPhase2 = new ArrayList<Card>();
+        fixPhase1.clear();
+        fixPhase2.clear();
+        switch(state.getPlayer1Phase()) { //fix phase for player 1
+            case 1:
+            case 7:
+            case 9:
+            case 10: //phases 1, 7, 9, and 10 all have 2 sets
                 if (state.getPhase().play1Set1 != null) {
                     fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
                     fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
                     state.setPlayer1PhaseContent(fixPhase1);
                 }
-            }
-            else if(state.getPlayer1Phase()==2){
-                if(state.getPhase().play1Set1 != null){
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
-                    state.setPlayer1PhaseContent(fixPhase1);
-                }
-            }
-            else if(state.getPlayer1Phase()==3){
-                if(state.getPhase().play1Set1 != null){
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
-                    state.setPlayer1PhaseContent(fixPhase1);
-                }
-            }
-            else if(state.getPlayer1Phase()==4){
-                if(state.getPhase().play1Run != null){
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
-                    state.setPlayer1PhaseContent(fixPhase1);
-                }
-            }
-            else if(state.getPlayer1Phase()==5){
-                if(state.getPhase().play1Run != null){
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
-                    state.setPlayer1PhaseContent(fixPhase1);
-                }
-            }
-            else if(state.getPlayer1Phase()==6){
-                if(state.getPhase().play1Run != null){
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
-                    state.setPlayer1PhaseContent(fixPhase1);
-                }
-            }
-            else if(state.getPlayer1Phase()==7) {
+                break;
+            case 2:
+            case 3://phases 2 and 3 both have 1 set and 1 run
                 if (state.getPhase().play1Set1 != null) {
                     fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
                     state.setPlayer1PhaseContent(fixPhase1);
                 }
-            }
-            else if(state.getPlayer1Phase()==6){
-                if(state.getPhase().play1Color != null){
+                break;
+            case 4:
+            case 5:
+            case 6: //phases 4-6 are all single runs
+                if (state.getPhase().play1Run != null) {
+                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Run));
+                    state.setPlayer1PhaseContent(fixPhase1);
+                }
+                break;
+            case 8: //phase 8 has a color group
+                if (state.getPhase().play1Color != null) {
                     fixPhase1.addAll(Arrays.asList(state.getPhase().play1Color));
                     state.setPlayer1PhaseContent(fixPhase1);
                 }
-            }
-            else if(state.getPlayer1Phase()==9) {
-                if (state.getPhase().play1Set1 != null) {
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
-                    state.setPlayer1PhaseContent(fixPhase1);
+                break;
+        }
+        switch(state.getPlayer2Phase()) { //fix phase for player 2
+            case 1:
+            case 7:
+            case 9:
+            case 10: //phases 1, 7, 9, and 10 all have 2 sets
+                if (state.getPhase().play2Set1 != null) {
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Set1));
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Set2));
+                    state.setPlayer2PhaseContent(fixPhase2);
                 }
-            }
-            else if(state.getPlayer1Phase()==10) {
-                if (state.getPhase().play1Set1 != null) {
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set1));
-                    fixPhase1.addAll(Arrays.asList(state.getPhase().play1Set2));
-                    state.setPlayer1PhaseContent(fixPhase1);
+                break;
+            case 2:
+            case 3://phases 2 and 3 both have 1 set and 1 run
+                if (state.getPhase().play2Set1 != null) {
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Set1));
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Run));
+                    state.setPlayer2PhaseContent(fixPhase2);
                 }
-            }
+                break;
+            case 4:
+            case 5:
+            case 6: //phases 4-6 are all single runs
+                if (state.getPhase().play2Run != null) {
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Run));
+                    state.setPlayer2PhaseContent(fixPhase2);
+                }
+                break;
+            case 8: //phase 8 has a color group
+                if (state.getPhase().play2Color != null) {
+                    fixPhase2.addAll(Arrays.asList(state.getPhase().play2Color));
+                    state.setPlayer2PhaseContent(fixPhase2);
+                }
+                break;
         }
     }
 
@@ -690,8 +770,8 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
      *
      */
     private void createPlayerPhase(){
-       if(this.playerNum==0) {
-
+        fixPhase();
+        if(this.playerNum==0) {
             int i = 1;
             for (ImageView Im : playerPhase) {
                 if (state.getPlayer1PhaseContent().size() < i) {
@@ -714,7 +794,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
         }
 
-    } //create playerPhaseHand
+    } //create playerPhase end
 
     /**
      *  method that draws all AI card, face down, so that the human player cannot see such

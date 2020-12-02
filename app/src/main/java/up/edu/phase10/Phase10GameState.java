@@ -10,6 +10,7 @@ package up.edu.phase10;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,6 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import up.edu.phase10.Framework.GameState;
-
 public class Phase10GameState extends GameState {
 
     //Resources
@@ -384,13 +384,11 @@ public class Phase10GameState extends GameState {
      * @return true if the action was successful, else will return false
      */
     public boolean discard(int playerId, Card card) {
-        Log.d("Game State", "Enter discard(), playerId = "+playerId+", Card = " + card.toString()+" Hand = "+this.player1Hand.toString());
         if (playerId != this.turnId || this.hasGoneOut == playerId || !this.playerHasDrawn) return false; //Exit if discard is illegal
         int cardLoc = 0;
         boolean notFound = true;
         boolean exit = false;
         while (notFound && !exit) { //Find card location in the hand
-            Log.d("Game State", "In discard(), looping, Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
             if (playerId == 0) { //Player 1
                 for (int i = 0; i < this.player1Hand.size(); i++) {
                     if (card.getNumber()==this.player1Hand.get(i).getNumber() && card.getColor() == this.player1Hand.get(i).getColor()) {
@@ -408,12 +406,10 @@ public class Phase10GameState extends GameState {
                 }
                 exit = true;
             } else{
-                Log.d("Game State", "Exit discard(), playerId = "+playerId);
                 return false;
             }
         }
         if(notFound){ //Error quit
-            Log.d("Game State Error", "In discard(), Card = "+card.toString()+"cardLoc = "+cardLoc+" Hand = "+this.player1Hand.toString());
             turnId++;
             if(turnId == 2) turnId = 0;
         }
@@ -421,7 +417,6 @@ public class Phase10GameState extends GameState {
         //determine which player is discarding
         if (playerId == 0) {
             if (this.player1Hand.size() < cardLoc){
-                Log.d("Game State", "Exit discard(), playerId = "+playerId+"Exit code 000");
                 return false;
             }
 
@@ -437,7 +432,6 @@ public class Phase10GameState extends GameState {
             return true;
         } else if (playerId == 1) {
             if (this.player2Hand.size() < cardLoc){
-                Log.d("Game State", "Exit discard(), playerId = "+playerId+"Exit code 000");
                 return false;
             }
 
@@ -450,10 +444,8 @@ public class Phase10GameState extends GameState {
             this.playerHasDrawn = false;
             Collections.sort(this.player1Hand); //sort cards to improve ease of play
             Collections.sort(this.player2Hand);
-            Log.d("Game State", "Exit discard(), playerId = "+playerId);
             return true;
         } else {
-            Log.d("Game State", "Exit discard(), playerId = "+playerId);
             return false;
         }
 
@@ -480,7 +472,6 @@ public class Phase10GameState extends GameState {
      * @return if phasing was successful
      */
     public boolean playPhase(int playerNum, ArrayList<Card> phaseContent) {
-        Log.d("Game State","Enter playPhase()");
         if(!playerHasDrawn) { //not player turn
             return false;
         }
@@ -500,7 +491,6 @@ public class Phase10GameState extends GameState {
                 }
                 turnStage++;
                 player1HasPhased = true;
-                Log.d("Game State","Exit playPhase()");
                 return true;
             }
         } else if (playerNum == 1) {
@@ -518,12 +508,10 @@ public class Phase10GameState extends GameState {
                 }
                 turnStage++;
                 player2HasPhased = true;
-                Log.d("Game State","Exit playPhase()");
                 return true;
             }
         }
         turnStage++;
-        Log.d("Game State","Exit playPhase()");
         return false;
     }
 
