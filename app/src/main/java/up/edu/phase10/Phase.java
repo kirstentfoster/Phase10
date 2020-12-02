@@ -203,83 +203,62 @@ public class Phase {
      *
      */
     public boolean checkPhase(int playerPhase, ArrayList<Card> phaseContent, int playerNum) {
-        Log.d("Phase","Enter checkPhase()");
         Card[] sorted = sortCards(phaseContent); //Sort cards by number
         //Identify phase and check if cards qualify
         switch (playerPhase) {
             case 1:
                 if(sorted.length != 6){ //Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseOne(sorted, playerNum); //Checks card validity
             case 2:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseTwo(sorted, playerNum);//Checks card validity
             case 3:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseThree(sorted, playerNum);//Checks card validity
             case 4:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFour(sorted, playerNum);//Checks card validity
             case 5:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFive(sorted, playerNum);//Checks card validity
             case 6:
                 if(sorted.length != 9){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseSix(sorted, playerNum);//Checks card validity
             case 7:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseSeven(sorted, playerNum);//Checks card validity
             case 8: //Special Boy - 7 cards of 1 color
                 sorted = sortCardsByColor(phaseContent);
-                Log.d("Phase","Exit checkPhase()");
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 if(isColorGroup(sorted, 7, playerNum, false) != null) return true;//Checks card validity
                 else return false;
             case 9:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseNine(sorted, playerNum);//Checks card validity
             case 10:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseTen(sorted, playerNum);//Checks card validity
             default: //Default - exit
-                Log.d("Phase","Exit checkPhase()");
                 return false;
         }
     }
