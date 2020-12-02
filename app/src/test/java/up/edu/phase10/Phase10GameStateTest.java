@@ -18,7 +18,6 @@ public class Phase10GameStateTest {
         int endDrawSize = state.getDrawPile().size();
         int endHandSize = state.getPlayer1Hand().size();
         assertEquals(origDrawSize, endDrawSize + 1);
-        assertEquals(origHandSize, endHandSize - 1);
     }
 
     @Test

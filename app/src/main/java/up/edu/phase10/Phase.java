@@ -755,7 +755,7 @@ public class Phase {
                 if(test){ //if test and test successful, return an arbitrary array
                     Card[] test1 = new Card[11];
                     test1[0] = new Card(40,40);
-                    Log.d("Phase","Exit isRun()");
+                  //  Log.d("Phase","Exit isRun()");
                     return test1;
                 }
 
@@ -788,11 +788,11 @@ public class Phase {
                     }
                     this.play1Run = temp; //set instance variable
                     if(notInRunLoc == 0){//No extra cards -> return run
-                        Log.d("Phase","Exit isRun()");
+                       // Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
                     if(notInRun.length > 0) { //extra cards -> return those for continued testing
-                        Log.d("Phase", "Exit isRun()");
+                       // Log.d("Phase", "Exit isRun()");
                         return notInRun;
                     }
                 }
@@ -852,7 +852,7 @@ public class Phase {
      * @param test if true it is used by computer player and instance variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
+    public Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
         if(checkForColor == null) return null; //illegal play, exit
         Card[] temp;
         Card[] notInColor;
