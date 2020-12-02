@@ -10,10 +10,6 @@ import static org.junit.Assert.*;
 public class PhaseTest {
 
     @Test
-    public void checkPhase() {
-
-    }
-    @Test
     public void checkIfPhaseOne() {
         Phase phase = new Phase();
         ArrayList<Card> hand = new ArrayList<Card>();
@@ -42,6 +38,7 @@ public class PhaseTest {
         assertFalse(phase.checkIfPhaseOne(bad,0));;
 
     }
+
     @Test
     public void checkIfPhaseTwo() {
         Random rand = new Random();
@@ -65,12 +62,12 @@ public class PhaseTest {
         notPhase.add(new Card(3,1));
         notPhase.add(new Card(3,1));
 
-        for (int i = 0; i < 4; i++){
-            hand.add(new Card(1+i,1));
-        }
-        for(int i = 0; i < 4; i++){
-            notPhase.add(new Card(rand.nextInt(11)+1,1)) ;
-        }
+//        for (int i = 0; i < 4; i++){
+//            hand.add(new Card(1+i,1));
+//        }
+//        for(int i = 0; i < 4; i++){
+//            notPhase.add(new Card(rand.nextInt(11)+1,1)) ;
+//        }
 
         Card[] sorted = phase.sortCards(hand);
         Card[] notSorted = phase.sortCards(notPhase);
@@ -258,7 +255,7 @@ public class PhaseTest {
         hand.add(new Card(1,1));
         hand.add(new Card(9,1));
         Card[] sorted = phase.sortCards(hand);
-        expectedHand = phase.isColorGroup(sorted, 4,1,true);
+        expectedHand = phase.isColorGroup(sorted, 4,1,false);
         assertEquals(expectedHand[0].getColor(),1);
         assertEquals(expectedHand[1].getColor(),1);
         assertEquals(expectedHand[2].getColor(),1);

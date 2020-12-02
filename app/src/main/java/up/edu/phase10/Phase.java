@@ -673,9 +673,7 @@ public class Phase {
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test, int setSize){
-        Log.d("Phase","Enter isRun()");
         if(checkForRun == null){
-            Log.d("Phase","Exit isRun()");
             return null;
         }
         int wildsStore = 0;
@@ -825,17 +823,14 @@ public class Phase {
                     }
                     this.play2Run = temp;//set instance variable
                     if(notInRunLoc == 0){//No extra cards -> return run
-                        Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
                     if(notInRun.length > 0) { //extra cards -> return those for continued testing
-                        Log.d("Phase","Exit isRun()");
                         return notInRun;
                     }
                 }
             }
         }
-        Log.d("Phase","Exit isRun()");
         return null;
     }
 
