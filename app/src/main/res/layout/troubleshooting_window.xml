@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#673AB7">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:lineSpacingMultiplier="1.25"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="
+Blue flash: You tried to draw a card but you've already drawn this turn!\n
+Yellow flash: You didn't have the right number of cards selected to discard or hit (one at a time!)\n
+Pink flash: You tried to hit, discard, or phase before you drew a card!\n
+No flash but what you tried to do didn't happen: You didn't have the right cards to phase or hit!
+Red flash: Bad things have happened."
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:typeface="serif" />
+
+</RelativeLayout>

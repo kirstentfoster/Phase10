@@ -20,7 +20,6 @@
             android:id="@+id/TopRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:padding="10dp">
 
             <LinearLayout
@@ -45,6 +44,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Card Points" />
+
+                <Button
+                    android:id="@+id/troubleshooting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Troubleshooting" />
             </LinearLayout>
 
             <LinearLayout
@@ -352,55 +358,56 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/Text"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
-            android:layout_marginBottom="15dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_weight="1"
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/scoreView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="#ffffff"
+                android:paddingRight="150dp"
                 android:shadowColor="#000000"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="18dp"
-                android:paddingRight="150dp" />
+                android:textColor="#ffffff"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/phaseDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
                 android:gravity="center|center_horizontal"
-                android:textColor="#ffffff"
                 android:shadowColor="#000000"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
+                android:textColor="#ffffff"
                 android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/oppScoreView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="#ffffff"
+                android:paddingLeft="150dp"
                 android:shadowColor="#000000"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="18dp"
-                android:paddingLeft="150dp" />
-        </LinearLayout>
+                android:textColor="#ffffff"
+                android:textSize="18dp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/DrawPiles"
@@ -450,9 +457,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:shadowColor="#000000"
-                android:text="Draw a card!"
                 android:textColor="#FFFFFF"
-                android:textColorHighlight="#000000" />
+                android:textColorHighlight="#000000"
+                android:textSize="25sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
