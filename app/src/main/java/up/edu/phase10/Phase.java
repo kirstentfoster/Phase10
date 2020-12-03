@@ -203,83 +203,62 @@ public class Phase {
      *
      */
     public boolean checkPhase(int playerPhase, ArrayList<Card> phaseContent, int playerNum) {
-        Log.d("Phase","Enter checkPhase()");
         Card[] sorted = sortCards(phaseContent); //Sort cards by number
         //Identify phase and check if cards qualify
         switch (playerPhase) {
             case 1:
                 if(sorted.length != 6){ //Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseOne(sorted, playerNum); //Checks card validity
             case 2:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseTwo(sorted, playerNum);//Checks card validity
             case 3:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseThree(sorted, playerNum);//Checks card validity
             case 4:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFour(sorted, playerNum);//Checks card validity
             case 5:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseFive(sorted, playerNum);//Checks card validity
             case 6:
                 if(sorted.length != 9){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseSix(sorted, playerNum);//Checks card validity
             case 7:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseSeven(sorted, playerNum);//Checks card validity
             case 8: //Special Boy - 7 cards of 1 color
                 sorted = sortCardsByColor(phaseContent);
-                Log.d("Phase","Exit checkPhase()");
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 if(isColorGroup(sorted, 7, playerNum, false) != null) return true;//Checks card validity
                 else return false;
             case 9:
                 if(sorted.length != 7){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
-                Log.d("Phase","Exit checkPhase()");
                 return checkIfPhaseNine(sorted, playerNum);//Checks card validity
             case 10:
                 if(sorted.length != 8){//Checks length validity
-                    Log.d("Phase","Exit checkPhase()");
                     return false;
                 }
                 return checkIfPhaseTen(sorted, playerNum);//Checks card validity
             default: //Default - exit
-                Log.d("Phase","Exit checkPhase()");
                 return false;
         }
     }
@@ -694,9 +673,7 @@ public class Phase {
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     public Card[] isRun(Card[] checkForRun, int size, int playerNum, boolean test, int setSize){
-        Log.d("Phase","Enter isRun()");
         if(checkForRun == null){
-            Log.d("Phase","Exit isRun()");
             return null;
         }
         int wildsStore = 0;
@@ -776,7 +753,7 @@ public class Phase {
                 if(test){ //if test and test successful, return an arbitrary array
                     Card[] test1 = new Card[11];
                     test1[0] = new Card(40,40);
-                    Log.d("Phase","Exit isRun()");
+                  //  Log.d("Phase","Exit isRun()");
                     return test1;
                 }
 
@@ -809,11 +786,11 @@ public class Phase {
                     }
                     this.play1Run = temp; //set instance variable
                     if(notInRunLoc == 0){//No extra cards -> return run
-                        Log.d("Phase","Exit isRun()");
+                       // Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
                     if(notInRun.length > 0) { //extra cards -> return those for continued testing
-                        Log.d("Phase", "Exit isRun()");
+                       // Log.d("Phase", "Exit isRun()");
                         return notInRun;
                     }
                 }
@@ -846,17 +823,14 @@ public class Phase {
                     }
                     this.play2Run = temp;//set instance variable
                     if(notInRunLoc == 0){//No extra cards -> return run
-                        Log.d("Phase","Exit isRun()");
                         return checkForRun;
                     }
                     if(notInRun.length > 0) { //extra cards -> return those for continued testing
-                        Log.d("Phase","Exit isRun()");
                         return notInRun;
                     }
                 }
             }
         }
-        Log.d("Phase","Exit isRun()");
         return null;
     }
 
@@ -873,7 +847,7 @@ public class Phase {
      * @param test if true it is used by computer player and instance variables will not be set
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
-    private Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
+    public Card[] isColorGroup(Card[] checkForColor, int size, int playerNum, boolean test){
         if(checkForColor == null) return null; //illegal play, exit
         Card[] temp;
         Card[] notInColor;
@@ -1072,24 +1046,27 @@ public class Phase {
                     for (int i = 0; i < play1Run.length; i++) {
                         tempPlay1Run[i] = play1Run[i];
                     }
+                    //Make sure wild number is set appropriately
                     if(this.play1Run[play1Run.length-1].getNumber() < 12) selectedCard.setNumber(this.play1Run[play1Run.length-1].getNumber()+1);
                     else if(this.play1Run[play1Run.length-1].getNumber() == 100)selectedCard.setNumber(100);
                     else selectedCard.setNumber(this.play1Run[0].getNumber()-1);
+                    //Set instance variable
                     tempPlay1Run[play1Run.length] = selectedCard;
                     play1Run = this.sortRaw(tempPlay1Run);
                     return true;
                 }
-                else {
+                else { //Identify if the number is smaller/bigger than the edges of the run
                     int x = -1;
                     if (selectedCard != null && selectedCard.getNumber() < play1Run[0].getNumber()) x = 1;
                     else if(selectedCard != null && selectedCard.getNumber() > play1Run[play1Run.length-1].getNumber()) x = 0;
-                    if(x != -1) {
+                    if(x != -1) {//Place appropriately
                         Card[] tempPlay1Run = new Card[play1Run.length + 1];
                         for (int i = 0; i < play1Run.length; i++) {
                             tempPlay1Run[i + x] = play1Run[i];
                         }
                         if (x == 0) tempPlay1Run[play1Run.length] = selectedCard;
                         else if (x == 1) tempPlay1Run[0] = selectedCard;
+                        //Test if card + old run is still a run
                         if (!(isRun(tempPlay1Run, tempPlay1Run.length, playerNum, test, 0) == null))
                             return true;
                     }
@@ -1102,7 +1079,9 @@ public class Phase {
                     for (int i = 0; i < play1Set1.length; i++) {
                         tempPlay1Set1[i] = play1Set1[i];
                     }
+                    //Make sure wild number is set appropriately
                     selectedCard.setNumber(this.play1Set1[play1Set1.length-1].getNumber());
+                    //Set instance variable
                     tempPlay1Set1[play1Set1.length] = selectedCard;
                     play1Set1 = this.sortRaw(tempPlay1Set1);
                     return true;
@@ -1124,7 +1103,9 @@ public class Phase {
                     for (int i = 0; i < play1Set2.length; i++) {
                         tempPlay1Set2[i] = play1Set2[i];
                     }
+                    //Make sure wild number is set appropriately
                     selectedCard.setNumber(this.play1Set2[play1Set2.length-1].getNumber());
+                    //Set instance variable
                     tempPlay1Set2[play1Set2.length] = selectedCard;
                     play1Set2 = this.sortRaw(tempPlay1Set2);
                     return true;
@@ -1149,6 +1130,7 @@ public class Phase {
                     for (int i = 0; i < play1Color.length; i++) {
                         tempPlay1Color[i] = play1Color[i];
                     }
+                    //Make sure wild number is set appropriately
                     if(selectedCard.isWild()) selectedCard.setColor(this.play1Color[play1Color.length-1].getColor());
                     tempPlay1Color[play1Color.length] = selectedCard;
                     play1Color = this.sortRaw(tempPlay1Color);
@@ -1166,9 +1148,11 @@ public class Phase {
                     for (int i = 0; i < play2Run.length; i++) {
                         tempPlay2Run[i] = play2Run[i];
                     }
+                    //Make sure wild number is set appropriately
                     if(this.play2Run[play2Run.length-1].getNumber() < 12) selectedCard.setNumber(this.play2Run[play2Run.length-1].getNumber()+1);
                     else if(this.play2Run[play2Run.length-1].getNumber() == 100)selectedCard.setNumber(100);
                     else selectedCard.setNumber(this.play2Run[0].getNumber()-1);
+                    //Set instance variable
                     tempPlay2Run[play2Run.length] = selectedCard;
                     play2Run = this.sortRaw(tempPlay2Run);
                     return true;
@@ -1198,7 +1182,9 @@ public class Phase {
                     for (int i = 0; i < play2Set1.length; i++) {
                         tempPlay2Set1[i] = play2Set1[i];
                     }
+                    //Make sure wild number is set appropriately
                     selectedCard.setNumber(this.play2Set1[play2Set1.length-1].getNumber());
+                    //Set instance variable
                     tempPlay2Set1[play2Set1.length] = selectedCard;
                     play2Set1 = this.sortRaw(tempPlay2Set1);
                     return true;
@@ -1219,7 +1205,9 @@ public class Phase {
                     for (int i = 0; i < play2Set2.length; i++) {
                         tempPlay2Set2[i] = play2Set2[i];
                     }
+                    //Make sure wild number is set appropriately
                     selectedCard.setNumber(this.play2Set2[play2Set2.length-1].getNumber());
+                    //Set instance variable
                     tempPlay2Set2[play2Set2.length] = selectedCard;
                     play2Set2 = this.sortRaw(tempPlay2Set2);
                     return true;
@@ -1243,6 +1231,7 @@ public class Phase {
                     for (int i = 0; i < play2Color.length; i++) {
                         tempPlay2Color[i] = play2Color[i];
                     }
+                    //Make sure wild number is set appropriately
                     if(selectedCard.isWild()) selectedCard.setColor(this.play2Color[play2Color.length-1].getColor());
                     tempPlay2Color[play2Color.length] = selectedCard;
                     play2Color = this.sortRaw(tempPlay2Color);
