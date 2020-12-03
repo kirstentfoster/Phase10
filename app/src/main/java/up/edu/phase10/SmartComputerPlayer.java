@@ -767,20 +767,23 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                     //Add wilds into top groups if applicable
-                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
-                        if (this.nonGroupCards.get(i).isWild() && this.viableGroups1.get(0).size() != size1) {
-                            this.viableGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if (this.viableGroups1.size() > 1)
-                                this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
-                            this.nonGroupCards.remove(i);
+                    if (this.nonGroupCards != null) {
+                        for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                            if (this.nonGroupCards.get(i).isWild() && this.viableGroups1 != null &&
+                            this.viableGroups1.get(0).size() != size1){
+                                this.viableGroups1.get(0).add(this.nonGroupCards.get(i));
+                                if (this.viableGroups1.size() > 1)
+                                    this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
+                                this.nonGroupCards.remove(i);
+                            }
                         }
-                    }
-                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
-                        if (this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1) {
-                            this.weakGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if (this.weakGroups1.size() > 1)
-                                this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
-                            this.nonGroupCards.remove(i);
+                        for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                            if (this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1) {
+                                this.weakGroups1.get(0).add(this.nonGroupCards.get(i));
+                                if (this.weakGroups1.size() > 1)
+                                    this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
+                                this.nonGroupCards.remove(i);
+                            }
                         }
                     }
                 }

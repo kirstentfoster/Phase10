@@ -111,7 +111,7 @@ public class Phase10LocalGame extends LocalGame {
         if(oneDone && !twoDone) { //Player one finished phase 10 and player two did not
             return this.playerNames[0]+ " wins!";
         }
-        else if (twoDone && !oneDone) { //Player tewo finished phase 10 and player one did not
+        else if (twoDone && !oneDone) { //Player two finished phase 10 and player one did not
             return this.playerNames[1]+ " wins!";
         }
         else if(oneDone && twoDone){ //Both finished phase 10, lowest score wins

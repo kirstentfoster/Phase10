@@ -29,7 +29,11 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     private ArrayList<Card> completeGroup2 = null;
     private ArrayList<Card> nonGroupCards = null;
 
-
+    /**
+     * constructor - nothing added to parent
+     *
+     * @param name AI's name
+     */
     public DumbComputerPlayer(String name) {
         super(name);
     }
@@ -176,7 +180,8 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     }
 
     /**
-     * clears the variables of this class
+     * clears the variables of this class, intended between
+     * recieve info calls
      */
     private void clearVars(){
         Log.d("Dumb AI", "Enter clearVars()");
@@ -1769,7 +1774,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private boolean checkHitsExist(){
         Log.d("Dumb AI", "Enter checkHitsExist()");
-        if(this.hitList != null && this.hitList.size() != 0){
+        if(this.hitList != null && this.hitList.size() != 0){ 
             Log.d("Dumb AI", "Exit checkHitsExist()");
             return true;
         }
@@ -1790,20 +1795,21 @@ public class DumbComputerPlayer extends GameComputerPlayer {
     private boolean doHits(int phase, ArrayList<Card> fullHand){
         Log.d("Dumb AI", "Enter doHits()");
         Random r = new Random();
-        if(hitList == null || whereToHitList == null){
+        if(hitList == null || whereToHitList == null){ //Hits dont exist, exit
             Log.d("Dumb AI", "Exit doHits()");
             return false;
         }
-        if(hitList.size() != whereToHitList.size()){
+        if(hitList.size() != whereToHitList.size()){ //Something is wrong, exit
             Log.d("Dumb AI", "Exit doHits()");
             return false;
         }
-        for(int i = 0; i < this.hitList.size(); i++){
+        for(int i = 0; i < this.hitList.size(); i++){ //Identify hits and send
             HitAction act = new HitAction(this, this.hitList.get(i), whereToHitList.get(i));
             game.sendAction(act); //Send hit!!
             if(this.playerNum == whereToHitList.get(i)){
                     checkGrowsGroup(this.hitList.get(i), phase, fullHand); //Add to complete group if self
             }
+            //Remove used hits
             this.hitList.remove(i);
             this.whereToHitList.remove(i);
         }
@@ -1820,11 +1826,11 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private boolean checkIsHit(Phase10GameState gs, Card c){
         Log.d("Dumb AI", "Enter checkIsit()");
-        if(gs.phase.checkHitValid(c, 0, true)){
+        if(gs.phase.checkHitValid(c, 0, true)){ //Check hit on player 1
             Log.d("Dumb AI", "Exit checkIsit()");
             return true;
         }
-        else if(gs.phase.checkHitValid(c, 1, true)){
+        else if(gs.phase.checkHitValid(c, 1, true)){ //Check hit on player 2
             Log.d("Dumb AI", "Exit checkIsit()");
             return true;
         }
@@ -1845,18 +1851,19 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private boolean makeHits(Phase10GameState gs, boolean phased1, boolean phased2) {//Only happens once someone has phased
         Log.d("Dumb AI", "Enter makeHits()");
-        if(phased1) {
+        if(phased1) { //Hits for player 1 (preference)
             if(this.nonGroupCards != null) {
                 this.hitList = new ArrayList<Card>();
                 Iterator<Card> it = this.nonGroupCards.iterator();
-                while (it.hasNext()) {
+                while (it.hasNext()) { //Test all cards not in groups
                     Card b = it.next();
                     if(b == null) break;
                     Card c = new Card(b.getNumber(), b.getColor());
-                    if (gs.phase.checkHitValid(c, 0, true)) {
+                    if (gs.phase.checkHitValid(c, 0, true)) { //test hit
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)
                             this.whereToHitList = new ArrayList<Integer>();
+                        //Place in lists
                         this.hitList.add(c);
                         this.nonGroupCards.remove(c);
                         this.whereToHitList.add((Integer) 0);
@@ -1864,17 +1871,18 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 }
             }
         }
-        if(phased2) {
+        if(phased2) { //Hits for player 2
             if(this.nonGroupCards != null) {
                 Iterator<Card> it = this.nonGroupCards.iterator();
-                while (it.hasNext()) {
+                while (it.hasNext()) { //Check all cards not in groups
                     Card b = it.next();
                     if(b == null) break;
                     Card c = new Card(b.getNumber(), b.getColor());
-                    if (gs.phase.checkHitValid(c, 1, true)) {
+                    if (gs.phase.checkHitValid(c, 1, true)) {  //test hit
                         if (this.hitList == null) this.hitList = new ArrayList<Card>();
                         if (this.whereToHitList == null)
                             this.whereToHitList = new ArrayList<Integer>();
+                        //Place in lists
                         this.hitList.add(c);
                         this.nonGroupCards.remove(c);
                         this.whereToHitList.add((Integer) 1);
