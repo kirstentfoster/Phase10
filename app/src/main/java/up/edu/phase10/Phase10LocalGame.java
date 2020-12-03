@@ -45,13 +45,12 @@ public class Phase10LocalGame extends LocalGame {
             return false;
         }
 
-    }
+    } //canMove
 
     /**
      * This method is called when a new action arrives from a player
      *
-     * @param action
-     * 			The move that the player has sent to the game
+     * @param action The move that the player has sent to the game
      * @return true if the action was taken or false if the action was invalid/illegal.
      */
     @Override
@@ -102,16 +101,18 @@ public class Phase10LocalGame extends LocalGame {
         if(this.pgs.getHasGoneOut() < 0 || this.pgs.getHasGoneOut() != this.pgs.getTurnId()){ //Round must be over
             return null;
         }
+        //checks if player 1 has finished phase 10
         if(s0 == 10 && this.pgs.getPlayer1HasPhased()){
             oneDone = true;
         }
+        //checks if player 2 has finished phase 10
         if(s1 == 10 && this.pgs.getPlayer2HasPhased()){
             twoDone = true;
         }
         if(oneDone && !twoDone) { //Player one finished phase 10 and player two did not
             return this.playerNames[0]+ " wins!";
         }
-        else if (twoDone && !oneDone) { //Player tewo finished phase 10 and player one did not
+        else if (twoDone && !oneDone) { //Player two finished phase 10 and player one did not
             return this.playerNames[1]+ " wins!";
         }
         else if(oneDone && twoDone){ //Both finished phase 10, lowest score wins
@@ -137,7 +138,8 @@ public class Phase10LocalGame extends LocalGame {
             }
         }
         else return null;
-    }
+    }//checkIfGameOver
+
     /**
      * ROUND HANDLING - if a player has gone out and the other player has done their last turn
      * then the round is over, and the board has to be reset and the scores updated
@@ -221,6 +223,6 @@ public class Phase10LocalGame extends LocalGame {
         pgs.setPlayer2Hand(tempP2);
 
         return true;
-    }
+    }//roundOver
 
 }// class LocalGame

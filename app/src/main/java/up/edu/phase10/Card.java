@@ -47,7 +47,7 @@ public class Card implements Comparable{
         else if(isWild()){this.score = 25;}
     }
 
-
+    //getters and setters
     public void setNumber(int n){
         this.number = n;
     }
