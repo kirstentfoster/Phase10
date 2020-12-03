@@ -6,9 +6,6 @@
 
 package up.edu.phase10;
 
-/*
-EXTERNAL CITATION https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
- */
 import java.util.ArrayList;
 
 import up.edu.phase10.Framework.GamePlayer;

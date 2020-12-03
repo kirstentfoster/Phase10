@@ -17,8 +17,6 @@ import java.util.Random;
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
-//Think about one card is best groups
-
 public class DumbComputerPlayer extends GameComputerPlayer {
 
     private ArrayList<Card> hitList = null;
