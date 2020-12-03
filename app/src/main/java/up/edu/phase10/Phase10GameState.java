@@ -305,8 +305,9 @@ public class Phase10GameState extends GameState {
      */
     public boolean drawFaceDown(int playerId) {
 
-        if (playerId != this.turnId || this.drawPile.size() <= 0 || this.hasGoneOut == playerId || this.playerHasDrawn)
+        if (playerId != this.turnId || this.drawPile.size() <= 0 || this.hasGoneOut == playerId || this.playerHasDrawn) {
             return false;
+        }
 
         Card drawn = this.drawPile.remove(0); //Remove top card from draw pile
 

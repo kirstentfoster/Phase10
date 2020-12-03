@@ -39,6 +39,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     // the android activity that we are running
     private GameMainActivity myActivity;
 
+    boolean flashed;
     final static boolean faceUp = false; //use to show AI cards
 
     /* instance variables */
@@ -47,6 +48,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private TextView    playerScoreTextView = null;
     private TextView    oppScoreTextView    = null;
     private TextView    phaseView     = null;
+    private TextView turnPart = null;
     private Button      phaseButton         = null;
     private Button      hitButton           = null;
     private Button hitSelfButton = null;
@@ -56,6 +58,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     private Button helpButton = null;
     private Button phasesButton = null;
     private Button cardPoints = null;
+    private Button troubleshoot = null;
     private ImageButton drawFaceUpImageButton = null;
     private ImageButton drawFaceDownImageButton = null;
 
@@ -162,6 +165,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             flash(Color.RED, 500);
             return;
         }
+        flashed = false;
         state = (Phase10GameState) info;
         createHand();
         createAIPhase();
@@ -176,6 +180,32 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
         //print info about phase and player turn
         if(playerNum == 0) {
+            if(state.getTurnId()==0){
+                switch(state.getTurnStage()){
+                    case 1:
+                        this.turnPart.setText("It's your turn! Draw a card!");
+                        break;
+                    case 2:
+                        if(!state.getPlayer1HasPhased()) {
+                            this.turnPart.setText("You drew a card! Now phase if you can or discard!");
+                            break;
+                        }
+                    case 3:
+                        if((this.playerNum==0&&state.getPlayer1HasPhased()) ||
+                                this.playerNum==1&&state.getPlayer2HasPhased()) {
+                            this.turnPart.setText("You've phased! Now hit if you can or discard!");
+                        }
+                        else{
+                            state.setTurnStage(2);
+                        }
+                        break;
+                    case 4:
+                        this.turnPart.setText("Discard a card!");
+                }
+            }
+            else{
+                this.turnPart.setText("Wait for the AI to play!");
+            }
             switch(state.getPlayer1Phase()){
                 case 1:
                     phaseView.setText("Phase " + state.getPlayer1Phase() + "\n" + state.phase.getPhase1());
@@ -210,6 +240,26 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             }
         }
         else if(playerNum==1){
+            if(state.getTurnId()==1){
+                switch(state.getTurnStage()){
+                    case 1:
+                        this.turnPart.setText("It's your turn! Draw a card!");
+                        break;
+                    case 2:
+                        if(!state.getPlayer2HasPhased()) {
+                            this.turnPart.setText("You drew a card! Now phase if you can or discard!");
+                            break;
+                        }
+                    case 3:
+                            this.turnPart.setText("You've phased! Now hit if you can or discard!");
+                            break;
+                    case 4:
+                        this.turnPart.setText("Discard a card!");
+                }
+            }
+            else{
+                this.turnPart.setText("Wait for the AI to play!");
+            }
             switch(state.getPlayer2Phase()){
                 case 1:
                     phaseView.setText("Phase " + state.getPlayer2Phase() + "\n" + state.phase.getPhase1());
@@ -272,6 +322,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
 
         if(state==null){return;}
         if(button.equals(phaseButton)) {
+            if(!state.getPlayerHasDrawn()){
+                flash(Color.parseColor("#ffc0cb"), 100);
+            }
             if(this.selected.size()>1) {
                 PhaseAction p = new PhaseAction(this, this.selected);
                 game.sendAction(p);
@@ -280,6 +333,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             for(ImageButton b : Hand){
                 b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
+
         }
         if(button.equals(quitButton)){//end program
             System.exit(0);
@@ -288,6 +342,10 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
             myActivity.recreate();
         }
         if(button.equals(hitButton)) {
+            if(!state.getPlayerHasDrawn()){
+                flash(Color.parseColor("#ffc0cb"), 100);
+                flashed = true;
+            }
             if(this.selected.size()==1) {
                 if(this.playerNum==0) {
                     HitAction p = new HitAction(this, this.selected.get(0), 1);
@@ -298,40 +356,71 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
                     game.sendAction(p);
                 }
             }
+            else{
+                if(!flashed) {
+                    flash(Color.parseColor("#ffff00"), 100);
+                }
+            }
             selected.clear();
             for(ImageButton b : Hand){
                 b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
+            flashed = false;
         }
         if(button.equals(hitSelfButton)){
+            if(!state.getPlayerHasDrawn()){
+                flash(Color.parseColor("#ffc0cb"), 100);
+                flashed = true;
+            }
             if(this.selected.size()==1){
                 HitAction p = new HitAction(this, this.selected.get(0), this.playerNum);
                 game.sendAction(p);
             }
+            else{
+                if(!flashed)
+                flash(Color.parseColor("#ffff00"), 100);
+            }
             selected.clear();
             for(ImageButton b : Hand){
                 b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
+            flashed = false;
         }
 
         if(button.equals(discardButton)) {
+            if(!state.getPlayerHasDrawn()){
+                flash(Color.parseColor("#ffc0cb"), 100);
+                flashed = true;
+            }
             if(this.selected.size()==1) {
                 DiscardAction p = new DiscardAction(this, this.selected.get(0)); //need to get info of discard card from gui
                 game.sendAction(p);
             }
+            else{
+                if(!flashed) {
+                    flash(Color.parseColor("#ffff00"), 100);
+                }
+            }
             selected.clear();
             for(ImageButton b : Hand){
                 b.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
+            flashed = false;
         }
 
 
         if(button.equals(drawFaceDownImageButton)) {
             DrawFaceDownAction p = new DrawFaceDownAction(this);
+            if(state.getPlayerHasDrawn()){
+                flash(Color.BLUE, 100);
+            }
             game.sendAction(p);
         }
         if(button.equals(drawFaceUpImageButton)) {
             DrawFaceUpAction p = new DrawFaceUpAction(this);
+            if(state.getPlayerHasDrawn()){
+                flash(Color.BLUE, 100);
+            }
             game.sendAction(p);
         }
 
@@ -343,6 +432,9 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         }
         if(button.equals(cardPoints)){
             this.displayPoints(getTopView());
+        }
+        if(button.equals(troubleshoot)){
+            this.displayTroubleshooting(getTopView());
         }
 
         //select cards
@@ -481,6 +573,36 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
     }
 
     /**
+     * Displays info about each phase
+     * @param view passes top view for where to display overlay
+     */
+    public void displayTroubleshooting(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.troubleshooting_window, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    /**
      * callback method--our game has been chosen/rechosen to be the GUI,
      * called from the GUI thread
      * @param activity
@@ -506,9 +628,11 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         this.helpButton = activity.findViewById(R.id.helpButton);
         this.phasesButton = activity.findViewById(R.id.phasesButton);
         this.cardPoints = activity.findViewById(R.id.pointButton);
+        this.troubleshoot = activity.findViewById(R.id.troubleshooting);
         this.playerScoreTextView = activity.findViewById(R.id.scoreView);
         this.oppScoreTextView = activity.findViewById(R.id.oppScoreView);
         this.phaseView = activity.findViewById(R.id.phaseDescription);
+        this.turnPart = activity.findViewById(R.id.turnPart);
 
         //hands for each player
         Hand1 = myActivity.findViewById(R.id.PlayerHand1);
@@ -643,6 +767,7 @@ public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListen
         helpButton.setOnClickListener(this);
         phasesButton.setOnClickListener(this);
         cardPoints.setOnClickListener(this);
+        troubleshoot.setOnClickListener(this);
         for(ImageButton b : Hand){
             b.setOnClickListener(this);
         }
