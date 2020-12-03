@@ -1,15 +1,14 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- *  this action class extends Game action and passes through the card
- *  the player is trying to discard
- */
 
 package up.edu.phase10;
 
 import up.edu.phase10.Framework.Game;
 import up.edu.phase10.Framework.GamePlayer;
 import up.edu.phase10.Framework.GameAction;
-
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ *  this action class extends Game action and passes through the card
+ *  the player is trying to discard
+ */
 public class DiscardAction extends GameAction {
     private Card card;
 

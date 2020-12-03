@@ -1,7 +1,4 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Manages pausing the AI to create more user-friendly play
- */
+
 package up.edu.phase10;
 
 import android.util.Log;
@@ -14,6 +11,12 @@ import android.util.Log;
 
  Resource: https://www.includehelp.com/java-programs/pause-the-execution.aspx
  Solution: I used the example from this link and adapted it to my code.
+ */
+
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ *
+ * Manages pausing the AI to create more user-friendly play
  */
 class ThreadPause {
     /**

@@ -1,19 +1,16 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * this action class extends Game action and passes through the game player,
- * the phaseContent of that game player to play in the game
- */
 
 package up.edu.phase10;
 
-/*
-EXTERNAL CITATION https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
- */
 import java.util.ArrayList;
 
 import up.edu.phase10.Framework.GamePlayer;
 import up.edu.phase10.Framework.GameAction;
 
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * this action class extends Game action and passes through the game player,
+ * the phaseContent of that game player to play in the game
+ */
 public class PhaseAction extends GameAction {
     private ArrayList<Card> phaseContent;
 

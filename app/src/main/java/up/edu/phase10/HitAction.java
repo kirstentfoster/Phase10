@@ -1,19 +1,16 @@
+
+package up.edu.phase10;
+
+import up.edu.phase10.Framework.Game;
+import up.edu.phase10.Framework.GamePlayer;
+import up.edu.phase10.Framework.GameAction;
+
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * this action class extends Game action and passes through the player
  * that is attempting to hit, the card the player is trying to hit with
  * and the other player the current player is trying to hit
  */
-
-package up.edu.phase10;
-
-/*
-EXTERNAL CITATION https://beginnersbook.com/2013/12/java-arraylist-of-object-sort-example-comparable-and-comparator/
- */
-import up.edu.phase10.Framework.Game;
-import up.edu.phase10.Framework.GamePlayer;
-import up.edu.phase10.Framework.GameAction;
-
 public class HitAction extends GameAction {
     private Card card;
     private int hitPlayer;

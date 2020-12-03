@@ -1,9 +1,4 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Where the AI methods are
- * Creates an smart AI for the use to play against
- * Should be able to do all actions necessary to complete games
- */
+
 package up.edu.phase10;
 
 import android.os.Handler;
@@ -18,7 +13,12 @@ import java.util.TimerTask;
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
-
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Where the AI methods are
+ * Creates an smart AI for the use to play against
+ * Should be able to do all actions necessary to complete games
+ */
 public class SmartComputerPlayer extends GameComputerPlayer {
 
     //List of hits and list of hit locations
@@ -767,20 +767,23 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                         }
                     }
                     //Add wilds into top groups if applicable
-                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
-                        if (this.nonGroupCards.get(i).isWild() && this.viableGroups1.get(0).size() != size1) {
-                            this.viableGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if (this.viableGroups1.size() > 1)
-                                this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
-                            this.nonGroupCards.remove(i);
+                    if (this.nonGroupCards != null) {
+                        for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                            if (this.nonGroupCards.get(i).isWild() && this.viableGroups1 != null &&
+                            this.viableGroups1.get(0).size() != size1){
+                                this.viableGroups1.get(0).add(this.nonGroupCards.get(i));
+                                if (this.viableGroups1.size() > 1)
+                                    this.viableGroups1.get(1).add(this.nonGroupCards.get(i));
+                                this.nonGroupCards.remove(i);
+                            }
                         }
-                    }
-                    for (int i = 0; i < this.nonGroupCards.size(); i++) {
-                        if (this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1) {
-                            this.weakGroups1.get(0).add(this.nonGroupCards.get(i));
-                            if (this.weakGroups1.size() > 1)
-                                this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
-                            this.nonGroupCards.remove(i);
+                        for (int i = 0; i < this.nonGroupCards.size(); i++) {
+                            if (this.nonGroupCards.get(i).isWild() && this.weakGroups1 != null && this.weakGroups1.get(0).size() != size1) {
+                                this.weakGroups1.get(0).add(this.nonGroupCards.get(i));
+                                if (this.weakGroups1.size() > 1)
+                                    this.weakGroups1.get(1).add(this.nonGroupCards.get(i));
+                                this.nonGroupCards.remove(i);
+                            }
                         }
                     }
                 }

@@ -1,10 +1,3 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- *  this class extens the GameHumanPlayer and implements onClickListener so
- *  that the hands, images relative to the cards that will be played, the buttons
- *  the human player will implement and information of the human player is
- *  recieved and sent to the game
- */
 
 package up.edu.phase10;
 
@@ -31,9 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *  @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ *  this class extens the GameHumanPlayer and implements onClickListener so
+ *  that the hands, images relative to the cards that will be played, the buttons
+ *  the human player will implement and information of the human player is
+ *  recieved and sent to the game
  */
-
 public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListener {
 
     // the android activity that we are running

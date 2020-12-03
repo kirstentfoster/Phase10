@@ -1,8 +1,3 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about phases including phase rules, the cards used for the phase
- * Checks if phase is successful
- */
 
 package up.edu.phase10;
 
@@ -12,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Holds information about phases including phase rules, the cards used for the phase
+ * Checks if phase is successful
+ */
 public class Phase {
 
     //Phase Rules

@@ -1,9 +1,4 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Holds information about each card (particularly number and color)
- * Also includes getters/setters for card info
- * Includes a "to string" method to explain what the card is
- */
+
 
 package up.edu.phase10;
 
@@ -18,6 +13,12 @@ import android.graphics.Paint;
  Solution: I used the example from this link and adapted it to my code.
  */
 
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Holds information about each card (particularly number and color)
+ * Also includes getters/setters for card info
+ * Includes a "to string" method to explain what the card is
+ */
 public class Card implements Comparable{
     private int number; //1-12 number
     private int color; // 1-4 to represent the 4 colors
@@ -47,7 +48,7 @@ public class Card implements Comparable{
         else if(isWild()){this.score = 25;}
     }
 
-
+    //getters and setters
     public void setNumber(int n){
         this.number = n;
     }
