@@ -1,3 +1,14 @@
+
+package up.edu.phase10;
+
+import java.util.ArrayList;
+
+import up.edu.phase10.Framework.GameMainActivity;
+import up.edu.phase10.Framework.GamePlayer;
+import up.edu.phase10.Framework.LocalGame;
+import up.edu.phase10.Framework.GameConfig;
+import up.edu.phase10.Framework.GamePlayerType;
+
 /**
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * this is the primary activity for Phase10
@@ -15,17 +26,6 @@
  * Working end game (who wins)
  *
  */
-
-package up.edu.phase10;
-
-import java.util.ArrayList;
-
-import up.edu.phase10.Framework.GameMainActivity;
-import up.edu.phase10.Framework.GamePlayer;
-import up.edu.phase10.Framework.LocalGame;
-import up.edu.phase10.Framework.GameConfig;
-import up.edu.phase10.Framework.GamePlayerType;
-
 public class MainActivity extends GameMainActivity {
 
     // the port number that this game will use when playing over the network

@@ -1,10 +1,3 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * this class handles the local game that is being played, makes sure the
- * current player can move, that the move it make is executed, checks if the
- * gamme is over and that the updated state is sent to the game
- *
- */
 
 package up.edu.phase10;
 
@@ -19,6 +12,13 @@ import up.edu.phase10.Framework.LocalGame;
 import up.edu.phase10.Framework.GameAction;
 import up.edu.phase10.Framework.GameState;
 
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * this class handles the local game that is being played, makes sure the
+ * current player can move, that the move it make is executed, checks if the
+ * gamme is over and that the updated state is sent to the game
+ *
+ */
 public class Phase10LocalGame extends LocalGame {
 
 

@@ -1,10 +1,4 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Game state holding information about each player and getters and setters for each variable
- * Draws the drawables in the correct position and assigns them values
- * Has the phasing, hitting, drawing and discrding methods for the actions
- *
- */
+
 package up.edu.phase10;
 
 import android.util.Log;
@@ -18,6 +12,14 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import up.edu.phase10.Framework.GameState;
+
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Game state holding information about each player and getters and setters for each variable
+ * Draws the drawables in the correct position and assigns them values
+ * Has the phasing, hitting, drawing and discrding methods for the actions
+ *
+ */
 public class Phase10GameState extends GameState {
 
     //Resources

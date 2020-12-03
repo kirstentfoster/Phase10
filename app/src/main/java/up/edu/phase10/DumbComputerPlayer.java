@@ -1,10 +1,4 @@
-/**
- * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
- * Where the AI methods are
- * Creates an relatively 'dumb' AI for the user to play against
- * Should be able to do all actions necessary to complete games, but
- * does not hit strategically and discards card randomly
- */
+
 package up.edu.phase10;
 
 import android.util.Log;
@@ -17,6 +11,13 @@ import java.util.Random;
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;
 
+/**
+ * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
+ * Where the AI methods are
+ * Creates an relatively 'dumb' AI for the user to play against
+ * Should be able to do all actions necessary to complete games, but
+ * does not hit strategically and discards card randomly
+ */
 public class DumbComputerPlayer extends GameComputerPlayer {
 
     private ArrayList<Card> hitList = null;
