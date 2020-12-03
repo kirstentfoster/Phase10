@@ -134,7 +134,7 @@ public abstract class GameHumanPlayer implements GamePlayer, Tickable {
 
         // save the original background color; set the new background
         // color
-        int savedColor = getBackgroundColor(top);
+        int savedColor = 0;
         top.setBackgroundColor(color);
 
         // set up a timer event to set the background color back to
