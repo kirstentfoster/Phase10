@@ -186,8 +186,8 @@ public class Phase10GameState extends GameState {
         hasGoneOut = -1;
         goesFirst = turnId;
         playerHasDrawn = false;
-        player1HasPhased = false;
-        player2HasPhased = false;
+        player1HasPhased = true;
+        player2HasPhased = true;
         player1Score = 0;
         player2Score = 0;
         player1Phase = 1;
