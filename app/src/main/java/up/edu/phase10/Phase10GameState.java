@@ -108,6 +108,7 @@ public class Phase10GameState extends GameState {
     }
 
     public void setTurnStage(int turnStage){this.turnStage = turnStage;}
+
     //Getters
     public boolean getPlayerHasDrawn() {
         return this.playerHasDrawn;
@@ -238,7 +239,7 @@ public class Phase10GameState extends GameState {
     }
 
     /**
-     * Deep copy
+     * Deep copy of all resources
      * @param PhaseGS used to send info to the phase game state class
      */
     public Phase10GameState(Phase10GameState PhaseGS) {
@@ -291,7 +292,6 @@ public class Phase10GameState extends GameState {
             temp6.add(new Card(c.getNumber(),c.getColor()));
         }
         this.setPlayer2PhaseContent(temp6);
-
         this.phase = new Phase(PhaseGS.phase);
     }
 
@@ -342,7 +342,7 @@ public class Phase10GameState extends GameState {
             turnStage++;
             return false;
         }
-    }
+    }//drawFaceDown
 
     /**
      * attempts to draw a face up card from the discard pile and add it to the player's hand
@@ -374,7 +374,7 @@ public class Phase10GameState extends GameState {
             turnStage++;
             return false;
         }
-    }
+    }//drawFaceUp
 
     /**
      * attempts to discard a card from player hand to the discard pile
@@ -450,7 +450,7 @@ public class Phase10GameState extends GameState {
             return false;
         }
 
-    }
+    }//discard
 
     /**
      * converts all information to a string
@@ -514,7 +514,7 @@ public class Phase10GameState extends GameState {
         }
         turnStage++;
         return false;
-    }
+    }//playPhase
 
     /**
      * checks if hit is valid and plays hit if it is
@@ -636,7 +636,7 @@ public class Phase10GameState extends GameState {
             }
         }
         return false;
-    }
+    }//hitPlayer
 
     /**
      *sends the id of the card to make it drawn on the top of the discard pile
@@ -659,7 +659,7 @@ public class Phase10GameState extends GameState {
             int id = testSlot(this.discardPile.peek());
             discardDraw.setImageResource(id);
         }
-    }
+    }//drawDiscard
 
     /**
      * takes card drawn and tests to see what the new top of the discard pile should be set to
