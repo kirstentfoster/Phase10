@@ -17,6 +17,7 @@ import up.edu.phase10.Framework.GamePlayerType;
  *
  * No known bugs
  * Fully functional GUI
+ * Game plays to completion
  *
  * JUnit tests present for both the GameState and Phase classes
  *      These test the action handling in the GameState and the phase handling
