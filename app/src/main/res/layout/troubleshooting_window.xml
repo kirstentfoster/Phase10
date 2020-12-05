@@ -24,7 +24,7 @@
 Blue flash: You tried to draw a card but you've already drawn this turn!\n
 Yellow flash: You didn't have the right number of cards selected to discard or hit (one at a time!)\n
 Pink flash: You tried to hit, discard, or phase before you drew a card!\n
-No flash but what you tried to do didn't happen: You didn't have the right cards to phase or hit!
+No flash but what you tried to do didn't happen: You didn't have the right cards to phase or hit!\n
 Red flash: Bad things have happened."
         android:textColor="#ffffff"
         android:textSize="20sp"
