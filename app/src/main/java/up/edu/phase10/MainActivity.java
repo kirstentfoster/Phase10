@@ -46,6 +46,9 @@ import up.edu.phase10.Framework.GamePlayerType;
  *      flash message to tell them their move was illegal
  * Working end game and winning
  *
+ * Our alpha release grading indicated to us that we have some long methods that could be
+ *      rectified by making greater use of arrays. We acknowledge this conceptually, but we did not have time
+ *      rewrite our code to be structured in this way.
  */
 public class MainActivity extends GameMainActivity {
 
