@@ -49,6 +49,10 @@ import up.edu.phase10.Framework.GamePlayerType;
  * Our alpha release grading indicated to us that we have some long methods that could be
  *      rectified by making greater use of arrays. We acknowledge this conceptually, but we did not have time
  *      rewrite our code to be structured in this way.
+ *
+ * The thread pausing used to slow down the AIs sometimes lags out when using the VM. We reccomend playing on a real tablet,
+ *      but if that is not possible the threadpause lines at the top of the receiveInfo methods in the AIs can be removed to
+ *      ensure smooth play.
  */
 public class MainActivity extends GameMainActivity {
 

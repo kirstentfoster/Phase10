@@ -150,12 +150,13 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 int v = r.nextInt(1);
                 if(v==0) {
                     doHits(phase, fullHand); //Hit action in here
+                    copy.setTurnStage(4);
                 }
                 else{
                     doDiscard(copy, hasPhased);
+                    copy.setTurnStage(1);
                 }
                 Log.d("Dumb AI", "Exit receiveInfo()");
-                copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);
@@ -177,7 +178,6 @@ public class DumbComputerPlayer extends GameComputerPlayer {
             }
         }
         Log.d("Dumb AI", "Exit receiveInfo()");
-        // count++;
         return;
     }
 

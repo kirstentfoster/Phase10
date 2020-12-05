@@ -1673,7 +1673,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         Log.d("Smart AI", "Enter checkGrowsColor()");
         if(groupNum == 1) {
             if (completeGroup1 != null) { //Will only reach here to test hit
-                if(card.getColor() == completeGroup1.get(0).getColor()){
+                if(card.getColor() == completeGroup1.get(0).getColor() || card.isWild()){
                     completeGroup1.add(card);
                     Log.d("Smart AI", "Exit checkGrowsColor()");
                     return true;
@@ -1681,7 +1681,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             }
             if (viableGroups1 != null) {
                 for (ArrayList<Card> group : viableGroups1) {
-                    if(card.getColor() == group.get(0).getColor()){
+                    if(card.getColor() == group.get(0).getColor()|| card.isWild()){
                         group.add(card);
                         Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
@@ -1690,7 +1690,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             }
             if (weakGroups1 != null) {
                 for (ArrayList<Card> group : weakGroups1) {
-                    if(card.getColor() == group.get(0).getColor()){
+                    if(card.getColor() == group.get(0).getColor()|| card.isWild()){
                         group.add(card);
                         Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
@@ -1701,7 +1701,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
         //check groups2 arent null
         else if(groupNum == 2) {
             if (completeGroup2 != null) { //Will only reach here to test hit
-                if (card.getColor() == completeGroup2.get(0).getColor()) {
+                if (card.getColor() == completeGroup2.get(0).getColor()|| card.isWild()) {
                     completeGroup2.add(card);
                     Log.d("Smart AI", "Exit checkGrowsColor()");
                     return true;
@@ -1709,7 +1709,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             }
             if (viableGroups2 != null) {
                 for (ArrayList<Card> group : viableGroups2) {
-                    if (card.getColor() == group.get(0).getColor()) {
+                    if (card.getColor() == group.get(0).getColor() || card.isWild()) {
                         group.add(card);
                         Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;
@@ -1718,7 +1718,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             }
             if (weakGroups2 != null) {
                 for (ArrayList<Card> group : weakGroups2) {
-                    if (card.getColor() == group.get(0).getColor()) {
+                    if (card.getColor() == group.get(0).getColor() || card.isWild()) {
                         group.add(card);
                         Log.d("Smart AI", "Exit checkGrowsColor()");
                         return true;

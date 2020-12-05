@@ -1,6 +1,7 @@
 
 package up.edu.phase10;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -194,6 +195,8 @@ public class Phase10LocalGame extends LocalGame {
             for (int i = 0; i < 4; i++) {//add skip cards(represented by -1,-1)
                 tempDeck.add(new Card(-1, -1));
             }
+
+            //Clean decks and re deal
             Collections.shuffle(tempDeck);
             Stack<Card> tempDiscard = new Stack<Card>();
             tempDiscard.push(tempDeck.get(0));
@@ -212,6 +215,7 @@ public class Phase10LocalGame extends LocalGame {
             pgs.setDiscardPile(tempDiscard);
             pgs.setPlayer1Hand(tempP1Hand);
             pgs.setPlayer2Hand(tempP2Hand);
+            Log.d("Local Game", "Round over, phases are: "+pgs.getPlayer1Phase()+" and " + pgs.getPlayer2Phase());
             return false;
         }
         ArrayList<Card> tempP1 = pgs.getPlayer1Hand();
@@ -222,6 +226,7 @@ public class Phase10LocalGame extends LocalGame {
         pgs.setPlayer1Hand(tempP1);
         pgs.setPlayer2Hand(tempP2);
 
+        Log.d("Local Game", "Round over, phases are: "+pgs.getPlayer1Phase()+" and " + pgs.getPlayer2Phase());
         return true;
     }//roundOver
 

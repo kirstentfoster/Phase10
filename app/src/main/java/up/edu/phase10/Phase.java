@@ -542,8 +542,9 @@ public class Phase {
      * @return null if unsuccessful, the extra cards if successful and cards are leftover, or the set if no extra cards
      */
     private Card[] isSet(Card[] checkForSet, int size, int playerNum, int setNum, boolean test){
+        if(checkForSet == null) return null;
         Card[] checkForSetStore = checkForSet;
-        if(checkForSet[0] != null && checkForSet[0].isWild()){ //Sometimes will be passed an unsorted group
+        if( checkForSet[0] != null && checkForSet[0].isWild()){ //Sometimes will be passed an unsorted group
             ArrayList<Card> toSort = new ArrayList<Card>();
             for(int i = 0; i < checkForSet.length; i++){
                 if(checkForSet[i] != null) toSort.add(checkForSet[i]);
