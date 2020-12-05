@@ -1037,7 +1037,7 @@ public class Phase {
      * @return true if hit is successful
      */
     public boolean checkHitValid(Card selectedCard, int playerNum, boolean test) {
-        if(selectedCard == null) return false;
+        if(selectedCard == null || selectedCard.isSkip()) return false;
         if (playerNum == 0) {
             //Runs
             if(this.play1Run != null) {
