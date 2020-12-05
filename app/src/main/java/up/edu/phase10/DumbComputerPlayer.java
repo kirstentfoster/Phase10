@@ -48,13 +48,14 @@ public class DumbComputerPlayer extends GameComputerPlayer {
         Random r = new Random();
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
         clearVars();
-        ThreadPause tp = new ThreadPause();
-        tp.wait(1);
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
         // gameFramework uses 0/1 player ID
         // Phase 10 code handles based on 1/2 player ID
+
+        ThreadPause tp = new ThreadPause();
+        tp.wait(1);
 
         Log.d("Dumb AI", "Enter receiveInfo()");
         boolean hasPhased = false;
@@ -154,7 +155,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                     doDiscard(copy, hasPhased);
                 }
                 Log.d("Dumb AI", "Exit receiveInfo()");
-                /*if(!checkHitsExist())*/copy.setTurnStage(4);
+                copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);

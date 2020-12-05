@@ -61,13 +61,15 @@ public class SmartComputerPlayer extends GameComputerPlayer {
     protected void receiveInfo(GameInfo info) {
         if (!(info instanceof Phase10GameState)) return; //Somethings wrong, exit
         clearVars();
-        ThreadPause tp = new ThreadPause();
-        tp.wait(1);
+
         Phase10GameState copy = (Phase10GameState) info; //Shallow copy
 
         if (copy.getTurnId() != this.playerNum) return;
         // gameFramework uses 0/1 player ID
         // Phase 10 code handles based on 1/2 player ID
+
+        ThreadPause tp = new ThreadPause();
+        tp.wait(1);
 
         Log.d("Smart AI", "Enter receiveInfo()");
         boolean hasPhased = false;
@@ -162,7 +164,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             if (hasPhased && checkHitsExist()) {
                 doHits(phase, fullHand); //Hit action in here
                 Log.d("Smart AI", "Exit receiveInfo()");
-/*           if(!checkHitsExist())*/ copy.setTurnStage(4);
+                copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);
