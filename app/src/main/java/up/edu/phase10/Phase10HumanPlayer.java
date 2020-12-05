@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class Phase10HumanPlayer extends GameHumanPlayer implements OnClickListener {
 
     // the android activity that we are running
-    private GameMainActivity myActivity;
+    public GameMainActivity myActivity;
 
     boolean flashed;
     final static boolean faceUp = false; //use to show AI cards
