@@ -154,7 +154,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                     doDiscard(copy, hasPhased);
                 }
                 Log.d("Dumb AI", "Exit receiveInfo()");
-                if(!checkHitsExist())copy.setTurnStage(4);
+                /*if(!checkHitsExist())*/copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);
@@ -885,7 +885,7 @@ public class DumbComputerPlayer extends GameComputerPlayer {
                 }
             }
         }
-        if (this.nonGroupCards.size() == 0){
+        if (this.nonGroupCards != null && this.nonGroupCards.size() == 0){
             this.nonGroupCards = null;
         }
         Log.d("Dumb AI", "Exit checkGroupOrg()");
@@ -1775,11 +1775,13 @@ public class DumbComputerPlayer extends GameComputerPlayer {
      */
     private boolean checkHitsExist(){
         Log.d("Dumb AI", "Enter checkHitsExist()");
-        if(this.hitList != null && this.hitList.size() != 0){ 
+        //Cards have been identified for hits
+        if(this.hitList != null && this.hitList.size() != 0 && this.whereToHitList != null
+                && this.hitList.size() == this.whereToHitList.size()){
             Log.d("Dumb AI", "Exit checkHitsExist()");
             return true;
         }
-        else{
+        else{ //Else, return false
             Log.d("Dumb AI", "Exit checkHitsExist()");
             return false;
         }

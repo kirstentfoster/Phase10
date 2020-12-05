@@ -162,7 +162,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
             if (hasPhased && checkHitsExist()) {
                 doHits(phase, fullHand); //Hit action in here
                 Log.d("Smart AI", "Exit receiveInfo()");
-                if(!checkHitsExist())copy.setTurnStage(4);
+/*           if(!checkHitsExist())*/ copy.setTurnStage(4);
                 return;
             }
             else copy.setTurnStage(4);
@@ -1142,7 +1142,7 @@ public class SmartComputerPlayer extends GameComputerPlayer {
                 }
             }
         }
-        if (this.nonGroupCards.size() == 0){
+        if (this.nonGroupCards != null && this.nonGroupCards.size() == 0){
             this.nonGroupCards = null;
         }
         Log.d("Smart AI", "Exit checkGroupOrg()");
@@ -2234,7 +2234,9 @@ public class SmartComputerPlayer extends GameComputerPlayer {
      */
     private boolean checkHitsExist(){
         Log.d("Smart AI", "Enter checkHitsExist()");
-        if(this.hitList != null && this.hitList.size() != 0){ //Cards have been identified for hits
+        //Cards have been identified for hits
+        if(this.hitList != null && this.hitList.size() != 0 && this.whereToHitList != null
+                && this.hitList.size() == this.whereToHitList.size()){
             Log.d("Smart AI", "Exit checkHitsExist()");
             return true;
         }
