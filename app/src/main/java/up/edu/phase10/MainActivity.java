@@ -13,18 +13,42 @@ import up.edu.phase10.Framework.GamePlayerType;
  * @author Kirsten Foster, Alexis Molina, Emily Hoppe, Grace Penunuri
  * this is the primary activity for Phase10
  *
- * Game state commentary:
+ * Final Release commentary:
+ *
  * No known bugs
  * Fully functional GUI
+ * Game plays to completion
+ *
+ * JUnit tests present for both the GameState and Phase classes
+ *      These test the action handling in the GameState and the phase handling
+ *      in the Phase class
+ *
  * Smart AI plays game intelligently with a good strategy
  * Dumb AI plays the game poorly with a poor strategy, but will not necessarily lose
- * Working quit, restart, and help (rules) buttons
- * Displays current score and phase of both players, as well as requirement for
- *  current human phase
- * Working phase/round progression, scoring, as well as skip and wild cards
- * All actions currently work when player follows action constrictions
- * Working end game (who wins)
+ * Both AIs have had their moves slowed down slightly to allow the human player to better see
+ *      what actions they are taking
  *
+ * Working quit, restart, and help (rules) buttons
+ * 3 assistance buttons, one that shows the 10 phases, one that shows card scoring
+ *      rules, and one that explains error flashing
+ * There are different colors of error flashes that indicate different illegal moves, explained
+ *      by pressing the "Flash Key" button
+ *
+ * Displays current score and phase of both players, as well as requirement for
+ *      current human phase
+ * Displays the actions that human is currently allowed to do (below the two draw piles),
+ *      which updates with player does an action
+ * Cards are visually highlighted and unhighlighted from the human hand when they are selected
+ *
+ * Working phase/round progression, scoring, as well as skip and wild cards
+ * Game properly handles when a player draws the last card in either deck
+ * All actions currently work when player follows action constrictions, and will recieve appropriate
+ *      flash message to tell them their move was illegal
+ * Working end game and winning
+ *
+ * Our alpha release grading indicated to us that we have some long methods that could be
+ *      rectified by making greater use of arrays. We acknowledge this conceptually, but we did not have time
+ *      rewrite our code to be structured in this way.
  */
 public class MainActivity extends GameMainActivity {
 
