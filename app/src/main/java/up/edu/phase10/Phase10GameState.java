@@ -186,8 +186,8 @@ public class Phase10GameState extends GameState {
         hasGoneOut = -1;
         goesFirst = turnId;
         playerHasDrawn = false;
-        player1HasPhased = true;
-        player2HasPhased = true;
+        player1HasPhased = false;
+        player2HasPhased = false;
         player1Score = 0;
         player2Score = 0;
         player1Phase = 1;
@@ -475,9 +475,10 @@ public class Phase10GameState extends GameState {
         if(!playerHasDrawn) { //not player turn
             return false;
         }
+
         //checks if valid, player num == playerId, needs to have not phased
         if (playerNum == 0) {
-            if (phase.checkPhase(player1Phase, phaseContent, playerNum) && !player1HasPhased) { //see if phase is legal
+            if (!player1HasPhased && phase.checkPhase(player1Phase, phaseContent, playerNum) ) { //see if phase is legal
                 for (Card c : phaseContent) { // match phase content to locations in player hand
                     int j = 0;
                     for(int i=0; i<player1Hand.size(); i++){
@@ -494,7 +495,7 @@ public class Phase10GameState extends GameState {
                 return true;
             }
         } else if (playerNum == 1) {
-            if (phase.checkPhase(player2Phase, phaseContent, playerNum) && !player2HasPhased) {//see if phase is legal
+            if ( !player2HasPhased && phase.checkPhase(player2Phase, phaseContent, playerNum)) {//see if phase is legal
                 for (Card c : phaseContent) {// match phase content to locations in player hand
                     int j = 0;
                     for(int i=0; i<player2Hand.size(); i++){
