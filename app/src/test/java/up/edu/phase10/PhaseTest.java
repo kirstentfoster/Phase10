@@ -10,6 +10,9 @@ import static org.junit.Assert.*;
 public class PhaseTest {
 
     @Test
+    /**
+     * Runs a test to make sure checkIfPhaseOne passes when meant to and fails when it should
+     */
     public void checkIfPhaseOne() {
         Phase phase = new Phase(); //creates a new phase
         ArrayList<Card> hand = new ArrayList<Card>(); //new array list for a complete phase
@@ -39,8 +42,10 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure second phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseTwo() {
-        Random rand = new Random();
         Phase phase = new Phase(); //creates a new phase
         ArrayList<Card> hand = new ArrayList<Card>(); //new array list for a complete phase
         ArrayList<Card> notPhase = new ArrayList<Card>(); //new array list for an incomplete phase
@@ -69,6 +74,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure third phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseThree() {
         Random rand = new Random();
         Phase phase = new Phase(); //creates a new phase
@@ -96,6 +104,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure fourth phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseFour() {
         Random rand = new Random();
         Phase phase = new Phase();
@@ -114,6 +125,9 @@ public class PhaseTest {
         assertFalse(phase.checkIfPhaseFour(notRun,1));
     }
     @Test
+    /**
+     * Checks to make sure fifth phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseFive() {
         Random rand = new Random();
         Phase phase = new Phase();
@@ -133,6 +147,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure sixth phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseSix() {
         Random rand = new Random();
         Phase phase = new Phase();
@@ -153,6 +170,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure seventh phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseSeven() {
         //checks for a 2 sets of 4
         Phase phase = new Phase();
@@ -186,6 +206,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure ninth phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseNine() {
         //test for 1 set of 5 and 1 set of 2
         Phase phase = new Phase();
@@ -216,6 +239,9 @@ public class PhaseTest {
     }
 
     @Test
+    /**
+     * Checks to make sure tenth phase passes with correct hand and fails with incorrect hand
+     */
     public void checkIfPhaseTen() {
         //test for 1 set of 5 and 1 set of 3
         Phase phase = new Phase();
@@ -250,6 +276,9 @@ public class PhaseTest {
 
 
     @Test
+    /**
+     * Checks to make sure isColorGroup correctly returns if something is or isn't a color group
+     */
     public void isColorGroup() {
         //tests if it is a group of all the same color (for phase 8)
         ArrayList<Card> hand = new ArrayList<Card>();
@@ -273,6 +302,9 @@ public class PhaseTest {
 
     }
     @Test
+    /**
+     * makes sure that the sortCards functions sorts as expected.
+     */
     public void sortCards() {
         ArrayList<Card> hand = new ArrayList<Card>();
         Card[] expectedHand;

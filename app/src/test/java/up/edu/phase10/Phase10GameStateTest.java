@@ -9,6 +9,10 @@ import static org.junit.Assert.*;
 public class Phase10GameStateTest {
 
     @Test
+    /**
+     * Checks drawFaceDown by making sure the hand gets an extra card and the face down pile loses
+     * a card
+     */
     public void drawFaceDown() {
         //tests if player draws from the face down pile
         Phase10GameState state = new Phase10GameState();
@@ -27,6 +31,10 @@ public class Phase10GameStateTest {
     }
 
     @Test
+    /**
+     * test draw face up by ensuring face up pile loses a card and hand gains a card
+     * after method is called
+     */
     public void drawFaceUp() {
         //tests if player draws from the face up pile
         Phase10GameState state = new Phase10GameState();
@@ -47,6 +55,10 @@ public class Phase10GameStateTest {
     }
 
     @Test
+    /**
+     * ensures discard method works correctly by ensuring the hand size decreases, the discard pile
+     * sizez increases, and the discarded card is the one that ends up on the discard pile
+     */
     public void discard() {
         //tests if the discard action is working
         Phase10GameState state = new Phase10GameState();
@@ -69,6 +81,9 @@ public class Phase10GameStateTest {
     }
 
     @Test
+    /**
+     * checks getPlayer1HasPhased by making sure that it is false when the phase content is empty
+     */
     public void getPlayer1HasPhased() {
         //tests if player one phasing is being checked
         Phase10GameState state = new Phase10GameState();
@@ -84,6 +99,10 @@ public class Phase10GameStateTest {
     }
 
     @Test
+    /**
+     * tests playPhase by ensuring the phase starts empty and not phased and then successfully updates
+     * values after phase is played
+     */
     public void playPhase() {
         Phase10GameState state = new Phase10GameState();
         ArrayList<Card> givenHand = new ArrayList<Card>();
@@ -126,6 +145,10 @@ public class Phase10GameStateTest {
     }
 
     @Test
+    /**
+     * tests hitPlayer by making sure a card is added to the hit on player's phase and that it was
+     * the correct card
+     */
     public void hitPlayer(){
         Phase10GameState state = new Phase10GameState();
         state.setTurnId(0);
