@@ -1,14 +1,11 @@
 
 package up.edu.phase10;
 
-import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import up.edu.phase10.Framework.GameComputerPlayer;
 import up.edu.phase10.Framework.GameInfo;

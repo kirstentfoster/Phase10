@@ -2,9 +2,6 @@
 
 package up.edu.phase10;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
 /**
  External Citation
  Date: 11/5/20
